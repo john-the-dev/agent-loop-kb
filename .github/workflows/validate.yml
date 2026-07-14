@@ -1,0 +1,24 @@
+name: validate
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Validate entries against schema + rubric
+        run: node scripts/validate.mjs
+      - name: Build dist/kb.json
+        run: node scripts/build.mjs
+      - name: Fail if dist/kb.json is stale (rebuild + commit)
+        run: |
+          if ! git diff --quiet -- dist/kb.json; then
+            echo "::error::dist/kb.json is out of date — run 'node scripts/build.mjs' and commit."
+            git --no-pager diff --stat -- dist/kb.json
+            exit 1
+          fi
