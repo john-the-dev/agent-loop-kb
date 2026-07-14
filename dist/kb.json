@@ -1,912 +1,923 @@
-[
-  {
-    "id": "agent-cost-control",
-    "title": "Cost control and token economics",
-    "url": "https://www.anthropic.com/engineering/building-effective-agents",
-    "category": "evaluation",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "cost",
-      "control",
-      "token",
-      "economics",
-      "measure"
-    ],
-    "text": "Measure cost per completed task, not cost per model call, because cheap models can become expensive when they cause retries or long trajectories. Reduce repeated input with prompt caching, retrieve only relevant chunks, compact history, cap tool and reasoning loops, and route routine classification or extraction to smaller models while escalating difficult cases based on confidence or validation failure. Set per-run and per-tenant budgets and surface budget exhaustion as an explicit partial outcome rather than silently degrading quality."
-  },
-  {
-    "id": "agent-deployment",
-    "title": "Deploying agents on serverless infrastructure",
-    "url": "https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html",
-    "category": "memory",
-    "source_type": "docs",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "deploying",
-      "serverless",
-      "infrastructure",
-      "treat",
-      "workers"
-    ],
-    "text": "Treat serverless agent workers as stateless and persist conversation state, plans, checkpoints, idempotency records, and pending approvals in durable services because instances can disappear or be retried at any time. Cold starts, execution-duration limits, connection limits, and burst concurrency make long agent loops better suited to queues plus resumable steps than one synchronous function invocation. Pin prompt, model, tool, and schema versions; reuse safe connections and cached clients within a warm instance, but never rely on local memory for correctness."
-  },
-  {
-    "id": "agent-evals",
-    "title": "Agent evaluation pitfalls",
-    "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
-    "category": "evaluation",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "evaluation",
-      "pitfalls",
-      "evaluations",
-      "should",
-      "separate"
-    ],
-    "text": "Agent evaluations should separate model quality from scaffold, tool, and environment failures. Single-run pass rates hide nondeterminism, while overly short time or token limits can misclassify capable agents. Use repeated trials, inspect trajectories, score intermediate outcomes, and test realistic failure recovery."
-  },
-  {
-    "id": "agent-identity-secrets",
-    "title": "Agent identity and secret management",
-    "url": "https://csrc.nist.gov/pubs/sp/800/207/final",
-    "category": "memory",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "identity",
-      "secret",
-      "management",
-      "give",
-      "each"
-    ],
-    "text": "Give each agent workload a distinct identity and short-lived, task-scoped credentials instead of placing broad API keys in prompts, tool output, logs, or persistent memory. A trusted executor should obtain secrets only after policy checks, constrain target resources and operations, and return the minimum result rather than exposing raw credentials to the model. Rotate credentials, audit principal-to-action mappings, isolate tenants, and revoke active sessions when a user, connector, or agent run loses authorization."
-  },
-  {
-    "id": "agent-loop",
-    "title": "What an agent loop is",
-    "url": "https://www.anthropic.com/research/building-effective-agents",
-    "category": "tools",
-    "source_type": "research",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "what",
-      "loop",
-      "repeatedly",
-      "reads",
-      "current"
-    ],
-    "text": "An agent loop repeatedly reads the current state, chooses an action, uses a tool, observes the result, and corrects its plan. The model is only one component: reliable agents also need clear goals, useful tools, bounded context, termination conditions, and feedback from the environment."
-  },
-  {
-    "id": "agent-memory-tiers",
-    "title": "Short-term and long-term agent memory",
-    "url": [],
-    "category": "memory",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "short",
-      "term",
-      "long",
-      "memory",
-      "working"
-    ],
-    "text": "Short-term memory is the working context supplied on each model call: recent messages, the current plan, tool results, and task-local state; it is bounded by the context window and disappears unless persisted. Long-term memory lives in an external store and should contain durable, scoped facts such as user preferences, decisions, and prior outcomes, with provenance, timestamps, access controls, and deletion support. Retrieve long-term memories only when relevant, and never treat model-written memories as authoritative without validation because stale or poisoned records can propagate across sessions."
-  },
-  {
-    "id": "agent-observability",
-    "title": "Tracing and replay for agents",
-    "url": "https://opentelemetry.io/docs/concepts/signals/traces/",
-    "category": "orchestration",
-    "source_type": "docs",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "tracing",
-      "replay",
-      "represent",
-      "each",
-      "trace"
-    ],
-    "text": "Represent each agent run as a trace with spans for model calls, retrieval, tool execution, guardrails, handoffs, and human approvals, linked by stable run and parent identifiers. Log model and prompt versions, token counts, latency, tool names and validated arguments, result status, retries, state transitions, citations, and final outcome, while redacting secrets and minimizing retained personal data. Store enough versioned inputs and environment references to replay failures, but distinguish deterministic replay of recorded tool results from a fresh live rerun that may change external state."
-  },
-  {
-    "id": "coding-agents",
-    "title": "Production coding agents",
-    "url": "https://arxiv.org/abs/2310.06770",
-    "category": "security",
-    "source_type": "paper",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "production",
-      "coding",
-      "should",
-      "work",
-      "isolated"
-    ],
-    "text": "Coding agents should work in isolated, least-privilege sandboxes with repository-scoped credentials, network controls, resource limits, and explicit approval for destructive commands, secret access, or deployment. Use a test-driven loop: reproduce the failure, inspect relevant code, make a minimal diff, run targeted tests and static checks, then report evidence and remaining risk. Deliver reviewable patches rather than opaque rewrites, never weaken tests merely to pass, and protect the agent from prompt injection embedded in source files, issues, or dependency output."
-  },
-  {
-    "id": "context-compaction",
-    "title": "Context management and compaction",
-    "url": [],
-    "category": "tools",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "context",
-      "management",
-      "compaction",
-      "manage",
-      "retain"
-    ],
-    "text": "Manage context as a budget: retain the system policy, current objective, unresolved constraints, recent actions, exact error messages, and identifiers needed for future tool calls, while dropping duplicated prose and superseded attempts. A sliding window preserves local conversational detail, whereas periodic summaries compress older history; summaries should separate verified facts from hypotheses and link to durable artifacts rather than paraphrasing critical code or numbers. Trigger compaction before the window is full and test that an agent can resume from the compacted state without losing commitments or repeating side effects."
-  },
-  {
-    "id": "customer-support-agents",
-    "title": "Production customer support agents",
-    "url": "https://www.anthropic.com/engineering/building-effective-agents",
-    "category": "general",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "production",
-      "customer",
-      "support",
-      "deflect",
-      "repetitive"
-    ],
-    "text": "A support agent can deflect repetitive requests by answering from versioned help-center content and resolving low-risk tasks such as checking delivery status, but it should cite the grounding article and avoid inventing policy. Route by intent and risk, preserve brand tone without masking uncertainty, authenticate users before account access, and escalate on low confidence, repeated failure, abuse, exceptions, or requests outside authority. For a refund request, the agent can gather order evidence and explain eligibility, while a deterministic policy service decides the amount and an approval gate handles exceptions."
-  },
-  {
-    "id": "determinism-reproducibility",
-    "title": "Determinism and reproducibility",
-    "url": [],
-    "category": "evaluation",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "determinism",
-      "reproducibility",
-      "lower",
-      "temperature",
-      "reduce"
-    ],
-    "text": "Lower temperature can reduce sampling variation for extraction and routing, but it does not make a hosted model or a multi-step agent deterministic because model revisions, parallel tools, retrieval indexes, and external state can change outcomes. Record model snapshots when available, parameters, prompts, tool and data versions, seeds where supported, timestamps, and complete trajectories, then evaluate with repeated trials and outcome tolerances. For reasoning models, follow provider guidance on sampling controls and put exact calculations, policy decisions, and invariants in deterministic code rather than relying on identical natural-language reasoning traces."
-  },
-  {
-    "id": "durable-agent-execution",
-    "title": "Durable execution and checkpointing",
-    "url": [],
-    "category": "tools",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "durable",
-      "execution",
-      "checkpointing",
-      "long",
-      "running"
-    ],
-    "text": "Long-running agents should execute as resumable state machines whose durable checkpoint records the current step, validated state, completed side effects, pending approvals, retry counters, and versioned inputs. Use an outbox or equivalent transactional pattern when a state update and external message must agree, and assign idempotency keys so crash recovery can safely replay a step. Define terminal states, cancellation and compensation paths, and migration behavior for runs that outlive a prompt, model, tool, or schema deployment."
-  },
-  {
-    "id": "ecommerce-agents",
-    "title": "Production e-commerce agents",
-    "url": [],
-    "category": "evaluation",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "production",
-      "commerce",
-      "should",
-      "combine",
-      "lexical"
-    ],
-    "text": "E-commerce agents should combine lexical and semantic product retrieval with hard filters for inventory, locale, compatibility, price, and fulfillment, and clearly label sponsored or personalized ranking. Recommendations must be grounded in catalog attributes and user-stated needs, not invented benefits; order tools require authenticated identity, exact totals, idempotency, and confirmation before purchase, cancellation, return, or address changes. A shopping agent can compare in-stock laptops against a budget and workload, then prepare a cart while the commerce service recomputes availability, tax, shipping, and the final charge."
-  },
-  {
-    "id": "evaluation-strategy",
-    "title": "Offline and online agent evaluation",
-    "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
-    "category": "evaluation",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "offline",
-      "online",
-      "evaluation",
-      "evals",
-      "provide"
-    ],
-    "text": "Offline evals provide repeatable pre-release regression tests over representative tasks, adversarial cases, tool failures, and multi-step trajectories; online evals measure real completion, escalation, latency, cost, and safety signals under production traffic. Maintain frozen golden sets plus newly mined failures, run repeated trials for nondeterministic agents, and score both final outcomes and critical intermediate constraints. LLM judges are scalable but can be biased by style, verbosity, ordering, or shared model errors, so calibrate them against blinded human labels and deterministic checks and track judge-version changes."
-  },
-  {
-    "id": "finance-agents",
-    "title": "Production agents in finance",
-    "url": "https://www.nist.gov/privacy-framework",
-    "category": "general",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "production",
-      "finance",
-      "need",
-      "data",
-      "minimization"
-    ],
-    "text": "Finance agents need data minimization, field-level protection for PII, least-privilege access, immutable audit trails, retention controls, and jurisdiction-specific compliance review. Keep ledger math, eligibility, limits, sanctions screening, and transaction authorization in deterministic services; the model may collect evidence or explain a result but must not override those checks. For an expense-review use case, the agent can extract receipt fields and flag policy anomalies with source spans, while rules validate totals and a human approves ambiguous or high-value reimbursements."
-  },
-  {
-    "id": "guardrails-safety",
-    "title": "Layered guardrails for agent actions",
-    "url": "https://www.nist.gov/itl/ai-risk-management-framework",
-    "category": "tools",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "layered",
-      "guardrails",
-      "actions",
-      "should",
-      "enforced"
-    ],
-    "text": "Guardrails should be enforced in code around the model: validate inputs and outputs, authorize every tool call against the user and task, constrain arguments with allow-lists, and run code or file operations in resource-limited sandboxes. Separate read tools from write tools, default to least privilege, redact secrets, impose spend and iteration limits, and require approval for irreversible or externally visible actions. Model-based safety classifiers can add defense in depth but must not be the sole control for permissions or transaction integrity."
-  },
-  {
-    "id": "healthcare-agents",
-    "title": "Production agents in healthcare",
-    "url": "https://www.hhs.gov/hipaa/for-professionals/security/index.html",
-    "category": "general",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "production",
-      "healthcare",
-      "handling",
-      "protected",
-      "health"
-    ],
-    "text": "Healthcare agents handling protected health information require HIPAA-aligned administrative, physical, and technical safeguards, minimum-necessary data access, vendor agreements where applicable, audit logs, and verified identity boundaries. Ground clinical statements in approved, current sources with citations, display uncertainty, and require qualified human review for diagnosis, treatment, triage, or any action that could affect care. A visit-summary agent can draft patient instructions from the signed note and formulary data, but a clinician must review the draft and unsupported details must be omitted rather than guessed."
-  },
-  {
-    "id": "human-approval-gates",
-    "title": "Human approval gates for high-stakes actions",
-    "url": "https://www.anthropic.com/research/trustworthy-agents",
-    "category": "general",
-    "source_type": "research",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "human",
-      "approval",
-      "gates",
-      "high",
-      "stakes"
-    ],
-    "text": "Place approval gates immediately before consequential actions such as sending messages, moving money, changing production, deleting data, or releasing regulated decisions, rather than asking once at session start. The approval view should show the exact proposed action, target, material parameters, evidence, uncertainty, and reversible alternatives; any later parameter change invalidates the approval. Persist who approved what and when, support rejection and editing, and fail closed when the approver or policy service is unavailable."
-  },
-  {
-    "id": "latency-streaming",
-    "title": "Latency and streaming agent results",
-    "url": "https://developers.openai.com/api/docs/guides/latency-optimization",
-    "category": "evaluation",
-    "source_type": "docs",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "latency",
-      "streaming",
-      "results",
-      "optimize",
-      "both"
-    ],
-    "text": "Optimize both time to first useful feedback and total task time: stream text or structured progress, acknowledge long-running work immediately, and expose tool status without leaking private reasoning. Parallelize independent retrievals or tool calls, prefetch predictable context, cache stable prefixes, and avoid serial model calls that code could replace. Streaming improves perceived speed but does not reduce completion latency by itself, so preserve cancellation, backpressure, and a final authoritative result distinct from partial output."
-  },
-  {
-    "id": "legal-agents",
-    "title": "Production agents for legal work",
-    "url": [],
-    "category": "memory",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "production",
-      "legal",
-      "work",
-      "should",
-      "retrieve"
-    ],
-    "text": "Legal agents should retrieve from authoritative, jurisdiction- and date-filtered corpora and preserve court, reporter, docket, pinpoint citation, precedential status, and source text for every proposition. Validate that cited authorities exist and support the claim, distinguish law from argument, disclose incomplete coverage, and require attorney review before filing, advising a client, or changing contractual rights. For a motion-research use case, the agent can assemble a claim-to-authority table and quote short verified passages, while a reviewer checks negative treatment and final reasoning."
-  },
-  {
-    "id": "lesson-ariane5-501",
-    "title": "Reuse code only after re-validating its assumptions",
-    "url": "https://en.wikipedia.org/wiki/Ariane_flight_V88",
-    "category": "lessons",
-    "source_type": "post-mortem",
-    "status": "current",
-    "grade": "A",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "code-reuse",
-      "assumptions",
-      "overflow",
-      "regression"
-    ],
-    "text": "Ariane 5's maiden flight was destroyed in 1996 when inertial-reference software reused from the slower Ariane 4 hit an unhandled overflow under the new rocket's higher values. Lesson: reused components carry hidden assumptions from their original context. For agents: prompts, tools, and sub-agents reused in a new task carry old assumptions — re-test them in the new context instead of assuming they still hold."
-  },
-  {
-    "id": "lesson-aws-s3-2017-guardrails",
-    "title": "Guardrails on destructive commands limit blast radius",
-    "url": "https://aws.amazon.com/message/41926/",
-    "category": "lessons",
-    "source_type": "post-mortem",
-    "status": "current",
-    "grade": "A",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "guardrails",
-      "destructive-ops",
-      "blast-radius",
-      "tools"
-    ],
-    "text": "The 2017 AWS S3 outage began when an engineer ran a debugging command with a mistyped parameter that removed far more capacity than intended, cascading across dependent systems. Lesson: destructive operations need typed inputs, confirmation, and limits on how much they can affect at once. For agents: tools that delete/modify state must have typed args, dry-run/confirm modes, and blast-radius caps — an agent should never be able to wipe more than a bounded scope in one call."
-  },
-  {
-    "id": "lesson-cloudflare-regex-2019",
-    "title": "Unbounded work will exhaust the system",
-    "url": "https://blog.cloudflare.com/details-of-the-cloudflare-outage-on-july-2-2019/",
-    "category": "lessons",
-    "source_type": "post-mortem",
-    "status": "current",
-    "grade": "A",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "resource-limits",
-      "runaway",
-      "loops",
-      "budgets"
-    ],
-    "text": "In 2019 a single regular expression with catastrophic backtracking consumed CPU globally and took Cloudflare offline. Lesson: any operation without an explicit bound can consume all resources. For agents: cap loop iterations, token budgets, tool-call counts, and wall-clock per task — a runaway agent loop is the same failure mode as an unbounded regex, and needs the same hard ceilings."
-  },
-  {
-    "id": "lesson-gitlab-2017-backups",
-    "title": "Test your recovery, not just your backups",
-    "url": "https://about.gitlab.com/blog/2017/02/10/postmortem-of-database-outage-of-january-31/",
-    "category": "lessons",
-    "source_type": "post-mortem",
-    "status": "current",
-    "grade": "A",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "backups",
-      "recovery",
-      "state",
-      "memory"
-    ],
-    "text": "In 2017 GitLab lost production data when a tired engineer removed a directory on the wrong host, then discovered that five separate backup/replication methods had silently been failing. Lesson: an untested backup is not a backup. For agents: verify that agent memory/state can actually be restored, and snapshot state before any destructive agent action so a bad step is recoverable."
-  },
-  {
-    "id": "lesson-google-error-budgets",
-    "title": "Error budgets balance reliability against velocity",
-    "url": "https://sre.google/sre-book/embracing-risk/",
-    "category": "lessons",
-    "source_type": "retrospective",
-    "status": "current",
-    "grade": "A",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "reliability",
-      "slo",
-      "error-budget",
-      "evaluation"
-    ],
-    "text": "Google SRE popularized the error budget: 100% reliability is the wrong target; you set an allowed failure rate, and while you're within budget you ship features, when you exceed it you stop and harden. Lesson: make the reliability-vs-speed tradeoff explicit and measurable. For agents: define an acceptable task-failure rate and let it gate whether you ship new capabilities or spend the cycle hardening the loop."
-  },
-  {
-    "id": "lesson-healthcaregov-2013",
-    "title": "Avoid big-bang launches; roll out incrementally",
-    "url": "https://en.wikipedia.org/wiki/HealthCare.gov",
-    "category": "lessons",
-    "source_type": "post-mortem",
-    "status": "current",
-    "grade": "A",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "rollout",
-      "canary",
-      "launch",
-      "load"
-    ],
-    "text": "HealthCare.gov's 2013 launch failed under load because a large, integration-heavy system was flipped on for everyone at once with inadequate end-to-end testing. Lesson: stage rollouts and test the whole path under real load before a full cutover. For agents: canary new agent behaviors to a small slice of traffic, watch failure rates, and expand gradually rather than switching all users to a new loop at once."
-  },
-  {
-    "id": "lesson-knight-capital-deploy",
-    "title": "Deploy discipline: dormant code + partial rollout can be catastrophic",
-    "url": "https://en.wikipedia.org/wiki/Knight_Capital_Group",
-    "category": "lessons",
-    "source_type": "post-mortem",
-    "status": "current",
-    "grade": "A",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "deploy",
-      "rollout",
-      "feature-flags",
-      "risk"
-    ],
-    "text": "Knight Capital lost ~$440M in 45 minutes in 2012 after a deploy left an old, repurposed feature flag enabling long-dormant code on some servers but not others. Lesson: never leave dead code reachable, and roll changes out uniformly with kill-switches. For agents: version and feature-flag tool rollouts, remove dormant tool paths an agent could trigger, and make a bad rollout instantly reversible."
-  },
-  {
-    "id": "lesson-mars-climate-orbiter",
-    "title": "Interface contracts: mismatched units/schemas cause silent disaster",
-    "url": "https://en.wikipedia.org/wiki/Mars_Climate_Orbiter",
-    "category": "lessons",
-    "source_type": "post-mortem",
-    "status": "current",
-    "grade": "A",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "interfaces",
-      "schemas",
-      "validation",
-      "tools"
-    ],
-    "text": "NASA lost the Mars Climate Orbiter in 1999 because one team produced output in imperial units while another consumed it as metric; the mismatch was never validated at the boundary. Lesson: every interface needs an enforced, typed contract. For agents: define strict tool schemas and validate types/units/formats at the tool boundary — never trust that the model and the tool agree on shape implicitly."
-  },
-  {
-    "id": "lesson-netflix-chaos",
-    "title": "Inject failure deliberately to build resilience",
-    "url": "https://netflix.github.io/chaosmonkey/",
-    "category": "lessons",
-    "source_type": "retrospective",
-    "status": "current",
-    "grade": "A",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "chaos-engineering",
-      "resilience",
-      "testing",
-      "fault-injection"
-    ],
-    "text": "Netflix's Chaos Monkey randomly kills production instances so the system is forced to tolerate failure as a normal condition rather than a rare emergency. Lesson: resilience comes from routinely exercising failure paths, not avoiding them. For agents: fault-inject dependencies — time out tools, return malformed tool output, drop context — and confirm the agent degrades gracefully instead of only testing the happy path."
-  },
-  {
-    "id": "lesson-therac-25",
-    "title": "Concurrency bugs and removed safety interlocks are lethal",
-    "url": "https://en.wikipedia.org/wiki/Therac-25",
-    "category": "lessons",
-    "source_type": "post-mortem",
-    "status": "current",
-    "grade": "A",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "safety",
-      "concurrency",
-      "interlocks",
-      "autonomy"
-    ],
-    "text": "The Therac-25 radiation machine (1985–87) gave massive overdoses due to race conditions after hardware safety interlocks were replaced with software-only checks that had subtle timing bugs. Lesson: don't remove independent safety layers, and treat concurrency as a first-class hazard. For agents: keep human/hardware approval gates for high-consequence actions, and guard concurrent tool calls that share state — autonomy must not bypass the interlocks."
-  },
-  {
-    "id": "mcp",
-    "title": "Model Context Protocol",
-    "url": "https://modelcontextprotocol.io/introduction",
-    "category": "tools",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "model",
-      "context",
-      "protocol",
-      "open",
-      "standard"
-    ],
-    "text": "The Model Context Protocol is an open standard for connecting AI applications to external tools and data. MCP uses a client-server architecture: servers expose resources, prompts, and tools, while hosts manage model access, permissions, and user consent. It reduces custom integration work but does not replace security boundaries."
-  },
-  {
-    "id": "model-selection-adaptation",
-    "title": "Choosing models, prompting, RAG, and fine-tuning",
-    "url": [],
-    "category": "evaluation",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "choosing",
-      "models",
-      "prompting",
-      "fine",
-      "tuning"
-    ],
-    "text": "Choose the smallest model that meets measured quality, tool-use, context, latency, modality, privacy, and reliability requirements on your own task distribution, then route exceptional cases upward. Improve instructions and examples when behavior is underspecified, use RAG when answers depend on changing or private facts that need provenance, and fine-tune when many examples define a stable behavior, format, or domain pattern that prompting cannot deliver economically. Fine-tuning does not reliably teach fresh facts or replace authorization, retrieval, or deterministic business logic, and every adaptation choice should be validated by the same regression suite."
-  },
-  {
-    "id": "multi-agent-orchestration",
-    "title": "Multi-agent orchestration tradeoffs",
-    "url": "https://www.anthropic.com/engineering/building-effective-agents",
-    "category": "orchestration",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "multi",
-      "orchestration",
-      "tradeoffs",
-      "multiple",
-      "subtasks"
-    ],
-    "text": "Use multiple agents when subtasks are genuinely independent, require distinct tools or context, or benefit from parallel search or review; a single agent is usually cheaper, faster, and easier to debug for sequential work. In the supervisor pattern, one coordinator decomposes the task, gives workers bounded contracts, and merges results, while handoffs must carry the goal, evidence, state, ownership, and completion criteria explicitly. Cap fan-out, recursion, and per-worker budgets because coordination messages, duplicated context, and synthesis can cost more than the useful work."
-  },
-  {
-    "id": "operations-agents",
-    "title": "Production back-office agents",
-    "url": [],
-    "category": "orchestration",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "production",
-      "back",
-      "office",
-      "useful",
-      "documents"
-    ],
-    "text": "Back-office agents are useful when documents vary and judgment is needed, while deterministic RPA remains preferable for stable screens and fixed rules; combine them by letting the model interpret inputs and a workflow engine enforce state transitions. Document pipelines should retain the original, extract fields with page or region provenance, validate totals and identifiers, deduplicate work, and route low-confidence or policy-exception cases to humans. For invoice processing, the agent can classify and extract an invoice, but deterministic services perform vendor matching, three-way matching, duplicate detection, and payment approval."
-  },
-  {
-    "id": "planning-decomposition",
-    "title": "Planning and task decomposition",
-    "url": "https://arxiv.org/abs/2210.03629",
-    "category": "general",
-    "source_type": "paper",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "planning",
-      "decomposition",
-      "react",
-      "interleaves",
-      "reasoning"
-    ],
-    "text": "ReAct interleaves reasoning, actions, and observations so the agent can revise its approach from environmental feedback; plan-then-execute first creates a task graph and is better when dependencies and approval points must be visible. Decompose work into verifiable steps with explicit inputs, outputs, dependencies, and stopping conditions, then replan when observations invalidate assumptions rather than blindly following the original plan. Reflection can improve a failed attempt, but bound reflection rounds and require new evidence or a changed action to prevent expensive self-critique loops."
-  },
-  {
-    "id": "prompt-caching",
-    "title": "Prompt caching and context reuse",
-    "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
-    "category": "memory",
-    "source_type": "docs",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "prompt",
-      "caching",
-      "context",
-      "reuse",
-      "reduces"
-    ],
-    "text": "Prompt caching reduces latency and input cost when many calls share a long stable prefix such as system instructions, tool definitions, examples, or reference documents. Put stable content before volatile conversation state, keep serialization byte-for-byte consistent, and monitor cache creation, hit rate, read tokens, expiration, and provider-specific minimums. Caching is an optimization rather than memory: invalidate or version cached prefixes when policies, permissions, schemas, or source data change."
-  },
-  {
-    "id": "prompt-injection-defense",
-    "title": "Defending against prompt injection",
-    "url": "https://www.ncsc.gov.uk/blog-post/prompt-injection-is-not-sql-injection",
-    "category": "tools",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "defending",
-      "against",
-      "prompt",
-      "injection",
-      "treat"
-    ],
-    "text": "Treat retrieved pages, emails, documents, tool outputs, and user-uploaded files as untrusted data, even when they contain text claiming to be system instructions. Keep instructions and data in distinct channels or fields, label provenance, minimize the data sent to privileged agents, and never let content grant itself permissions or select secrets to reveal. Enforce authorization and destination allow-lists outside the model, require confirmation for sensitive writes, and test indirect-injection cases where malicious instructions arrive through a trusted connector."
-  },
-  {
-    "id": "rag-basics",
-    "title": "Retrieval-augmented generation basics",
-    "url": "https://learn.microsoft.com/azure/search/retrieval-augmented-generation-overview",
-    "category": "evaluation",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "retrieval",
-      "augmented",
-      "generation",
-      "basics",
-      "embeds"
-    ],
-    "text": "Retrieval-augmented generation embeds a question, retrieves semantically similar passages from a knowledge base, and places those passages in the model context. Good RAG systems preserve source metadata, retrieve compact relevant chunks, instruct the model to stay grounded, and evaluate retrieval separately from answer generation."
-  },
-  {
-    "id": "rate-limiting-backpressure",
-    "title": "Rate limiting and backpressure",
-    "url": "https://developers.openai.com/api/docs/guides/rate-limits",
-    "category": "memory",
-    "source_type": "docs",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "rate",
-      "limiting",
-      "backpressure",
-      "model",
-      "providers"
-    ],
-    "text": "Model providers can limit requests, input tokens, output tokens, or concurrent work, so admission control must estimate token load rather than count requests alone. Use per-tenant quotas, bounded queues, concurrency semaphores, exponential backoff with jitter, and provider reset headers; shed or defer low-priority work before queues consume all memory or exceed user deadlines. Propagate cancellation through agent and tool calls, and avoid synchronized retry storms or unbounded worker fan-out after a limit clears."
-  },
-  {
-    "id": "retrieval-quality",
-    "title": "Chunking, hybrid retrieval, and reranking",
-    "url": "https://learn.microsoft.com/en-us/azure/search/hybrid-search-overview",
-    "category": "evaluation",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "chunking",
-      "hybrid",
-      "retrieval",
-      "reranking",
-      "chunk"
-    ],
-    "text": "Chunk along semantic boundaries and keep headings, source URL, timestamps, permissions, and neighboring relationships; chunks should be small enough to isolate an answer but large enough to preserve definitions and exceptions. Hybrid retrieval combines lexical search, which excels at exact identifiers and rare terms, with vector search for paraphrases, then a reranker scores a broader candidate set before context assembly. Evaluate retrieval separately with recall at k, ranking metrics, citation coverage, and hard negatives, and apply access filters before results reach the model."
-  },
-  {
-    "id": "sales-agents",
-    "title": "Production sales and GTM agents",
-    "url": [],
-    "category": "tools",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "production",
-      "sales",
-      "should",
-      "personalize",
-      "consented"
-    ],
-    "text": "Sales agents should personalize from consented, relevant data, respect suppression lists and communication rules, and avoid inferring sensitive traits or fabricating customer facts. CRM tools need scoped read and write operations, duplicate detection, ownership checks, and approval before external outreach or bulk changes. For lead qualification, an agent can summarize verified firmographic and interaction signals, assign a reason-coded recommendation, and draft an email, while deterministic territory rules route the lead and the account owner approves sending."
-  },
-  {
-    "id": "structured-outputs",
-    "title": "Structured outputs with JSON Schema",
-    "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
-    "category": "general",
-    "source_type": "docs",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "structured",
-      "outputs",
-      "json",
-      "schema",
-      "constrained"
-    ],
-    "text": "Use schema-constrained generation when downstream code needs machine-readable output: define required fields, closed enums, bounds, and disallow unexpected properties where the provider's supported JSON Schema subset permits it. Schema conformance guarantees shape, not truth, so still perform semantic validation, authorization, range checks, and referential checks before acting. Handle refusals, truncation, and provider errors as distinct outcomes, and version schemas so producers and consumers can evolve safely."
-  },
-  {
-    "id": "token-budgets",
-    "title": "Token budgets change agent capability",
-    "url": "https://www.aisi.gov.uk/",
-    "category": "evaluation",
-    "source_type": "research",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "token",
-      "budgets",
-      "change",
-      "capability",
-      "security"
-    ],
-    "text": "UK AI Security Institute evaluations found that increasing an agent's token budget from 1 million to 10 million tokens improved success on software-engineering tasks by roughly 25 percent. Some long-horizon cybersecurity tasks can require budgets near 50 million tokens. A weak result may therefore reflect an exhausted reasoning budget rather than a hard capability limit."
-  },
-  {
-    "id": "tool-retries-idempotency",
-    "title": "Retries, timeouts, and idempotent tools",
-    "url": "https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/",
-    "category": "tools",
-    "source_type": "blog",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "retries",
-      "timeouts",
-      "idempotent",
-      "tools",
-      "give"
-    ],
-    "text": "Give every networked tool a connection timeout, an overall deadline, and a bounded retry policy using exponential backoff with jitter only for transient failures such as throttling or selected 5xx responses. Never automatically retry validation, authorization, or permanent business errors, and respect provider retry hints. Side-effecting operations need an idempotency key and stored outcome so a timeout after a successful write cannot create a duplicate charge, ticket, email, or order."
-  },
-  {
-    "id": "tool-schema-design",
-    "title": "Function and tool schema design",
-    "url": "https://developers.openai.com/api/docs/guides/function-calling",
-    "category": "tools",
-    "source_type": "docs",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "function",
-      "tool",
-      "schema",
-      "design",
-      "expose"
-    ],
-    "text": "Expose narrow, intent-level tools with unambiguous names and descriptions, explicit required fields, typed enums and bounds, and no overlapping functions that differ only subtly. Do not make the model invent database keys or hidden defaults: provide lookup tools, use stable external identifiers, and return structured success or actionable error objects. Keep authorization, validation, and side-effect confirmation in the executor, and use strict schema mode where available while testing selection and argument accuracy across realistic prompts."
-  },
-  {
-    "id": "tool-use",
-    "title": "Reliable tool use",
-    "url": "https://platform.openai.com/docs/guides/function-calling",
-    "category": "tools",
-    "source_type": "docs",
-    "status": "current",
-    "grade": "unrated",
-    "added": "2026-07-14",
-    "last_verified": "2026-07-14",
-    "superseded_by": null,
-    "tags": [
-      "reliable",
-      "tool",
-      "using",
-      "work",
-      "best"
-    ],
-    "text": "Tool-using agents work best with narrow tools, explicit schemas, actionable error messages, and observable results. Validate arguments before execution, use idempotency keys for side effects, limit permissions, and return structured outputs so the model can accurately decide what to do next."
-  }
-]
+{
+  "source": "The Agent Loop",
+  "homepage": "https://agent-loop.xyz",
+  "repository": "https://github.com/john-the-dev/agent-loop-kb",
+  "license": "CC BY 4.0",
+  "attribution_required": true,
+  "attribution": "Source: The Agent Loop (https://agent-loop.xyz)",
+  "usage": "https://github.com/john-the-dev/agent-loop-kb/blob/main/AGENTS.md",
+  "version": "fa48faba9b4e",
+  "count": 46,
+  "entries": [
+    {
+      "id": "agent-cost-control",
+      "title": "Cost control and token economics",
+      "url": "https://www.anthropic.com/engineering/building-effective-agents",
+      "category": "evaluation",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "cost",
+        "control",
+        "token",
+        "economics",
+        "measure"
+      ],
+      "text": "Measure cost per completed task, not cost per model call, because cheap models can become expensive when they cause retries or long trajectories. Reduce repeated input with prompt caching, retrieve only relevant chunks, compact history, cap tool and reasoning loops, and route routine classification or extraction to smaller models while escalating difficult cases based on confidence or validation failure. Set per-run and per-tenant budgets and surface budget exhaustion as an explicit partial outcome rather than silently degrading quality."
+    },
+    {
+      "id": "agent-deployment",
+      "title": "Deploying agents on serverless infrastructure",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html",
+      "category": "memory",
+      "source_type": "docs",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "deploying",
+        "serverless",
+        "infrastructure",
+        "treat",
+        "workers"
+      ],
+      "text": "Treat serverless agent workers as stateless and persist conversation state, plans, checkpoints, idempotency records, and pending approvals in durable services because instances can disappear or be retried at any time. Cold starts, execution-duration limits, connection limits, and burst concurrency make long agent loops better suited to queues plus resumable steps than one synchronous function invocation. Pin prompt, model, tool, and schema versions; reuse safe connections and cached clients within a warm instance, but never rely on local memory for correctness."
+    },
+    {
+      "id": "agent-evals",
+      "title": "Agent evaluation pitfalls",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "category": "evaluation",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "evaluation",
+        "pitfalls",
+        "evaluations",
+        "should",
+        "separate"
+      ],
+      "text": "Agent evaluations should separate model quality from scaffold, tool, and environment failures. Single-run pass rates hide nondeterminism, while overly short time or token limits can misclassify capable agents. Use repeated trials, inspect trajectories, score intermediate outcomes, and test realistic failure recovery."
+    },
+    {
+      "id": "agent-identity-secrets",
+      "title": "Agent identity and secret management",
+      "url": "https://csrc.nist.gov/pubs/sp/800/207/final",
+      "category": "memory",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "identity",
+        "secret",
+        "management",
+        "give",
+        "each"
+      ],
+      "text": "Give each agent workload a distinct identity and short-lived, task-scoped credentials instead of placing broad API keys in prompts, tool output, logs, or persistent memory. A trusted executor should obtain secrets only after policy checks, constrain target resources and operations, and return the minimum result rather than exposing raw credentials to the model. Rotate credentials, audit principal-to-action mappings, isolate tenants, and revoke active sessions when a user, connector, or agent run loses authorization."
+    },
+    {
+      "id": "agent-loop",
+      "title": "What an agent loop is",
+      "url": "https://www.anthropic.com/research/building-effective-agents",
+      "category": "tools",
+      "source_type": "research",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "what",
+        "loop",
+        "repeatedly",
+        "reads",
+        "current"
+      ],
+      "text": "An agent loop repeatedly reads the current state, chooses an action, uses a tool, observes the result, and corrects its plan. The model is only one component: reliable agents also need clear goals, useful tools, bounded context, termination conditions, and feedback from the environment."
+    },
+    {
+      "id": "agent-memory-tiers",
+      "title": "Short-term and long-term agent memory",
+      "url": [],
+      "category": "memory",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "short",
+        "term",
+        "long",
+        "memory",
+        "working"
+      ],
+      "text": "Short-term memory is the working context supplied on each model call: recent messages, the current plan, tool results, and task-local state; it is bounded by the context window and disappears unless persisted. Long-term memory lives in an external store and should contain durable, scoped facts such as user preferences, decisions, and prior outcomes, with provenance, timestamps, access controls, and deletion support. Retrieve long-term memories only when relevant, and never treat model-written memories as authoritative without validation because stale or poisoned records can propagate across sessions."
+    },
+    {
+      "id": "agent-observability",
+      "title": "Tracing and replay for agents",
+      "url": "https://opentelemetry.io/docs/concepts/signals/traces/",
+      "category": "orchestration",
+      "source_type": "docs",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "tracing",
+        "replay",
+        "represent",
+        "each",
+        "trace"
+      ],
+      "text": "Represent each agent run as a trace with spans for model calls, retrieval, tool execution, guardrails, handoffs, and human approvals, linked by stable run and parent identifiers. Log model and prompt versions, token counts, latency, tool names and validated arguments, result status, retries, state transitions, citations, and final outcome, while redacting secrets and minimizing retained personal data. Store enough versioned inputs and environment references to replay failures, but distinguish deterministic replay of recorded tool results from a fresh live rerun that may change external state."
+    },
+    {
+      "id": "coding-agents",
+      "title": "Production coding agents",
+      "url": "https://arxiv.org/abs/2310.06770",
+      "category": "security",
+      "source_type": "paper",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "production",
+        "coding",
+        "should",
+        "work",
+        "isolated"
+      ],
+      "text": "Coding agents should work in isolated, least-privilege sandboxes with repository-scoped credentials, network controls, resource limits, and explicit approval for destructive commands, secret access, or deployment. Use a test-driven loop: reproduce the failure, inspect relevant code, make a minimal diff, run targeted tests and static checks, then report evidence and remaining risk. Deliver reviewable patches rather than opaque rewrites, never weaken tests merely to pass, and protect the agent from prompt injection embedded in source files, issues, or dependency output."
+    },
+    {
+      "id": "context-compaction",
+      "title": "Context management and compaction",
+      "url": [],
+      "category": "tools",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "context",
+        "management",
+        "compaction",
+        "manage",
+        "retain"
+      ],
+      "text": "Manage context as a budget: retain the system policy, current objective, unresolved constraints, recent actions, exact error messages, and identifiers needed for future tool calls, while dropping duplicated prose and superseded attempts. A sliding window preserves local conversational detail, whereas periodic summaries compress older history; summaries should separate verified facts from hypotheses and link to durable artifacts rather than paraphrasing critical code or numbers. Trigger compaction before the window is full and test that an agent can resume from the compacted state without losing commitments or repeating side effects."
+    },
+    {
+      "id": "customer-support-agents",
+      "title": "Production customer support agents",
+      "url": "https://www.anthropic.com/engineering/building-effective-agents",
+      "category": "general",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "production",
+        "customer",
+        "support",
+        "deflect",
+        "repetitive"
+      ],
+      "text": "A support agent can deflect repetitive requests by answering from versioned help-center content and resolving low-risk tasks such as checking delivery status, but it should cite the grounding article and avoid inventing policy. Route by intent and risk, preserve brand tone without masking uncertainty, authenticate users before account access, and escalate on low confidence, repeated failure, abuse, exceptions, or requests outside authority. For a refund request, the agent can gather order evidence and explain eligibility, while a deterministic policy service decides the amount and an approval gate handles exceptions."
+    },
+    {
+      "id": "determinism-reproducibility",
+      "title": "Determinism and reproducibility",
+      "url": [],
+      "category": "evaluation",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "determinism",
+        "reproducibility",
+        "lower",
+        "temperature",
+        "reduce"
+      ],
+      "text": "Lower temperature can reduce sampling variation for extraction and routing, but it does not make a hosted model or a multi-step agent deterministic because model revisions, parallel tools, retrieval indexes, and external state can change outcomes. Record model snapshots when available, parameters, prompts, tool and data versions, seeds where supported, timestamps, and complete trajectories, then evaluate with repeated trials and outcome tolerances. For reasoning models, follow provider guidance on sampling controls and put exact calculations, policy decisions, and invariants in deterministic code rather than relying on identical natural-language reasoning traces."
+    },
+    {
+      "id": "durable-agent-execution",
+      "title": "Durable execution and checkpointing",
+      "url": [],
+      "category": "tools",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "durable",
+        "execution",
+        "checkpointing",
+        "long",
+        "running"
+      ],
+      "text": "Long-running agents should execute as resumable state machines whose durable checkpoint records the current step, validated state, completed side effects, pending approvals, retry counters, and versioned inputs. Use an outbox or equivalent transactional pattern when a state update and external message must agree, and assign idempotency keys so crash recovery can safely replay a step. Define terminal states, cancellation and compensation paths, and migration behavior for runs that outlive a prompt, model, tool, or schema deployment."
+    },
+    {
+      "id": "ecommerce-agents",
+      "title": "Production e-commerce agents",
+      "url": [],
+      "category": "evaluation",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "production",
+        "commerce",
+        "should",
+        "combine",
+        "lexical"
+      ],
+      "text": "E-commerce agents should combine lexical and semantic product retrieval with hard filters for inventory, locale, compatibility, price, and fulfillment, and clearly label sponsored or personalized ranking. Recommendations must be grounded in catalog attributes and user-stated needs, not invented benefits; order tools require authenticated identity, exact totals, idempotency, and confirmation before purchase, cancellation, return, or address changes. A shopping agent can compare in-stock laptops against a budget and workload, then prepare a cart while the commerce service recomputes availability, tax, shipping, and the final charge."
+    },
+    {
+      "id": "evaluation-strategy",
+      "title": "Offline and online agent evaluation",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "category": "evaluation",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "offline",
+        "online",
+        "evaluation",
+        "evals",
+        "provide"
+      ],
+      "text": "Offline evals provide repeatable pre-release regression tests over representative tasks, adversarial cases, tool failures, and multi-step trajectories; online evals measure real completion, escalation, latency, cost, and safety signals under production traffic. Maintain frozen golden sets plus newly mined failures, run repeated trials for nondeterministic agents, and score both final outcomes and critical intermediate constraints. LLM judges are scalable but can be biased by style, verbosity, ordering, or shared model errors, so calibrate them against blinded human labels and deterministic checks and track judge-version changes."
+    },
+    {
+      "id": "finance-agents",
+      "title": "Production agents in finance",
+      "url": "https://www.nist.gov/privacy-framework",
+      "category": "general",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "production",
+        "finance",
+        "need",
+        "data",
+        "minimization"
+      ],
+      "text": "Finance agents need data minimization, field-level protection for PII, least-privilege access, immutable audit trails, retention controls, and jurisdiction-specific compliance review. Keep ledger math, eligibility, limits, sanctions screening, and transaction authorization in deterministic services; the model may collect evidence or explain a result but must not override those checks. For an expense-review use case, the agent can extract receipt fields and flag policy anomalies with source spans, while rules validate totals and a human approves ambiguous or high-value reimbursements."
+    },
+    {
+      "id": "guardrails-safety",
+      "title": "Layered guardrails for agent actions",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "category": "tools",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "layered",
+        "guardrails",
+        "actions",
+        "should",
+        "enforced"
+      ],
+      "text": "Guardrails should be enforced in code around the model: validate inputs and outputs, authorize every tool call against the user and task, constrain arguments with allow-lists, and run code or file operations in resource-limited sandboxes. Separate read tools from write tools, default to least privilege, redact secrets, impose spend and iteration limits, and require approval for irreversible or externally visible actions. Model-based safety classifiers can add defense in depth but must not be the sole control for permissions or transaction integrity."
+    },
+    {
+      "id": "healthcare-agents",
+      "title": "Production agents in healthcare",
+      "url": "https://www.hhs.gov/hipaa/for-professionals/security/index.html",
+      "category": "general",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "production",
+        "healthcare",
+        "handling",
+        "protected",
+        "health"
+      ],
+      "text": "Healthcare agents handling protected health information require HIPAA-aligned administrative, physical, and technical safeguards, minimum-necessary data access, vendor agreements where applicable, audit logs, and verified identity boundaries. Ground clinical statements in approved, current sources with citations, display uncertainty, and require qualified human review for diagnosis, treatment, triage, or any action that could affect care. A visit-summary agent can draft patient instructions from the signed note and formulary data, but a clinician must review the draft and unsupported details must be omitted rather than guessed."
+    },
+    {
+      "id": "human-approval-gates",
+      "title": "Human approval gates for high-stakes actions",
+      "url": "https://www.anthropic.com/research/trustworthy-agents",
+      "category": "general",
+      "source_type": "research",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "human",
+        "approval",
+        "gates",
+        "high",
+        "stakes"
+      ],
+      "text": "Place approval gates immediately before consequential actions such as sending messages, moving money, changing production, deleting data, or releasing regulated decisions, rather than asking once at session start. The approval view should show the exact proposed action, target, material parameters, evidence, uncertainty, and reversible alternatives; any later parameter change invalidates the approval. Persist who approved what and when, support rejection and editing, and fail closed when the approver or policy service is unavailable."
+    },
+    {
+      "id": "latency-streaming",
+      "title": "Latency and streaming agent results",
+      "url": "https://developers.openai.com/api/docs/guides/latency-optimization",
+      "category": "evaluation",
+      "source_type": "docs",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "latency",
+        "streaming",
+        "results",
+        "optimize",
+        "both"
+      ],
+      "text": "Optimize both time to first useful feedback and total task time: stream text or structured progress, acknowledge long-running work immediately, and expose tool status without leaking private reasoning. Parallelize independent retrievals or tool calls, prefetch predictable context, cache stable prefixes, and avoid serial model calls that code could replace. Streaming improves perceived speed but does not reduce completion latency by itself, so preserve cancellation, backpressure, and a final authoritative result distinct from partial output."
+    },
+    {
+      "id": "legal-agents",
+      "title": "Production agents for legal work",
+      "url": [],
+      "category": "memory",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "production",
+        "legal",
+        "work",
+        "should",
+        "retrieve"
+      ],
+      "text": "Legal agents should retrieve from authoritative, jurisdiction- and date-filtered corpora and preserve court, reporter, docket, pinpoint citation, precedential status, and source text for every proposition. Validate that cited authorities exist and support the claim, distinguish law from argument, disclose incomplete coverage, and require attorney review before filing, advising a client, or changing contractual rights. For a motion-research use case, the agent can assemble a claim-to-authority table and quote short verified passages, while a reviewer checks negative treatment and final reasoning."
+    },
+    {
+      "id": "lesson-ariane5-501",
+      "title": "Reuse code only after re-validating its assumptions",
+      "url": "https://en.wikipedia.org/wiki/Ariane_flight_V88",
+      "category": "lessons",
+      "source_type": "post-mortem",
+      "status": "current",
+      "grade": "A",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "code-reuse",
+        "assumptions",
+        "overflow",
+        "regression"
+      ],
+      "text": "Ariane 5's maiden flight was destroyed in 1996 when inertial-reference software reused from the slower Ariane 4 hit an unhandled overflow under the new rocket's higher values. Lesson: reused components carry hidden assumptions from their original context. For agents: prompts, tools, and sub-agents reused in a new task carry old assumptions — re-test them in the new context instead of assuming they still hold."
+    },
+    {
+      "id": "lesson-aws-s3-2017-guardrails",
+      "title": "Guardrails on destructive commands limit blast radius",
+      "url": "https://aws.amazon.com/message/41926/",
+      "category": "lessons",
+      "source_type": "post-mortem",
+      "status": "current",
+      "grade": "A",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "guardrails",
+        "destructive-ops",
+        "blast-radius",
+        "tools"
+      ],
+      "text": "The 2017 AWS S3 outage began when an engineer ran a debugging command with a mistyped parameter that removed far more capacity than intended, cascading across dependent systems. Lesson: destructive operations need typed inputs, confirmation, and limits on how much they can affect at once. For agents: tools that delete/modify state must have typed args, dry-run/confirm modes, and blast-radius caps — an agent should never be able to wipe more than a bounded scope in one call."
+    },
+    {
+      "id": "lesson-cloudflare-regex-2019",
+      "title": "Unbounded work will exhaust the system",
+      "url": "https://blog.cloudflare.com/details-of-the-cloudflare-outage-on-july-2-2019/",
+      "category": "lessons",
+      "source_type": "post-mortem",
+      "status": "current",
+      "grade": "A",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "resource-limits",
+        "runaway",
+        "loops",
+        "budgets"
+      ],
+      "text": "In 2019 a single regular expression with catastrophic backtracking consumed CPU globally and took Cloudflare offline. Lesson: any operation without an explicit bound can consume all resources. For agents: cap loop iterations, token budgets, tool-call counts, and wall-clock per task — a runaway agent loop is the same failure mode as an unbounded regex, and needs the same hard ceilings."
+    },
+    {
+      "id": "lesson-gitlab-2017-backups",
+      "title": "Test your recovery, not just your backups",
+      "url": "https://about.gitlab.com/blog/2017/02/10/postmortem-of-database-outage-of-january-31/",
+      "category": "lessons",
+      "source_type": "post-mortem",
+      "status": "current",
+      "grade": "A",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "backups",
+        "recovery",
+        "state",
+        "memory"
+      ],
+      "text": "In 2017 GitLab lost production data when a tired engineer removed a directory on the wrong host, then discovered that five separate backup/replication methods had silently been failing. Lesson: an untested backup is not a backup. For agents: verify that agent memory/state can actually be restored, and snapshot state before any destructive agent action so a bad step is recoverable."
+    },
+    {
+      "id": "lesson-google-error-budgets",
+      "title": "Error budgets balance reliability against velocity",
+      "url": "https://sre.google/sre-book/embracing-risk/",
+      "category": "lessons",
+      "source_type": "retrospective",
+      "status": "current",
+      "grade": "A",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "reliability",
+        "slo",
+        "error-budget",
+        "evaluation"
+      ],
+      "text": "Google SRE popularized the error budget: 100% reliability is the wrong target; you set an allowed failure rate, and while you're within budget you ship features, when you exceed it you stop and harden. Lesson: make the reliability-vs-speed tradeoff explicit and measurable. For agents: define an acceptable task-failure rate and let it gate whether you ship new capabilities or spend the cycle hardening the loop."
+    },
+    {
+      "id": "lesson-healthcaregov-2013",
+      "title": "Avoid big-bang launches; roll out incrementally",
+      "url": "https://en.wikipedia.org/wiki/HealthCare.gov",
+      "category": "lessons",
+      "source_type": "post-mortem",
+      "status": "current",
+      "grade": "A",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "rollout",
+        "canary",
+        "launch",
+        "load"
+      ],
+      "text": "HealthCare.gov's 2013 launch failed under load because a large, integration-heavy system was flipped on for everyone at once with inadequate end-to-end testing. Lesson: stage rollouts and test the whole path under real load before a full cutover. For agents: canary new agent behaviors to a small slice of traffic, watch failure rates, and expand gradually rather than switching all users to a new loop at once."
+    },
+    {
+      "id": "lesson-knight-capital-deploy",
+      "title": "Deploy discipline: dormant code + partial rollout can be catastrophic",
+      "url": "https://en.wikipedia.org/wiki/Knight_Capital_Group",
+      "category": "lessons",
+      "source_type": "post-mortem",
+      "status": "current",
+      "grade": "A",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "deploy",
+        "rollout",
+        "feature-flags",
+        "risk"
+      ],
+      "text": "Knight Capital lost ~$440M in 45 minutes in 2012 after a deploy left an old, repurposed feature flag enabling long-dormant code on some servers but not others. Lesson: never leave dead code reachable, and roll changes out uniformly with kill-switches. For agents: version and feature-flag tool rollouts, remove dormant tool paths an agent could trigger, and make a bad rollout instantly reversible."
+    },
+    {
+      "id": "lesson-mars-climate-orbiter",
+      "title": "Interface contracts: mismatched units/schemas cause silent disaster",
+      "url": "https://en.wikipedia.org/wiki/Mars_Climate_Orbiter",
+      "category": "lessons",
+      "source_type": "post-mortem",
+      "status": "current",
+      "grade": "A",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "interfaces",
+        "schemas",
+        "validation",
+        "tools"
+      ],
+      "text": "NASA lost the Mars Climate Orbiter in 1999 because one team produced output in imperial units while another consumed it as metric; the mismatch was never validated at the boundary. Lesson: every interface needs an enforced, typed contract. For agents: define strict tool schemas and validate types/units/formats at the tool boundary — never trust that the model and the tool agree on shape implicitly."
+    },
+    {
+      "id": "lesson-netflix-chaos",
+      "title": "Inject failure deliberately to build resilience",
+      "url": "https://netflix.github.io/chaosmonkey/",
+      "category": "lessons",
+      "source_type": "retrospective",
+      "status": "current",
+      "grade": "A",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "chaos-engineering",
+        "resilience",
+        "testing",
+        "fault-injection"
+      ],
+      "text": "Netflix's Chaos Monkey randomly kills production instances so the system is forced to tolerate failure as a normal condition rather than a rare emergency. Lesson: resilience comes from routinely exercising failure paths, not avoiding them. For agents: fault-inject dependencies — time out tools, return malformed tool output, drop context — and confirm the agent degrades gracefully instead of only testing the happy path."
+    },
+    {
+      "id": "lesson-therac-25",
+      "title": "Concurrency bugs and removed safety interlocks are lethal",
+      "url": "https://en.wikipedia.org/wiki/Therac-25",
+      "category": "lessons",
+      "source_type": "post-mortem",
+      "status": "current",
+      "grade": "A",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "safety",
+        "concurrency",
+        "interlocks",
+        "autonomy"
+      ],
+      "text": "The Therac-25 radiation machine (1985–87) gave massive overdoses due to race conditions after hardware safety interlocks were replaced with software-only checks that had subtle timing bugs. Lesson: don't remove independent safety layers, and treat concurrency as a first-class hazard. For agents: keep human/hardware approval gates for high-consequence actions, and guard concurrent tool calls that share state — autonomy must not bypass the interlocks."
+    },
+    {
+      "id": "mcp",
+      "title": "Model Context Protocol",
+      "url": "https://modelcontextprotocol.io/introduction",
+      "category": "tools",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "model",
+        "context",
+        "protocol",
+        "open",
+        "standard"
+      ],
+      "text": "The Model Context Protocol is an open standard for connecting AI applications to external tools and data. MCP uses a client-server architecture: servers expose resources, prompts, and tools, while hosts manage model access, permissions, and user consent. It reduces custom integration work but does not replace security boundaries."
+    },
+    {
+      "id": "model-selection-adaptation",
+      "title": "Choosing models, prompting, RAG, and fine-tuning",
+      "url": [],
+      "category": "evaluation",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "choosing",
+        "models",
+        "prompting",
+        "fine",
+        "tuning"
+      ],
+      "text": "Choose the smallest model that meets measured quality, tool-use, context, latency, modality, privacy, and reliability requirements on your own task distribution, then route exceptional cases upward. Improve instructions and examples when behavior is underspecified, use RAG when answers depend on changing or private facts that need provenance, and fine-tune when many examples define a stable behavior, format, or domain pattern that prompting cannot deliver economically. Fine-tuning does not reliably teach fresh facts or replace authorization, retrieval, or deterministic business logic, and every adaptation choice should be validated by the same regression suite."
+    },
+    {
+      "id": "multi-agent-orchestration",
+      "title": "Multi-agent orchestration tradeoffs",
+      "url": "https://www.anthropic.com/engineering/building-effective-agents",
+      "category": "orchestration",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "multi",
+        "orchestration",
+        "tradeoffs",
+        "multiple",
+        "subtasks"
+      ],
+      "text": "Use multiple agents when subtasks are genuinely independent, require distinct tools or context, or benefit from parallel search or review; a single agent is usually cheaper, faster, and easier to debug for sequential work. In the supervisor pattern, one coordinator decomposes the task, gives workers bounded contracts, and merges results, while handoffs must carry the goal, evidence, state, ownership, and completion criteria explicitly. Cap fan-out, recursion, and per-worker budgets because coordination messages, duplicated context, and synthesis can cost more than the useful work."
+    },
+    {
+      "id": "operations-agents",
+      "title": "Production back-office agents",
+      "url": [],
+      "category": "orchestration",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "production",
+        "back",
+        "office",
+        "useful",
+        "documents"
+      ],
+      "text": "Back-office agents are useful when documents vary and judgment is needed, while deterministic RPA remains preferable for stable screens and fixed rules; combine them by letting the model interpret inputs and a workflow engine enforce state transitions. Document pipelines should retain the original, extract fields with page or region provenance, validate totals and identifiers, deduplicate work, and route low-confidence or policy-exception cases to humans. For invoice processing, the agent can classify and extract an invoice, but deterministic services perform vendor matching, three-way matching, duplicate detection, and payment approval."
+    },
+    {
+      "id": "planning-decomposition",
+      "title": "Planning and task decomposition",
+      "url": "https://arxiv.org/abs/2210.03629",
+      "category": "general",
+      "source_type": "paper",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "planning",
+        "decomposition",
+        "react",
+        "interleaves",
+        "reasoning"
+      ],
+      "text": "ReAct interleaves reasoning, actions, and observations so the agent can revise its approach from environmental feedback; plan-then-execute first creates a task graph and is better when dependencies and approval points must be visible. Decompose work into verifiable steps with explicit inputs, outputs, dependencies, and stopping conditions, then replan when observations invalidate assumptions rather than blindly following the original plan. Reflection can improve a failed attempt, but bound reflection rounds and require new evidence or a changed action to prevent expensive self-critique loops."
+    },
+    {
+      "id": "prompt-caching",
+      "title": "Prompt caching and context reuse",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+      "category": "memory",
+      "source_type": "docs",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "prompt",
+        "caching",
+        "context",
+        "reuse",
+        "reduces"
+      ],
+      "text": "Prompt caching reduces latency and input cost when many calls share a long stable prefix such as system instructions, tool definitions, examples, or reference documents. Put stable content before volatile conversation state, keep serialization byte-for-byte consistent, and monitor cache creation, hit rate, read tokens, expiration, and provider-specific minimums. Caching is an optimization rather than memory: invalidate or version cached prefixes when policies, permissions, schemas, or source data change."
+    },
+    {
+      "id": "prompt-injection-defense",
+      "title": "Defending against prompt injection",
+      "url": "https://www.ncsc.gov.uk/blog-post/prompt-injection-is-not-sql-injection",
+      "category": "tools",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "defending",
+        "against",
+        "prompt",
+        "injection",
+        "treat"
+      ],
+      "text": "Treat retrieved pages, emails, documents, tool outputs, and user-uploaded files as untrusted data, even when they contain text claiming to be system instructions. Keep instructions and data in distinct channels or fields, label provenance, minimize the data sent to privileged agents, and never let content grant itself permissions or select secrets to reveal. Enforce authorization and destination allow-lists outside the model, require confirmation for sensitive writes, and test indirect-injection cases where malicious instructions arrive through a trusted connector."
+    },
+    {
+      "id": "rag-basics",
+      "title": "Retrieval-augmented generation basics",
+      "url": "https://learn.microsoft.com/azure/search/retrieval-augmented-generation-overview",
+      "category": "evaluation",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "retrieval",
+        "augmented",
+        "generation",
+        "basics",
+        "embeds"
+      ],
+      "text": "Retrieval-augmented generation embeds a question, retrieves semantically similar passages from a knowledge base, and places those passages in the model context. Good RAG systems preserve source metadata, retrieve compact relevant chunks, instruct the model to stay grounded, and evaluate retrieval separately from answer generation."
+    },
+    {
+      "id": "rate-limiting-backpressure",
+      "title": "Rate limiting and backpressure",
+      "url": "https://developers.openai.com/api/docs/guides/rate-limits",
+      "category": "memory",
+      "source_type": "docs",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "rate",
+        "limiting",
+        "backpressure",
+        "model",
+        "providers"
+      ],
+      "text": "Model providers can limit requests, input tokens, output tokens, or concurrent work, so admission control must estimate token load rather than count requests alone. Use per-tenant quotas, bounded queues, concurrency semaphores, exponential backoff with jitter, and provider reset headers; shed or defer low-priority work before queues consume all memory or exceed user deadlines. Propagate cancellation through agent and tool calls, and avoid synchronized retry storms or unbounded worker fan-out after a limit clears."
+    },
+    {
+      "id": "retrieval-quality",
+      "title": "Chunking, hybrid retrieval, and reranking",
+      "url": "https://learn.microsoft.com/en-us/azure/search/hybrid-search-overview",
+      "category": "evaluation",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "chunking",
+        "hybrid",
+        "retrieval",
+        "reranking",
+        "chunk"
+      ],
+      "text": "Chunk along semantic boundaries and keep headings, source URL, timestamps, permissions, and neighboring relationships; chunks should be small enough to isolate an answer but large enough to preserve definitions and exceptions. Hybrid retrieval combines lexical search, which excels at exact identifiers and rare terms, with vector search for paraphrases, then a reranker scores a broader candidate set before context assembly. Evaluate retrieval separately with recall at k, ranking metrics, citation coverage, and hard negatives, and apply access filters before results reach the model."
+    },
+    {
+      "id": "sales-agents",
+      "title": "Production sales and GTM agents",
+      "url": [],
+      "category": "tools",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "production",
+        "sales",
+        "should",
+        "personalize",
+        "consented"
+      ],
+      "text": "Sales agents should personalize from consented, relevant data, respect suppression lists and communication rules, and avoid inferring sensitive traits or fabricating customer facts. CRM tools need scoped read and write operations, duplicate detection, ownership checks, and approval before external outreach or bulk changes. For lead qualification, an agent can summarize verified firmographic and interaction signals, assign a reason-coded recommendation, and draft an email, while deterministic territory rules route the lead and the account owner approves sending."
+    },
+    {
+      "id": "structured-outputs",
+      "title": "Structured outputs with JSON Schema",
+      "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+      "category": "general",
+      "source_type": "docs",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "structured",
+        "outputs",
+        "json",
+        "schema",
+        "constrained"
+      ],
+      "text": "Use schema-constrained generation when downstream code needs machine-readable output: define required fields, closed enums, bounds, and disallow unexpected properties where the provider's supported JSON Schema subset permits it. Schema conformance guarantees shape, not truth, so still perform semantic validation, authorization, range checks, and referential checks before acting. Handle refusals, truncation, and provider errors as distinct outcomes, and version schemas so producers and consumers can evolve safely."
+    },
+    {
+      "id": "token-budgets",
+      "title": "Token budgets change agent capability",
+      "url": "https://www.aisi.gov.uk/",
+      "category": "evaluation",
+      "source_type": "research",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "token",
+        "budgets",
+        "change",
+        "capability",
+        "security"
+      ],
+      "text": "UK AI Security Institute evaluations found that increasing an agent's token budget from 1 million to 10 million tokens improved success on software-engineering tasks by roughly 25 percent. Some long-horizon cybersecurity tasks can require budgets near 50 million tokens. A weak result may therefore reflect an exhausted reasoning budget rather than a hard capability limit."
+    },
+    {
+      "id": "tool-retries-idempotency",
+      "title": "Retries, timeouts, and idempotent tools",
+      "url": "https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/",
+      "category": "tools",
+      "source_type": "blog",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "retries",
+        "timeouts",
+        "idempotent",
+        "tools",
+        "give"
+      ],
+      "text": "Give every networked tool a connection timeout, an overall deadline, and a bounded retry policy using exponential backoff with jitter only for transient failures such as throttling or selected 5xx responses. Never automatically retry validation, authorization, or permanent business errors, and respect provider retry hints. Side-effecting operations need an idempotency key and stored outcome so a timeout after a successful write cannot create a duplicate charge, ticket, email, or order."
+    },
+    {
+      "id": "tool-schema-design",
+      "title": "Function and tool schema design",
+      "url": "https://developers.openai.com/api/docs/guides/function-calling",
+      "category": "tools",
+      "source_type": "docs",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "function",
+        "tool",
+        "schema",
+        "design",
+        "expose"
+      ],
+      "text": "Expose narrow, intent-level tools with unambiguous names and descriptions, explicit required fields, typed enums and bounds, and no overlapping functions that differ only subtly. Do not make the model invent database keys or hidden defaults: provide lookup tools, use stable external identifiers, and return structured success or actionable error objects. Keep authorization, validation, and side-effect confirmation in the executor, and use strict schema mode where available while testing selection and argument accuracy across realistic prompts."
+    },
+    {
+      "id": "tool-use",
+      "title": "Reliable tool use",
+      "url": "https://platform.openai.com/docs/guides/function-calling",
+      "category": "tools",
+      "source_type": "docs",
+      "status": "current",
+      "grade": "unrated",
+      "added": "2026-07-14",
+      "last_verified": "2026-07-14",
+      "superseded_by": null,
+      "tags": [
+        "reliable",
+        "tool",
+        "using",
+        "work",
+        "best"
+      ],
+      "text": "Tool-using agents work best with narrow tools, explicit schemas, actionable error messages, and observable results. Validate arguments before execution, use idempotency keys for side effects, limit permissions, and return structured outputs so the model can accurately decide what to do next."
+    }
+  ]
+}

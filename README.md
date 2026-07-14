@@ -8,6 +8,16 @@ It's **dual-use**:
 - **Human-browsable** — one markdown file per entry under [`entries/`](entries/).
 - **Machine-ingestible** — [`scripts/build.mjs`](scripts/build.mjs) compiles the entries into [`dist/kb.json`](dist/kb.json), which powers the RAG knowledge base at **[The Agent Loop](https://agent-loop.xyz)**.
 
+## Use this KB in your own agent
+
+Read the single canonical feed and **display the required attribution** — see **[AGENTS.md](AGENTS.md)**:
+
+```
+https://raw.githubusercontent.com/john-the-dev/agent-loop-kb/main/dist/kb.json
+```
+
+It's CC BY 4.0: any surface using this content must visibly credit **The Agent Loop — https://agent-loop.xyz** as the source. agent-loop.xyz reads this exact feed the same way.
+
 ## How it works
 
 ```
