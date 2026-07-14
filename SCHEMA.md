@@ -9,8 +9,8 @@ Every file in [`entries/`](entries/) is `<id>.md`: a YAML front-matter block, th
 | `id` | ✅ | string | Stable slug; must equal the filename (`<id>.md`). `[a-z0-9-]+`. |
 | `title` | ✅ | string | Human title. |
 | `url` | ✅ | string | Canonical source URL. |
-| `category` | ✅ | enum | `frameworks` · `orchestration` · `evaluation` · `memory` · `tools` · `protocols` · `security` · `infra` · `research` · `general` |
-| `source_type` | ✅ | enum | `docs` · `blog` · `paper` · `release` · `repo` · `research` |
+| `category` | ✅ | enum | `frameworks` · `orchestration` · `evaluation` · `memory` · `tools` · `protocols` · `security` · `infra` · `research` · `lessons` · `general` |
+| `source_type` | ✅ | enum | `docs` · `blog` · `paper` · `release` · `repo` · `research` · `post-mortem` · `retrospective` · `talk` |
 | `status` | ✅ | enum | `current` · `experimental` · `deprecated` · `superseded` |
 | `grade` | ✅ | enum | `A` · `B` · `C` · `D` · `unrated` (see [`GRADING.md`](GRADING.md)) |
 | `added` | ✅ | date | `YYYY-MM-DD` first added. |
@@ -22,6 +22,14 @@ Every file in [`entries/`](entries/) is `<id>.md`: a YAML front-matter block, th
 ## Body
 
 Everything after the front-matter is the summary — 1–4 sentences, plain text, self-contained. This is what gets embedded for retrieval.
+
+## `category: lessons`
+
+A **lesson** is an engineering lesson drawn from a **famous, publicly-documented** project or incident (post-mortem, retrospective, or published talk), stated with its takeaway for AI-agent engineering. Rules:
+
+- **Public sources only.** Every lesson must cite a public post-mortem, retrospective, paper, or reputable record. **Never include private, proprietary, or non-public project details** — no internal specifics from anyone's closed-source or personal projects.
+- Use `source_type: post-mortem` / `retrospective` / `talk`.
+- The body should name the public case, the durable lesson, and how it applies to building agents.
 
 ## Compiled output
 

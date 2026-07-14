@@ -3,8 +3,8 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 export const ENUMS = {
-  category: ["frameworks", "orchestration", "evaluation", "memory", "tools", "protocols", "security", "infra", "research", "general"],
-  source_type: ["docs", "blog", "paper", "release", "repo", "research"],
+  category: ["frameworks", "orchestration", "evaluation", "memory", "tools", "protocols", "security", "infra", "research", "lessons", "general"],
+  source_type: ["docs", "blog", "paper", "release", "repo", "research", "post-mortem", "retrospective", "talk"],
   status: ["current", "experimental", "deprecated", "superseded"],
   grade: ["A", "B", "C", "D", "unrated"],
 };

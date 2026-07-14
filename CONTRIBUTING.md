@@ -15,6 +15,7 @@ Thanks for helping keep AI-agent engineering knowledge accurate and fresh.
 - **Evidence over opinion.** A grade or a `deprecated` status must cite checkable evidence (release dates, adoption, CVEs, correctness notes).
 - **Label, don't delete.** Outdated/bad tech stays with `status: deprecated`/`superseded` and a `D`/`C` grade, so readers learn *why*. Deleting loses the lesson.
 - **Keep summaries tight** — 1–4 self-contained sentences; that text is what gets embedded for retrieval.
+- **Lessons are public-only.** `category: lessons` entries must come from famous, publicly-documented projects/post-mortems. Never include private, proprietary, or non-public project details (anyone's).
 - **Primary sources first** — official docs / papers / release notes over secondhand blogs.
 
 ## The maintainer bot

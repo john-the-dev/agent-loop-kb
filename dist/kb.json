@@ -400,6 +400,196 @@
     "text": "Legal agents should retrieve from authoritative, jurisdiction- and date-filtered corpora and preserve court, reporter, docket, pinpoint citation, precedential status, and source text for every proposition. Validate that cited authorities exist and support the claim, distinguish law from argument, disclose incomplete coverage, and require attorney review before filing, advising a client, or changing contractual rights. For a motion-research use case, the agent can assemble a claim-to-authority table and quote short verified passages, while a reviewer checks negative treatment and final reasoning."
   },
   {
+    "id": "lesson-ariane5-501",
+    "title": "Reuse code only after re-validating its assumptions",
+    "url": "https://en.wikipedia.org/wiki/Ariane_flight_V88",
+    "category": "lessons",
+    "source_type": "post-mortem",
+    "status": "current",
+    "grade": "A",
+    "added": "2026-07-14",
+    "last_verified": "2026-07-14",
+    "superseded_by": null,
+    "tags": [
+      "code-reuse",
+      "assumptions",
+      "overflow",
+      "regression"
+    ],
+    "text": "Ariane 5's maiden flight was destroyed in 1996 when inertial-reference software reused from the slower Ariane 4 hit an unhandled overflow under the new rocket's higher values. Lesson: reused components carry hidden assumptions from their original context. For agents: prompts, tools, and sub-agents reused in a new task carry old assumptions — re-test them in the new context instead of assuming they still hold."
+  },
+  {
+    "id": "lesson-aws-s3-2017-guardrails",
+    "title": "Guardrails on destructive commands limit blast radius",
+    "url": "https://aws.amazon.com/message/41926/",
+    "category": "lessons",
+    "source_type": "post-mortem",
+    "status": "current",
+    "grade": "A",
+    "added": "2026-07-14",
+    "last_verified": "2026-07-14",
+    "superseded_by": null,
+    "tags": [
+      "guardrails",
+      "destructive-ops",
+      "blast-radius",
+      "tools"
+    ],
+    "text": "The 2017 AWS S3 outage began when an engineer ran a debugging command with a mistyped parameter that removed far more capacity than intended, cascading across dependent systems. Lesson: destructive operations need typed inputs, confirmation, and limits on how much they can affect at once. For agents: tools that delete/modify state must have typed args, dry-run/confirm modes, and blast-radius caps — an agent should never be able to wipe more than a bounded scope in one call."
+  },
+  {
+    "id": "lesson-cloudflare-regex-2019",
+    "title": "Unbounded work will exhaust the system",
+    "url": "https://blog.cloudflare.com/details-of-the-cloudflare-outage-on-july-2-2019/",
+    "category": "lessons",
+    "source_type": "post-mortem",
+    "status": "current",
+    "grade": "A",
+    "added": "2026-07-14",
+    "last_verified": "2026-07-14",
+    "superseded_by": null,
+    "tags": [
+      "resource-limits",
+      "runaway",
+      "loops",
+      "budgets"
+    ],
+    "text": "In 2019 a single regular expression with catastrophic backtracking consumed CPU globally and took Cloudflare offline. Lesson: any operation without an explicit bound can consume all resources. For agents: cap loop iterations, token budgets, tool-call counts, and wall-clock per task — a runaway agent loop is the same failure mode as an unbounded regex, and needs the same hard ceilings."
+  },
+  {
+    "id": "lesson-gitlab-2017-backups",
+    "title": "Test your recovery, not just your backups",
+    "url": "https://about.gitlab.com/blog/2017/02/10/postmortem-of-database-outage-of-january-31/",
+    "category": "lessons",
+    "source_type": "post-mortem",
+    "status": "current",
+    "grade": "A",
+    "added": "2026-07-14",
+    "last_verified": "2026-07-14",
+    "superseded_by": null,
+    "tags": [
+      "backups",
+      "recovery",
+      "state",
+      "memory"
+    ],
+    "text": "In 2017 GitLab lost production data when a tired engineer removed a directory on the wrong host, then discovered that five separate backup/replication methods had silently been failing. Lesson: an untested backup is not a backup. For agents: verify that agent memory/state can actually be restored, and snapshot state before any destructive agent action so a bad step is recoverable."
+  },
+  {
+    "id": "lesson-google-error-budgets",
+    "title": "Error budgets balance reliability against velocity",
+    "url": "https://sre.google/sre-book/embracing-risk/",
+    "category": "lessons",
+    "source_type": "retrospective",
+    "status": "current",
+    "grade": "A",
+    "added": "2026-07-14",
+    "last_verified": "2026-07-14",
+    "superseded_by": null,
+    "tags": [
+      "reliability",
+      "slo",
+      "error-budget",
+      "evaluation"
+    ],
+    "text": "Google SRE popularized the error budget: 100% reliability is the wrong target; you set an allowed failure rate, and while you're within budget you ship features, when you exceed it you stop and harden. Lesson: make the reliability-vs-speed tradeoff explicit and measurable. For agents: define an acceptable task-failure rate and let it gate whether you ship new capabilities or spend the cycle hardening the loop."
+  },
+  {
+    "id": "lesson-healthcaregov-2013",
+    "title": "Avoid big-bang launches; roll out incrementally",
+    "url": "https://en.wikipedia.org/wiki/HealthCare.gov",
+    "category": "lessons",
+    "source_type": "post-mortem",
+    "status": "current",
+    "grade": "A",
+    "added": "2026-07-14",
+    "last_verified": "2026-07-14",
+    "superseded_by": null,
+    "tags": [
+      "rollout",
+      "canary",
+      "launch",
+      "load"
+    ],
+    "text": "HealthCare.gov's 2013 launch failed under load because a large, integration-heavy system was flipped on for everyone at once with inadequate end-to-end testing. Lesson: stage rollouts and test the whole path under real load before a full cutover. For agents: canary new agent behaviors to a small slice of traffic, watch failure rates, and expand gradually rather than switching all users to a new loop at once."
+  },
+  {
+    "id": "lesson-knight-capital-deploy",
+    "title": "Deploy discipline: dormant code + partial rollout can be catastrophic",
+    "url": "https://en.wikipedia.org/wiki/Knight_Capital_Group",
+    "category": "lessons",
+    "source_type": "post-mortem",
+    "status": "current",
+    "grade": "A",
+    "added": "2026-07-14",
+    "last_verified": "2026-07-14",
+    "superseded_by": null,
+    "tags": [
+      "deploy",
+      "rollout",
+      "feature-flags",
+      "risk"
+    ],
+    "text": "Knight Capital lost ~$440M in 45 minutes in 2012 after a deploy left an old, repurposed feature flag enabling long-dormant code on some servers but not others. Lesson: never leave dead code reachable, and roll changes out uniformly with kill-switches. For agents: version and feature-flag tool rollouts, remove dormant tool paths an agent could trigger, and make a bad rollout instantly reversible."
+  },
+  {
+    "id": "lesson-mars-climate-orbiter",
+    "title": "Interface contracts: mismatched units/schemas cause silent disaster",
+    "url": "https://en.wikipedia.org/wiki/Mars_Climate_Orbiter",
+    "category": "lessons",
+    "source_type": "post-mortem",
+    "status": "current",
+    "grade": "A",
+    "added": "2026-07-14",
+    "last_verified": "2026-07-14",
+    "superseded_by": null,
+    "tags": [
+      "interfaces",
+      "schemas",
+      "validation",
+      "tools"
+    ],
+    "text": "NASA lost the Mars Climate Orbiter in 1999 because one team produced output in imperial units while another consumed it as metric; the mismatch was never validated at the boundary. Lesson: every interface needs an enforced, typed contract. For agents: define strict tool schemas and validate types/units/formats at the tool boundary — never trust that the model and the tool agree on shape implicitly."
+  },
+  {
+    "id": "lesson-netflix-chaos",
+    "title": "Inject failure deliberately to build resilience",
+    "url": "https://netflix.github.io/chaosmonkey/",
+    "category": "lessons",
+    "source_type": "retrospective",
+    "status": "current",
+    "grade": "A",
+    "added": "2026-07-14",
+    "last_verified": "2026-07-14",
+    "superseded_by": null,
+    "tags": [
+      "chaos-engineering",
+      "resilience",
+      "testing",
+      "fault-injection"
+    ],
+    "text": "Netflix's Chaos Monkey randomly kills production instances so the system is forced to tolerate failure as a normal condition rather than a rare emergency. Lesson: resilience comes from routinely exercising failure paths, not avoiding them. For agents: fault-inject dependencies — time out tools, return malformed tool output, drop context — and confirm the agent degrades gracefully instead of only testing the happy path."
+  },
+  {
+    "id": "lesson-therac-25",
+    "title": "Concurrency bugs and removed safety interlocks are lethal",
+    "url": "https://en.wikipedia.org/wiki/Therac-25",
+    "category": "lessons",
+    "source_type": "post-mortem",
+    "status": "current",
+    "grade": "A",
+    "added": "2026-07-14",
+    "last_verified": "2026-07-14",
+    "superseded_by": null,
+    "tags": [
+      "safety",
+      "concurrency",
+      "interlocks",
+      "autonomy"
+    ],
+    "text": "The Therac-25 radiation machine (1985–87) gave massive overdoses due to race conditions after hardware safety interlocks were replaced with software-only checks that had subtle timing bugs. Lesson: don't remove independent safety layers, and treat concurrency as a first-class hazard. For agents: keep human/hardware approval gates for high-consequence actions, and guard concurrent tool calls that share state — autonomy must not bypass the interlocks."
+  },
+  {
     "id": "mcp",
     "title": "Model Context Protocol",
     "url": "https://modelcontextprotocol.io/introduction",
