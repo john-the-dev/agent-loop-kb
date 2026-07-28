@@ -6,7 +6,7 @@
   "attribution_required": true,
   "attribution": "Source: The Agent Loop (https://agent-loop.xyz)",
   "usage": "https://github.com/john-the-dev/agent-loop-kb/blob/main/AGENTS.md",
-  "version": "7f08a4be14e4",
+  "version": "eddabbcbc67f",
   "count": 51,
   "entries": [
     {
@@ -414,7 +414,7 @@
       "status": "current",
       "grade": "unrated",
       "added": "2026-07-14",
-      "last_verified": "2026-07-14",
+      "last_verified": "2026-07-28",
       "superseded_by": null,
       "tags": [
         "human",
@@ -425,7 +425,7 @@
       ],
       "evidence": [],
       "text": "Place approval gates immediately before consequential actions such as sending messages, moving money, changing production, deleting data, or releasing regulated decisions, rather than asking once at session start. The approval view should show the exact proposed action, target, material parameters, evidence, uncertainty, and reversible alternatives; any later parameter change invalidates the approval. Persist who approved what and when, support rejection and editing, and fail closed when the approver or policy service is unavailable.",
-      "body": null
+      "body": "The approval gate is the one guardrail that survives every other failure: injection got past your filters, the model hallucinated a parameter, the plan drifted — none of it matters if the send/pay/delete still needs a human click. But gates are routinely built wrong in two opposite ways: asked too early (a session-start \"may I act on your behalf?\" that authorizes everything after) or so often that the human rubber-stamps without reading. Both are approval theater. [Anthropic's trustworthy-agents research agenda](https://www.anthropic.com/research/trustworthy-agents) frames the underlying requirement as *humans staying meaningfully in the loop as agents gain autonomy* — meaningful being the operative word.\n\n## Gate placement: at the action, not the session\n\nApprove the **specific consequential action at the moment it is about to execute**, with everything the approver needs on one screen:\n\n- the exact operation and target (\"send this email to alice@…\", not \"proceed?\")\n- material parameters (amount, recipients, scope) — rendered, not summarized\n- the evidence the agent is acting on, and its stated uncertainty\n- reversible alternatives, when they exist (\"save as draft instead\")\n\nTwo invariants make the approval real rather than ceremonial: **any parameter change after approval invalidates it** (the agent re-proposes; it never edits an approved action), and **the approved payload is the executed payload** — the gate sits between the model and the tool, in code, so what was shown is byte-for-byte what runs.\n\n## Design against rubber-stamping\n\nA gate the human stops reading is a gate that has already failed. Keep the approval surface *scarce* (gate irreversible and externally-visible actions; let reversible, low-stakes steps flow), *informative* (show what changed since the last similar approval), and *tiered* — standing approvals for narrow, well-defined action classes (\"always allow git push to my fork\") are better than either extreme, provided the standing grant is itself explicit, scoped, and revocable.\n\n## The operational contract\n\n- **Persist the audit trail**: who approved what payload, when, from which surface — it's both your incident forensics and your compliance story.\n- **Support reject *and edit***: a gate that only offers OK/Cancel forces the human to abandon good work over one wrong parameter; letting the approver amend the payload (which re-runs validation) keeps the loop productive.\n- **Fail closed**: if the approver is unreachable or the policy service is down, consequential actions queue — they never default through. An agent that \"assumed yes\" once will be assumed to always.\n\n*Sources: [Anthropic — Building trustworthy agents](https://www.anthropic.com/research/trustworthy-agents) · [Design Patterns for Securing LLM Agents (arXiv:2506.08837)](https://arxiv.org/abs/2506.08837).*\n\n*Related: [guardrails & safety](/library/guardrails-safety), [prompt injection defense](/library/prompt-injection-defense), [tool retries & idempotency](/library/tool-retries-idempotency), [agent observability](/library/agent-observability).*"
     },
     {
       "id": "langflow-cisa-kev-agent-rce",
@@ -464,7 +464,7 @@
       "status": "current",
       "grade": "unrated",
       "added": "2026-07-14",
-      "last_verified": "2026-07-14",
+      "last_verified": "2026-07-28",
       "superseded_by": null,
       "tags": [
         "latency",
@@ -475,7 +475,7 @@
       ],
       "evidence": [],
       "text": "Optimize both time to first useful feedback and total task time: stream text or structured progress, acknowledge long-running work immediately, and expose tool status without leaking private reasoning. Parallelize independent retrievals or tool calls, prefetch predictable context, cache stable prefixes, and avoid serial model calls that code could replace. Streaming improves perceived speed but does not reduce completion latency by itself, so preserve cancellation, backpressure, and a final authoritative result distinct from partial output.",
-      "body": null
+      "body": "Agent latency is two different metrics wearing one name: **time to first useful feedback** (does the user know something is happening?) and **total task time** (when is it actually done?). Users forgive a slow task that talks; they abandon a fast one that goes silent for forty seconds. Optimize both, but never confuse them — streaming fixes the first and does *nothing* for the second.\n\n## Cutting real latency\n\n[OpenAI's latency-optimization guide](https://platform.openai.com/docs/guides/latency-optimization) organizes the levers well, and they map directly onto agent loops:\n\n1. **Fewer serial model calls.** Every hop in a chain is a full round-trip. Collapse plan-then-act pairs where the plan is trivial, and never use a model call for what a regex or a join could do — the guide's \"use fewer tokens / make fewer requests\" advice is doubly true when each request feeds the next.\n2. **Parallelize the independent.** Retrievals, tool calls, and subagent fan-outs that don't depend on each other should run concurrently; an agent that awaits three searches serially triples its own latency.\n3. **Cache the stable prefix.** System prompt + tool definitions re-sent every turn are exactly what [prompt caching](/library/prompt-caching) exists for — cache reads cut both cost and time-to-first-token on every subsequent call.\n4. **Prefetch the predictable.** If step 3 always needs the user's calendar, start fetching it during step 2's model call, not after.\n5. **Right-size the model.** Routing classification and extraction to a small fast model, reserving the frontier model for the hard reasoning steps, is often the single biggest total-time win.\n\n## Streaming as UX, honestly\n\nStream tokens for prose and structured progress events for tool phases (\"searching…\", \"3 files read\") — [Anthropic's streaming docs](https://docs.claude.com/en/docs/build-with-claude/streaming) cover the event model, including streaming during tool use. Expose *status*, not private chain-of-thought. And keep three engineering invariants that streaming tempts you to drop:\n\n- **Cancellation**: a user who sees the wrong direction at token 50 must be able to stop the run — and cancel any in-flight tool side effects safely (idempotency again).\n- **Backpressure**: a consumer slower than the stream must not silently drop frames or balloon memory.\n- **A final authoritative result**, distinct from the partial stream. Partial output is a preview; downstream systems consume only the committed final — otherwise a mid-stream disconnect becomes a half-acted-on answer.\n\n## The agent-specific trap\n\nLong-running agents also need **liveness signaling** at the task level: an immediate acknowledgment (\"on it — this will take a few minutes\"), progress at real milestones, and a completion notification. That's cheap to build and worth more perceived speed than any decoding optimization.\n\n*Sources: [OpenAI — Latency optimization](https://platform.openai.com/docs/guides/latency-optimization) · [Anthropic — Streaming Messages](https://docs.claude.com/en/docs/build-with-claude/streaming).*\n\n*Related: [prompt caching](/library/prompt-caching), [token budgets](/library/token-budgets), [multi-agent orchestration](/library/multi-agent-orchestration), [tool retries & idempotency](/library/tool-retries-idempotency).*"
     },
     {
       "id": "legal-agents",
