@@ -28,6 +28,8 @@ for (const e of entries) {
   if (Array.isArray(e.evidence) && e.evidence.length === 0 && e.grade !== "unrated")
     errors.push(`${f}: evidence[] empty but grade="${e.grade}" (only "unrated" may lack evidence)`);
   if (!e.text || e.text.length < 20) errors.push(`${f}: summary body too short`);
+  if (e.body !== null && e.body !== undefined && e.body.length < 300)
+    errors.push(`${f}: "## Deep dive" present but under 300 chars — either flesh it out or remove the heading`);
 
   if (e.last_verified && daysSince(e.last_verified) > STALE_DAYS)
     warnings.push(`${f}: STALE — last_verified ${e.last_verified} (${daysSince(e.last_verified)}d ago)`);

@@ -49,7 +49,16 @@ export function parseEntry(text) {
     if (rawVal.trim() === "") { data[key] = []; listKey = key; continue; } // block list
     data[key] = parseScalar(rawVal);
   }
-  data.text = body;
+  // Optional long-form section: everything under a "## Deep dive" heading
+  // becomes `body` (markdown); the text above it stays the embeddable summary.
+  const marker = body.search(/(^|\n)## Deep dive[ \t]*(\n|$)/);
+  if (marker === -1) {
+    data.text = body;
+    data.body = null;
+  } else {
+    data.text = body.slice(0, marker).trim();
+    data.body = body.slice(marker).replace(/^\s*## Deep dive[ \t]*\n?/, "").trim() || null;
+  }
   return data;
 }
 

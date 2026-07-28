@@ -23,6 +23,10 @@ Every file in [`entries/`](entries/) is `<id>.md`: a YAML front-matter block, th
 
 Everything after the front-matter is the summary — 1–4 sentences, plain text, self-contained. This is what gets embedded for retrieval.
 
+### Optional deep dive
+
+An entry may follow the summary with a `## Deep dive` heading. Everything under it is long-form markdown (sections, lists, links) compiled into the feed as `body` and rendered as the full article on the entry's site page. The summary above the heading remains the retrieval/embedding text. If the heading is present the deep dive must be ≥ 300 characters (validated).
+
 ## `category: lessons`
 
 A **lesson** is an engineering lesson drawn from a **famous, publicly-documented** project or incident (post-mortem, retrospective, or published talk), stated with its takeaway for AI-agent engineering. Rules:
@@ -33,5 +37,5 @@ A **lesson** is an engineering lesson drawn from a **famous, publicly-documented
 
 ## Compiled output
 
-[`scripts/build.mjs`](scripts/build.mjs) emits [`dist/kb.json`](dist/kb.json): a **manifest** `{ source, homepage, repository, license, attribution_required, attribution, usage, version, count, entries[] }` where each entry is `{ id, title, url, category, source_type, status, grade, added, last_verified, superseded_by, tags, text }`. See [AGENTS.md](AGENTS.md) for the consumption contract + required attribution.
+[`scripts/build.mjs`](scripts/build.mjs) emits [`dist/kb.json`](dist/kb.json): a **manifest** `{ source, homepage, repository, license, attribution_required, attribution, usage, version, count, entries[] }` where each entry is `{ id, title, url, category, source_type, status, grade, added, last_verified, superseded_by, tags, text, body }` (`body` = the optional deep-dive markdown, else `null`). See [AGENTS.md](AGENTS.md) for the consumption contract + required attribution.
 The Agent Loop site ingests this (drops `status: deprecated`/`grade: D` from active retrieval, or down-weights them).

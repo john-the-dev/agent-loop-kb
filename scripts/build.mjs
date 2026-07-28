@@ -29,6 +29,7 @@ const entries = loadAll()
     superseded_by: e.superseded_by ?? null,
     tags: Array.isArray(e.tags) ? e.tags : [],
     text: e.text,
+    body: e.body ?? null,
   }))
   .sort((a, b) => a.id.localeCompare(b.id));
 
