@@ -6,7 +6,7 @@
   "attribution_required": true,
   "attribution": "Source: The Agent Loop (https://agent-loop.xyz)",
   "usage": "https://github.com/john-the-dev/agent-loop-kb/blob/main/AGENTS.md",
-  "version": "607e68d7ac3c",
+  "version": "558afcfac692",
   "count": 51,
   "entries": [
     {
@@ -892,7 +892,7 @@
       "status": "current",
       "grade": "unrated",
       "added": "2026-07-14",
-      "last_verified": "2026-07-14",
+      "last_verified": "2026-07-28",
       "superseded_by": null,
       "tags": [
         "prompt",
@@ -903,7 +903,7 @@
       ],
       "evidence": [],
       "text": "Prompt caching reduces latency and input cost when many calls share a long stable prefix such as system instructions, tool definitions, examples, or reference documents. Put stable content before volatile conversation state, keep serialization byte-for-byte consistent, and monitor cache creation, hit rate, read tokens, expiration, and provider-specific minimums. Caching is an optimization rather than memory: invalidate or version cached prefixes when policies, permissions, schemas, or source data change.",
-      "body": null
+      "body": "An agent loop re-sends nearly the same prompt dozens of times per task: the system prompt, the tool definitions, and the growing conversation are identical on every call except the newest turn. Prompt caching lets the provider store the processed prefix and skip re-computing it — which for a long-running agent is the single cheapest large win available: no quality trade-off, just less latency and a much smaller bill.\n\n## How the providers differ\n\n- **Anthropic** uses [explicit cache breakpoints](https://platform.claude.com/docs/en/build-with-claude/prompt-caching): you mark where the stable prefix ends. Cache writes cost a premium over base input tokens, cache *reads* cost a small fraction of them, and entries expire on a short TTL (with a paid longer-TTL option) — so the economics reward prefixes that are reused quickly and often.\n- **OpenAI** applies [caching automatically](https://platform.openai.com/docs/guides/prompt-caching) once a prompt exceeds a minimum length, discounting the cached portion with no code changes — but you only benefit if your prompts actually share a byte-identical prefix.\n- **Gemini** offers [context caching](https://ai.google.dev/gemini-api/docs/caching) with both implicit caching and explicitly-managed cached content objects you create and reference across requests, suited to a large document or video you'll query repeatedly.\n\nThe shared contract across all three: caching operates on an **exact prefix match**. One changed byte early in the prompt invalidates everything after it.\n\n## Structuring an agent for cache hits\n\n1. **Stability-ordered prompts.** System instructions and tool definitions first, few-shot examples next, conversation history after, and the volatile parts — current time, retrieved documents, the user's newest message — last.\n2. **Never interleave volatility.** A timestamp (\"Current time: 14:03:27\") rendered into the system prompt destroys the cache on every single call. Move it to the end, truncate it to the granularity you need, or pass it as a message.\n3. **Byte-stable serialization.** Non-deterministic JSON key order, shuffled tool lists, or a randomized retriever re-ranking the same documents will silently zero your hit rate. Serialize canonically.\n4. **Watch the metrics, not the vibes.** Providers report cache reads/writes per request. An agent fleet with a low hit rate usually has one volatile line in a shared prefix — findable in minutes once you actually look.\n\n## What caching is not\n\nIt is not memory and not state: the cache stores computation over tokens you still send, it can evict at any time, and it must never be load-bearing for correctness. Version your prefixes — when a policy, permission set, or tool schema changes, the *content* changes, and stale-prefix reuse is a bug the cache will happily hide.\n\n*Sources: [Anthropic — Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) · [OpenAI — Prompt caching](https://platform.openai.com/docs/guides/prompt-caching) · [Google — Gemini context caching](https://ai.google.dev/gemini-api/docs/caching).*\n\n*Related: [token budgets](/library/token-budgets), [context compaction](/library/context-compaction), [latency & streaming](/library/latency-streaming), [agent cost control](/library/agent-cost-control).*"
     },
     {
       "id": "prompt-injection-defense",
@@ -1134,7 +1134,7 @@
       "status": "current",
       "grade": "unrated",
       "added": "2026-07-14",
-      "last_verified": "2026-07-14",
+      "last_verified": "2026-07-28",
       "superseded_by": null,
       "tags": [
         "reliable",
@@ -1145,7 +1145,7 @@
       ],
       "evidence": [],
       "text": "Tool-using agents work best with narrow tools, explicit schemas, actionable error messages, and observable results. Validate arguments before execution, use idempotency keys for side effects, limit permissions, and return structured outputs so the model can accurately decide what to do next.",
-      "body": null
+      "body": "Most \"the agent is dumb\" complaints trace back to tool design, not model capability. The model can only be as reliable as the interface you hand it: vague tool names, kitchen-sink parameters, and error messages like `500 Internal Error` force it to guess — and an agent that guesses inside a loop compounds the guess on every subsequent step.\n\n## Design tools for the model that will read them\n\n[Anthropic's guide to writing tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents) distills what their own teams converged on: fewer, more targeted tools beat exhaustive API mirrors; names and descriptions are prompts, so write them for the model, not for a human SDK reference; and return responses that are informative but token-efficient. A tool that wraps \"search flights, filter by date, sort by price\" as one clear operation outperforms three chained generic endpoints, because every extra round-trip is another chance to mis-plan.\n\nSchema precision does real work too. Both [OpenAI's function-calling docs](https://platform.openai.com/docs/guides/function-calling) and [Anthropic's tool-use docs](https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview) make the same points: constrain inputs with enums and formats instead of free strings, describe each parameter's semantics (units, timezone, valid ranges), and state when the tool should — and should not — be used. Ambiguity you leave in the schema resurfaces as a hallucinated argument at 2am.\n\n## Errors are part of the interface\n\nAn agent recovers from failure exactly as well as your error messages allow. `{\"error\": \"invalid_date\", \"hint\": \"use YYYY-MM-DD; dates in the past are not bookable\"}` gives the loop a next move; a bare 400 gives it a coin flip. Design error responses as *instructions for retry*: what was wrong, what a valid call looks like, whether retrying can help at all.\n\n## Side effects need idempotency\n\nAgents retry — after timeouts, after truncated responses, after crash recovery. Any tool with a side effect (send, charge, create, deploy) therefore needs an [idempotency key](https://docs.stripe.com/api/idempotent_requests) — the pattern Stripe's API popularized: the caller supplies a unique key per logical operation, and replays with the same key return the original result instead of double-charging. Without it, \"the agent retried\" and \"the customer paid twice\" are the same event.\n\n## The checklist\n\nNarrow, well-named tools · enum-constrained schemas with semantic descriptions · errors that teach the retry · idempotency keys on every side effect · least-privilege scopes per tool · structured (not prose) results so the next step starts from facts.\n\n*Sources: [Anthropic — Writing tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents) · [OpenAI — Function calling](https://platform.openai.com/docs/guides/function-calling) · [Anthropic — Tool use overview](https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview) · [Stripe — Idempotent requests](https://docs.stripe.com/api/idempotent_requests).*\n\n*Related: [tool schema design](/library/tool-schema-design), [tool retries & idempotency](/library/tool-retries-idempotency), [structured outputs](/library/structured-outputs), [agent loop](/library/agent-loop).*"
     }
   ]
 }
