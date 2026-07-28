@@ -6,7 +6,7 @@
   "attribution_required": true,
   "attribution": "Source: The Agent Loop (https://agent-loop.xyz)",
   "usage": "https://github.com/john-the-dev/agent-loop-kb/blob/main/AGENTS.md",
-  "version": "558afcfac692",
+  "version": "8b31708e7e75",
   "count": 51,
   "entries": [
     {
@@ -936,7 +936,7 @@
       "status": "current",
       "grade": "unrated",
       "added": "2026-07-14",
-      "last_verified": "2026-07-14",
+      "last_verified": "2026-07-28",
       "superseded_by": null,
       "tags": [
         "retrieval",
@@ -947,7 +947,7 @@
       ],
       "evidence": [],
       "text": "Retrieval-augmented generation embeds a question, retrieves semantically similar passages from a knowledge base, and places those passages in the model context. Good RAG systems preserve source metadata, retrieve compact relevant chunks, instruct the model to stay grounded, and evaluate retrieval separately from answer generation.",
-      "body": null
+      "body": "RAG's premise — introduced by the original [retrieval-augmented generation paper (arXiv:2005.11401)](https://arxiv.org/abs/2005.11401) — is that a model shouldn't have to memorize what it can look up: pair a generator with a retriever over an external corpus, and answers can stay current and attributable without retraining. In 2026 the architecture is table stakes; what separates working systems from demos is everything around the embedding search.\n\n## The pipeline, honestly\n\nA production pipeline is: chunk → index → retrieve → (rerank) → assemble context → generate → cite. Each stage fails independently, which is why [Microsoft's RAG overview](https://learn.microsoft.com/azure/search/retrieval-augmented-generation-overview) treats retrieval as an information-retrieval problem first and an LLM problem second. The two highest-leverage upgrades over naive cosine search are usually **hybrid retrieval** (dense vectors + BM25 keyword matching — embeddings miss exact identifiers, error codes, and product names that keyword search catches trivially) and a **reranker** over the top-k candidates.\n\n**Chunking is where context dies silently.** A chunk that reads fine in isolation often loses the fact that anchors it (\"the company\", \"this method\" — which one?). [Anthropic's contextual retrieval](https://www.anthropic.com/news/contextual-retrieval) attacks exactly this: prepend a short chunk-specific explanatory context (generated once, at index time) before embedding, and combine with BM25 — their published benchmark cut top-20 retrieval failure rates by roughly half, with reranking pushing failures down further.\n\n## Grounding is an instruction, not a hope\n\nThe model must be told what the retrieved context is *for*: answer from it, say what's missing instead of guessing, and cite which passage supports which claim. Preserve source metadata (URL, title, date) through the whole pipeline so citations are real links, not decorations — and so stale documents can be filtered by date at query time.\n\n## Evaluate the stages separately\n\nA wrong answer has two very different causes: the passage wasn't retrieved, or it was retrieved and the model ignored or mangled it. Score retrieval on its own (did the gold passage appear in top-k?) and generation on its own (given the right passages, was the answer faithful?). Teams that only measure end-to-end answer quality routinely tune the wrong stage.\n\n## When RAG is the wrong tool\n\nFacts that fit comfortably in the prompt don't need a retriever. Stable behavioral patterns are better taught by prompting or fine-tuning. RAG earns its complexity when the corpus is large, changing, or private, and when provenance matters.\n\n*Sources: [Lewis et al. — Retrieval-Augmented Generation (arXiv:2005.11401)](https://arxiv.org/abs/2005.11401) · [Anthropic — Introducing Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval) · [Microsoft — RAG overview](https://learn.microsoft.com/azure/search/retrieval-augmented-generation-overview).*\n\n*Related: [retrieval quality](/library/retrieval-quality), [context rot](/library/context-rot), [agent memory tiers](/library/agent-memory-tiers), [evaluation strategy](/library/evaluation-strategy).*"
     },
     {
       "id": "rate-limiting-backpressure",
@@ -1024,7 +1024,7 @@
       "status": "current",
       "grade": "unrated",
       "added": "2026-07-14",
-      "last_verified": "2026-07-14",
+      "last_verified": "2026-07-28",
       "superseded_by": null,
       "tags": [
         "structured",
@@ -1035,7 +1035,7 @@
       ],
       "evidence": [],
       "text": "Use schema-constrained generation when downstream code needs machine-readable output: define required fields, closed enums, bounds, and disallow unexpected properties where the provider's supported JSON Schema subset permits it. Schema conformance guarantees shape, not truth, so still perform semantic validation, authorization, range checks, and referential checks before acting. Handle refusals, truncation, and provider errors as distinct outcomes, and version schemas so producers and consumers can evolve safely.",
-      "body": null
+      "body": "The moment an LLM's output feeds code instead of a human, \"usually valid JSON\" becomes a bug class: a stray markdown fence, a trailing comma, or an invented field name breaks the parser on the 1-in-50 call, which for an agent loop means a crash mid-task. Schema-constrained generation closes that class — [OpenAI's structured outputs](https://platform.openai.com/docs/guides/structured-outputs) enforce conformance to a supplied JSON Schema during decoding, and [Anthropic's structured outputs](https://docs.claude.com/en/docs/build-with-claude/structured-outputs) offer the same contract (with tool-input schemas as the long-standing equivalent pattern). The retry-on-parse-failure loop you wrote in 2024 is now the provider's job.\n\n## Write schemas that carry intent\n\nThe schema is not just a validator — the model reads it as instructions:\n\n- **Closed enums over free strings.** `\"status\": \"open\" | \"resolved\" | \"escalated\"` eliminates the synonym roulette (\"closed\", \"done\", \"finished\") that breaks downstream switch statements.\n- **Required fields + no additional properties**, where the provider's schema subset allows, so drift is impossible in both directions.\n- **Field descriptions do prompting work.** Units, timezone, format, and \"null when unknown — never guess\" belong on the field, next to where the model decides.\n- **Model uncertainty explicitly.** A nullable field with a \"why missing\" companion beats forcing a value; forced fields get filled with plausible fabrications.\n\n## Shape is not truth\n\nProvider-side conformance guarantees the JSON parses and matches the schema — nothing more. The values can still be wrong, stale, unauthorized, or referentially broken (`customer_id` that doesn't exist). Treat schema-valid output as *untrusted input that parses*: semantic validation, range checks, authorization, and existence checks still run in your code before anything acts on it. This matters doubly for agents, where a structured tool call is often one step from a side effect.\n\n## Handle the non-happy paths as distinct outcomes\n\nRefusals, truncation (max-token cutoffs mid-object), and provider errors are different failures with different fixes — a refusal should surface, truncation should raise the budget or shrink the schema, an API error should retry. Collapsing them into one catch block turns a diagnosable failure into a mystery. And version your schemas: producers and consumers evolve independently, and a silently-added enum value is a breaking change to the consumer that switches on it.\n\n*Sources: [OpenAI — Structured outputs](https://platform.openai.com/docs/guides/structured-outputs) · [Anthropic — Structured outputs](https://docs.claude.com/en/docs/build-with-claude/structured-outputs).*\n\n*Related: [tool schema design](/library/tool-schema-design), [tool use](/library/tool-use), [guardrails & safety](/library/guardrails-safety), [determinism & reproducibility](/library/determinism-reproducibility).*"
     },
     {
       "id": "subagents",
