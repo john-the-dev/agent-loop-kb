@@ -1,7 +1,7 @@
 ---
 id: sales-agents
 title: "Production sales and GTM agents"
-url: 
+url: https://www.salesforce.com/agentforce/
 category: tools
 source_type: blog
 status: current

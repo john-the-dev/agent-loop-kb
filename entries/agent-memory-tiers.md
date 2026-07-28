@@ -1,7 +1,7 @@
 ---
 id: agent-memory-tiers
 title: "Short-term and long-term agent memory"
-url: 
+url: https://arxiv.org/abs/2310.08560
 category: memory
 source_type: blog
 status: current

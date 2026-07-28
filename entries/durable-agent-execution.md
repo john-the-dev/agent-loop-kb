@@ -1,7 +1,7 @@
 ---
 id: durable-agent-execution
 title: "Durable execution and checkpointing"
-url: 
+url: https://docs.temporal.io/evaluate/understanding-temporal
 category: tools
 source_type: blog
 status: current

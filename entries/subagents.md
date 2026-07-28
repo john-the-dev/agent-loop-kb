@@ -21,7 +21,7 @@ A **subagent** is a specialized worker your main agent spins up to handle one fo
 
 ## Why subagents exist: context isolation
 
-As an agent's conversation grows, its context fills with tool output, dead ends, and half-finished reasoning. That bloat makes it slower, pricier, and more error-prone. Subagents contain the mess: the subagent may read 50 files, but the orchestrator only sees the 3-line answer. In practice this cuts token use sharply (reports of ~60–70% savings vs. cramming everything into one loop) and keeps the main agent sharp.
+As an agent's conversation grows, its context fills with tool output, dead ends, and half-finished reasoning. That bloat makes it slower, pricier, and more error-prone. Subagents contain the mess: the subagent may read 50 files, but the orchestrator only sees the 3-line answer. [Anthropic's multi-agent research system write-up](https://www.anthropic.com/engineering/multi-agent-research-system) describes exactly this pattern — subagents "operating in parallel with their own context windows" act as intelligent filters, compressing large explorations down to the insights the lead agent actually needs. (Note the honest trade-off from the same report: multi-agent runs consume substantially *more total tokens* than single-agent chat — what isolation buys is a sharp, uncluttered main loop, not a smaller bill.)
 
 ## When to use subagents
 
@@ -48,3 +48,5 @@ The failure mode is a **lossy handoff** — the subagent knew the answer but its
 ## Bottom line
 
 Use subagents to **isolate context and parallelize independent work**; keep a single loop when the work is tightly coupled. The 2026 SDKs (including the Claude Agent SDK's new hierarchical spawning) make this cheap to try — the engineering is in the handoff, not the spawn.
+
+*Sources: [Anthropic — How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) · [Claude Code subagents docs](https://docs.claude.com/en/docs/claude-code/sub-agents).*

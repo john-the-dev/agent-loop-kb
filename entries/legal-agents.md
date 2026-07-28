@@ -1,7 +1,7 @@
 ---
 id: legal-agents
 title: "Production agents for legal work"
-url: 
+url: https://hai.stanford.edu/news/hallucinating-law-legal-mistakes-large-language-models-are-pervasive
 category: memory
 source_type: blog
 status: current

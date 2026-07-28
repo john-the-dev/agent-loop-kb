@@ -19,7 +19,9 @@ const entries = loadAll()
   .map((e) => ({
     id: e.id,
     title: e.title,
-    url: e.url,
+    // Feed contract: url is a valid http(s) string or null — never an empty
+    // list/other shape (consumers render it as a link).
+    url: typeof e.url === "string" && /^https?:\/\/\S+$/.test(e.url) ? e.url : null,
     category: e.category,
     source_type: e.source_type,
     status: e.status,
@@ -28,6 +30,7 @@ const entries = loadAll()
     last_verified: e.last_verified,
     superseded_by: e.superseded_by ?? null,
     tags: Array.isArray(e.tags) ? e.tags : [],
+    evidence: Array.isArray(e.evidence) ? e.evidence : [],
     text: e.text,
     body: e.body ?? null,
   }))

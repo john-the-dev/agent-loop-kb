@@ -1,7 +1,7 @@
 ---
 id: determinism-reproducibility
 title: "Determinism and reproducibility"
-url: 
+url: https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/
 category: evaluation
 source_type: blog
 status: current

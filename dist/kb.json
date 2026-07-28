@@ -6,7 +6,7 @@
   "attribution_required": true,
   "attribution": "Source: The Agent Loop (https://agent-loop.xyz)",
   "usage": "https://github.com/john-the-dev/agent-loop-kb/blob/main/AGENTS.md",
-  "version": "711a9d437efa",
+  "version": "eee0cf22f1f3",
   "count": 51,
   "entries": [
     {
@@ -27,6 +27,7 @@
         "economics",
         "measure"
       ],
+      "evidence": [],
       "text": "Measure cost per completed task, not cost per model call, because cheap models can become expensive when they cause retries or long trajectories. Reduce repeated input with prompt caching, retrieve only relevant chunks, compact history, cap tool and reasoning loops, and route routine classification or extraction to smaller models while escalating difficult cases based on confidence or validation failure. Set per-run and per-tenant budgets and surface budget exhaustion as an explicit partial outcome rather than silently degrading quality.",
       "body": null
     },
@@ -48,6 +49,7 @@
         "treat",
         "workers"
       ],
+      "evidence": [],
       "text": "Treat serverless agent workers as stateless and persist conversation state, plans, checkpoints, idempotency records, and pending approvals in durable services because instances can disappear or be retried at any time. Cold starts, execution-duration limits, connection limits, and burst concurrency make long agent loops better suited to queues plus resumable steps than one synchronous function invocation. Pin prompt, model, tool, and schema versions; reuse safe connections and cached clients within a warm instance, but never rely on local memory for correctness.",
       "body": null
     },
@@ -69,6 +71,7 @@
         "should",
         "separate"
       ],
+      "evidence": [],
       "text": "Agent evaluations should separate model quality from scaffold, tool, and environment failures. Single-run pass rates hide nondeterminism, while overly short time or token limits can misclassify capable agents. Use repeated trials, inspect trajectories, score intermediate outcomes, and test realistic failure recovery.",
       "body": null
     },
@@ -90,6 +93,7 @@
         "give",
         "each"
       ],
+      "evidence": [],
       "text": "Give each agent workload a distinct identity and short-lived, task-scoped credentials instead of placing broad API keys in prompts, tool output, logs, or persistent memory. A trusted executor should obtain secrets only after policy checks, constrain target resources and operations, and return the minimum result rather than exposing raw credentials to the model. Rotate credentials, audit principal-to-action mappings, isolate tenants, and revoke active sessions when a user, connector, or agent run loses authorization.",
       "body": null
     },
@@ -111,13 +115,14 @@
         "reads",
         "current"
       ],
+      "evidence": [],
       "text": "An agent loop repeatedly reads the current state, chooses an action, uses a tool, observes the result, and corrects its plan. The model is only one component: reliable agents also need clear goals, useful tools, bounded context, termination conditions, and feedback from the environment.",
       "body": null
     },
     {
       "id": "agent-memory-tiers",
       "title": "Short-term and long-term agent memory",
-      "url": [],
+      "url": "https://arxiv.org/abs/2310.08560",
       "category": "memory",
       "source_type": "blog",
       "status": "current",
@@ -132,6 +137,7 @@
         "memory",
         "working"
       ],
+      "evidence": [],
       "text": "Short-term memory is the working context supplied on each model call: recent messages, the current plan, tool results, and task-local state; it is bounded by the context window and disappears unless persisted. Long-term memory lives in an external store and should contain durable, scoped facts such as user preferences, decisions, and prior outcomes, with provenance, timestamps, access controls, and deletion support. Retrieve long-term memories only when relevant, and never treat model-written memories as authoritative without validation because stale or poisoned records can propagate across sessions.",
       "body": null
     },
@@ -153,6 +159,7 @@
         "each",
         "trace"
       ],
+      "evidence": [],
       "text": "Represent each agent run as a trace with spans for model calls, retrieval, tool execution, guardrails, handoffs, and human approvals, linked by stable run and parent identifiers. Log model and prompt versions, token counts, latency, tool names and validated arguments, result status, retries, state transitions, citations, and final outcome, while redacting secrets and minimizing retained personal data. Store enough versioned inputs and environment references to replay failures, but distinguish deterministic replay of recorded tool results from a fresh live rerun that may change external state.",
       "body": null
     },
@@ -174,13 +181,14 @@
         "work",
         "isolated"
       ],
+      "evidence": [],
       "text": "Coding agents should work in isolated, least-privilege sandboxes with repository-scoped credentials, network controls, resource limits, and explicit approval for destructive commands, secret access, or deployment. Use a test-driven loop: reproduce the failure, inspect relevant code, make a minimal diff, run targeted tests and static checks, then report evidence and remaining risk. Deliver reviewable patches rather than opaque rewrites, never weaken tests merely to pass, and protect the agent from prompt injection embedded in source files, issues, or dependency output.",
       "body": null
     },
     {
       "id": "context-compaction",
       "title": "Context management and compaction",
-      "url": [],
+      "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
       "category": "tools",
       "source_type": "blog",
       "status": "current",
@@ -195,6 +203,7 @@
         "manage",
         "retain"
       ],
+      "evidence": [],
       "text": "Manage context as a budget: retain the system policy, current objective, unresolved constraints, recent actions, exact error messages, and identifiers needed for future tool calls, while dropping duplicated prose and superseded attempts. A sliding window preserves local conversational detail, whereas periodic summaries compress older history; summaries should separate verified facts from hypotheses and link to durable artifacts rather than paraphrasing critical code or numbers. Trigger compaction before the window is full and test that an agent can resume from the compacted state without losing commitments or repeating side effects.",
       "body": null
     },
@@ -216,8 +225,9 @@
         "context-engineering",
         "attention"
       ],
+      "evidence": [],
       "text": "Context rot is the degradation of agent performance as the context window fills — long before the technical token limit — because attention favors the start and end of the window and buries the middle. Prevent it with compaction over accumulation, externalized memory, position-aware window structure, aggressive eviction of stale output, and delegation of bounded sub-tasks to fresh subagent windows.",
-      "body": "**Context rot** is the degradation of an agent's performance as its context window fills up — even when the total token count stays well under the model's technical limit. Task coherence erodes as older but still-relevant information gets buried under newer tokens or quietly drops out at the edges of the model's attention. A 2025 analysis of enterprise deployments attributed roughly 65% of agent failures to context drift and memory loss during multi-step reasoning — not to the underlying model being incapable. Most production agents on 200K-token models start breaking well before 130K.\n\n## Why it happens\n\nAttention is not uniform across a long window. Models reliably attend to the start and end of the context (\"primacy\" and \"recency\") but degrade in the middle — the \"lost in the middle\" effect. As an agent loop appends tool results, retrieved documents, and prior turns, the instructions and facts that mattered on turn 3 sink into that low-attention middle by turn 30. Nothing was truncated, so it looks fine — but the model has effectively stopped using it.\n\n## How to prevent it\n\n**1. Compaction over accumulation.** When the window approaches a threshold (not the hard limit), summarize the older turns into a compact state and reinitialize with that summary. Keep verbatim only what must stay verbatim — open sub-goals, the active plan, unresolved errors.\n\n**2. Externalize memory.** Offload durable facts to a store (files, vector DB, scratchpad) and retrieve on demand. The window should hold the *working set* for the current step, not the entire history.\n\n**3. Structure the window by position.** Pin the system prompt and current task at the top; keep the most recent tool output at the bottom. Put reference material that must survive in those high-attention zones, not the middle.\n\n**4. Evict aggressively.** Drop stale tool outputs, resolved errors, and superseded plans. A smaller, cleaner window outperforms a larger, noisier one — fewer distractor tokens means sharper attention on what matters.\n\n**5. Delegate to subagents.** Hand a bounded sub-task to a fresh agent with its own clean window, and return only the result. This is compaction by architecture: the parent never sees the sub-task's intermediate churn.\n\n## The one-line rule\n\nContext engineering asks *what tokens should occupy the window at every moment* — including what to evict, compress, or delegate. Treat the window as a scarce, actively-managed resource, not an append-only log, and context rot stops being your top failure mode.\n\n*Related: [context compaction](/library/context-compaction), [token budgets](/library/token-budgets), [agent memory tiers](/library/agent-memory-tiers), [multi-agent orchestration](/library/multi-agent-orchestration).*"
+      "body": "**Context rot** is the degradation of an agent's performance as its context window fills up — even when the total token count stays well under the model's technical limit. Task coherence erodes as older but still-relevant information gets buried under newer tokens or quietly drops out at the edges of the model's attention. This is measured, not anecdotal: [Chroma's \"Context Rot\" technical report](https://research.trychroma.com/context-rot) evaluated 18 models (including GPT-4.1, Claude 4, Gemini 2.5) and found performance degrades — increasingly unevenly — as input length grows, even on tasks as simple as repeating text, and the [\"Lost in the Middle\" study](https://arxiv.org/abs/2307.03172) showed accuracy drops sharply when relevant information sits in the middle of a long context rather than at the edges. In practice, agents start failing well before the advertised window is full.\n\n## Why it happens\n\nAttention is not uniform across a long window. Models reliably attend to the start and end of the context (\"primacy\" and \"recency\") but degrade in the middle — the \"lost in the middle\" effect. As an agent loop appends tool results, retrieved documents, and prior turns, the instructions and facts that mattered on turn 3 sink into that low-attention middle by turn 30. Nothing was truncated, so it looks fine — but the model has effectively stopped using it.\n\n## How to prevent it\n\n**1. Compaction over accumulation.** When the window approaches a threshold (not the hard limit), summarize the older turns into a compact state and reinitialize with that summary. Keep verbatim only what must stay verbatim — open sub-goals, the active plan, unresolved errors.\n\n**2. Externalize memory.** Offload durable facts to a store (files, vector DB, scratchpad) and retrieve on demand. The window should hold the *working set* for the current step, not the entire history.\n\n**3. Structure the window by position.** Pin the system prompt and current task at the top; keep the most recent tool output at the bottom. Put reference material that must survive in those high-attention zones, not the middle.\n\n**4. Evict aggressively.** Drop stale tool outputs, resolved errors, and superseded plans. A smaller, cleaner window outperforms a larger, noisier one — fewer distractor tokens means sharper attention on what matters.\n\n**5. Delegate to subagents.** Hand a bounded sub-task to a fresh agent with its own clean window, and return only the result. This is compaction by architecture: the parent never sees the sub-task's intermediate churn.\n\n## The one-line rule\n\nContext engineering asks *what tokens should occupy the window at every moment* — including what to evict, compress, or delegate. Treat the window as a scarce, actively-managed resource, not an append-only log, and context rot stops being your top failure mode.\n\n*Sources: [Chroma — Context Rot: How Increasing Input Tokens Impacts LLM Performance](https://research.trychroma.com/context-rot) · [Liu et al. — Lost in the Middle (TACL 2024)](https://arxiv.org/abs/2307.03172) · [Anthropic — Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents).*\n\n*Related: [context compaction](/library/context-compaction), [token budgets](/library/token-budgets), [agent memory tiers](/library/agent-memory-tiers), [multi-agent orchestration](/library/multi-agent-orchestration).*"
     },
     {
       "id": "customer-support-agents",
@@ -237,13 +247,14 @@
         "deflect",
         "repetitive"
       ],
+      "evidence": [],
       "text": "A support agent can deflect repetitive requests by answering from versioned help-center content and resolving low-risk tasks such as checking delivery status, but it should cite the grounding article and avoid inventing policy. Route by intent and risk, preserve brand tone without masking uncertainty, authenticate users before account access, and escalate on low confidence, repeated failure, abuse, exceptions, or requests outside authority. For a refund request, the agent can gather order evidence and explain eligibility, while a deterministic policy service decides the amount and an approval gate handles exceptions.",
       "body": null
     },
     {
       "id": "determinism-reproducibility",
       "title": "Determinism and reproducibility",
-      "url": [],
+      "url": "https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/",
       "category": "evaluation",
       "source_type": "blog",
       "status": "current",
@@ -258,13 +269,14 @@
         "temperature",
         "reduce"
       ],
+      "evidence": [],
       "text": "Lower temperature can reduce sampling variation for extraction and routing, but it does not make a hosted model or a multi-step agent deterministic because model revisions, parallel tools, retrieval indexes, and external state can change outcomes. Record model snapshots when available, parameters, prompts, tool and data versions, seeds where supported, timestamps, and complete trajectories, then evaluate with repeated trials and outcome tolerances. For reasoning models, follow provider guidance on sampling controls and put exact calculations, policy decisions, and invariants in deterministic code rather than relying on identical natural-language reasoning traces.",
       "body": null
     },
     {
       "id": "durable-agent-execution",
       "title": "Durable execution and checkpointing",
-      "url": [],
+      "url": "https://docs.temporal.io/evaluate/understanding-temporal",
       "category": "tools",
       "source_type": "blog",
       "status": "current",
@@ -279,13 +291,14 @@
         "long",
         "running"
       ],
+      "evidence": [],
       "text": "Long-running agents should execute as resumable state machines whose durable checkpoint records the current step, validated state, completed side effects, pending approvals, retry counters, and versioned inputs. Use an outbox or equivalent transactional pattern when a state update and external message must agree, and assign idempotency keys so crash recovery can safely replay a step. Define terminal states, cancellation and compensation paths, and migration behavior for runs that outlive a prompt, model, tool, or schema deployment.",
       "body": null
     },
     {
       "id": "ecommerce-agents",
       "title": "Production e-commerce agents",
-      "url": [],
+      "url": "https://www.agenticcommerce.dev/",
       "category": "evaluation",
       "source_type": "blog",
       "status": "current",
@@ -300,6 +313,7 @@
         "combine",
         "lexical"
       ],
+      "evidence": [],
       "text": "E-commerce agents should combine lexical and semantic product retrieval with hard filters for inventory, locale, compatibility, price, and fulfillment, and clearly label sponsored or personalized ranking. Recommendations must be grounded in catalog attributes and user-stated needs, not invented benefits; order tools require authenticated identity, exact totals, idempotency, and confirmation before purchase, cancellation, return, or address changes. A shopping agent can compare in-stock laptops against a budget and workload, then prepare a cart while the commerce service recomputes availability, tax, shipping, and the final charge.",
       "body": null
     },
@@ -321,6 +335,7 @@
         "evals",
         "provide"
       ],
+      "evidence": [],
       "text": "Offline evals provide repeatable pre-release regression tests over representative tasks, adversarial cases, tool failures, and multi-step trajectories; online evals measure real completion, escalation, latency, cost, and safety signals under production traffic. Maintain frozen golden sets plus newly mined failures, run repeated trials for nondeterministic agents, and score both final outcomes and critical intermediate constraints. LLM judges are scalable but can be biased by style, verbosity, ordering, or shared model errors, so calibrate them against blinded human labels and deterministic checks and track judge-version changes.",
       "body": null
     },
@@ -342,6 +357,7 @@
         "data",
         "minimization"
       ],
+      "evidence": [],
       "text": "Finance agents need data minimization, field-level protection for PII, least-privilege access, immutable audit trails, retention controls, and jurisdiction-specific compliance review. Keep ledger math, eligibility, limits, sanctions screening, and transaction authorization in deterministic services; the model may collect evidence or explain a result but must not override those checks. For an expense-review use case, the agent can extract receipt fields and flag policy anomalies with source spans, while rules validate totals and a human approves ambiguous or high-value reimbursements.",
       "body": null
     },
@@ -363,6 +379,7 @@
         "should",
         "enforced"
       ],
+      "evidence": [],
       "text": "Guardrails should be enforced in code around the model: validate inputs and outputs, authorize every tool call against the user and task, constrain arguments with allow-lists, and run code or file operations in resource-limited sandboxes. Separate read tools from write tools, default to least privilege, redact secrets, impose spend and iteration limits, and require approval for irreversible or externally visible actions. Model-based safety classifiers can add defense in depth but must not be the sole control for permissions or transaction integrity.",
       "body": null
     },
@@ -384,6 +401,7 @@
         "protected",
         "health"
       ],
+      "evidence": [],
       "text": "Healthcare agents handling protected health information require HIPAA-aligned administrative, physical, and technical safeguards, minimum-necessary data access, vendor agreements where applicable, audit logs, and verified identity boundaries. Ground clinical statements in approved, current sources with citations, display uncertainty, and require qualified human review for diagnosis, treatment, triage, or any action that could affect care. A visit-summary agent can draft patient instructions from the signed note and formulary data, but a clinician must review the draft and unsupported details must be omitted rather than guessed.",
       "body": null
     },
@@ -405,6 +423,7 @@
         "high",
         "stakes"
       ],
+      "evidence": [],
       "text": "Place approval gates immediately before consequential actions such as sending messages, moving money, changing production, deleting data, or releasing regulated decisions, rather than asking once at session start. The approval view should show the exact proposed action, target, material parameters, evidence, uncertainty, and reversible alternatives; any later parameter change invalidates the approval. Persist who approved what and when, support rejection and editing, and fail closed when the approver or policy service is unavailable.",
       "body": null
     },
@@ -429,6 +448,10 @@
         "authorization",
         "agent-frameworks"
       ],
+      "evidence": [
+        "Langflow flaws repeatedly added to CISA's Known Exploited Vulnerabilities catalog: CVE-2025-3248 (CVSS 9.8, unauth exec() on /api/v1/validate/code, KEV 2025-05-05), CVE-2026-33017 (9.3, unauth RCE on /api/v1/build_public_tmp/.../flow, exploited within ~20h of disclosure), CVE-2025-34291 (9.4, CORS+CSRF token chain → account takeover), CVE-2026-55255 (IDOR on /api/v1/responses → read other users' flows + their secrets) (verified 2026-07-14)",
+        "Real-world weaponization: Flodrix botnet + Sysdig-documented agentic-ransomware operator (JADEPUFFER) chaining the IDOR + RCE, June 2026 (verified 2026-07-14)"
+      ],
       "text": "Langflow — a popular open-source visual framework for building AI agents and RAG pipelines — has had multiple critical flaws added to CISA's Known Exploited Vulnerabilities catalog over the past year (unauthenticated `exec()` RCE, an account-takeover token chain, and an IDOR that reads other tenants' flows). Attackers moved within ~20 hours of one disclosure, before any public PoC. The lesson for agent engineering: an agent-building platform is a concentrated credential store — it holds model API keys, cloud credentials, and DB strings — so a single authz gap (an ID that isn't checked against the caller, or code passed to `exec()` before auth) doesn't leak one secret, it leaks the whole ring. Harden agent frameworks like production infrastructure: authenticate AND authorize every flow/tool endpoint (deny-by-default), never expose them directly to the internet, scope secrets per tenant/agent with short-lived tokens, and treat any exposed instance as potentially compromised even after patching.",
       "body": null
     },
@@ -450,13 +473,14 @@
         "optimize",
         "both"
       ],
+      "evidence": [],
       "text": "Optimize both time to first useful feedback and total task time: stream text or structured progress, acknowledge long-running work immediately, and expose tool status without leaking private reasoning. Parallelize independent retrievals or tool calls, prefetch predictable context, cache stable prefixes, and avoid serial model calls that code could replace. Streaming improves perceived speed but does not reduce completion latency by itself, so preserve cancellation, backpressure, and a final authoritative result distinct from partial output.",
       "body": null
     },
     {
       "id": "legal-agents",
       "title": "Production agents for legal work",
-      "url": [],
+      "url": "https://hai.stanford.edu/news/hallucinating-law-legal-mistakes-large-language-models-are-pervasive",
       "category": "memory",
       "source_type": "blog",
       "status": "current",
@@ -471,6 +495,7 @@
         "should",
         "retrieve"
       ],
+      "evidence": [],
       "text": "Legal agents should retrieve from authoritative, jurisdiction- and date-filtered corpora and preserve court, reporter, docket, pinpoint citation, precedential status, and source text for every proposition. Validate that cited authorities exist and support the claim, distinguish law from argument, disclose incomplete coverage, and require attorney review before filing, advising a client, or changing contractual rights. For a motion-research use case, the agent can assemble a claim-to-authority table and quote short verified passages, while a reviewer checks negative treatment and final reasoning.",
       "body": null
     },
@@ -490,6 +515,9 @@
         "assumptions",
         "overflow",
         "regression"
+      ],
+      "evidence": [
+        "Public post-mortem/record; well-documented, durable lesson (verified 2026-07-14)"
       ],
       "text": "Ariane 5's maiden flight was destroyed in 1996 when inertial-reference software reused from the slower Ariane 4 hit an unhandled overflow under the new rocket's higher values. Lesson: reused components carry hidden assumptions from their original context. For agents: prompts, tools, and sub-agents reused in a new task carry old assumptions — re-test them in the new context instead of assuming they still hold.",
       "body": null
@@ -511,6 +539,9 @@
         "blast-radius",
         "tools"
       ],
+      "evidence": [
+        "Public post-mortem/record; well-documented, durable lesson (verified 2026-07-14)"
+      ],
       "text": "The 2017 AWS S3 outage began when an engineer ran a debugging command with a mistyped parameter that removed far more capacity than intended, cascading across dependent systems. Lesson: destructive operations need typed inputs, confirmation, and limits on how much they can affect at once. For agents: tools that delete/modify state must have typed args, dry-run/confirm modes, and blast-radius caps — an agent should never be able to wipe more than a bounded scope in one call.",
       "body": null
     },
@@ -530,6 +561,9 @@
         "runaway",
         "loops",
         "budgets"
+      ],
+      "evidence": [
+        "Public post-mortem/record; well-documented, durable lesson (verified 2026-07-14)"
       ],
       "text": "In 2019 a single regular expression with catastrophic backtracking consumed CPU globally and took Cloudflare offline. Lesson: any operation without an explicit bound can consume all resources. For agents: cap loop iterations, token budgets, tool-call counts, and wall-clock per task — a runaway agent loop is the same failure mode as an unbounded regex, and needs the same hard ceilings.",
       "body": null
@@ -551,6 +585,9 @@
         "state",
         "memory"
       ],
+      "evidence": [
+        "Public post-mortem/record; well-documented, durable lesson (verified 2026-07-14)"
+      ],
       "text": "In 2017 GitLab lost production data when a tired engineer removed a directory on the wrong host, then discovered that five separate backup/replication methods had silently been failing. Lesson: an untested backup is not a backup. For agents: verify that agent memory/state can actually be restored, and snapshot state before any destructive agent action so a bad step is recoverable.",
       "body": null
     },
@@ -570,6 +607,9 @@
         "slo",
         "error-budget",
         "evaluation"
+      ],
+      "evidence": [
+        "Public post-mortem/record; well-documented, durable lesson (verified 2026-07-14)"
       ],
       "text": "Google SRE popularized the error budget: 100% reliability is the wrong target; you set an allowed failure rate, and while you're within budget you ship features, when you exceed it you stop and harden. Lesson: make the reliability-vs-speed tradeoff explicit and measurable. For agents: define an acceptable task-failure rate and let it gate whether you ship new capabilities or spend the cycle hardening the loop.",
       "body": null
@@ -591,6 +631,9 @@
         "launch",
         "load"
       ],
+      "evidence": [
+        "Public post-mortem/record; well-documented, durable lesson (verified 2026-07-14)"
+      ],
       "text": "HealthCare.gov's 2013 launch failed under load because a large, integration-heavy system was flipped on for everyone at once with inadequate end-to-end testing. Lesson: stage rollouts and test the whole path under real load before a full cutover. For agents: canary new agent behaviors to a small slice of traffic, watch failure rates, and expand gradually rather than switching all users to a new loop at once.",
       "body": null
     },
@@ -610,6 +653,9 @@
         "rollout",
         "feature-flags",
         "risk"
+      ],
+      "evidence": [
+        "Public post-mortem/record; well-documented, durable lesson (verified 2026-07-14)"
       ],
       "text": "Knight Capital lost ~$440M in 45 minutes in 2012 after a deploy left an old, repurposed feature flag enabling long-dormant code on some servers but not others. Lesson: never leave dead code reachable, and roll changes out uniformly with kill-switches. For agents: version and feature-flag tool rollouts, remove dormant tool paths an agent could trigger, and make a bad rollout instantly reversible.",
       "body": null
@@ -631,6 +677,9 @@
         "validation",
         "tools"
       ],
+      "evidence": [
+        "Public post-mortem/record; well-documented, durable lesson (verified 2026-07-14)"
+      ],
       "text": "NASA lost the Mars Climate Orbiter in 1999 because one team produced output in imperial units while another consumed it as metric; the mismatch was never validated at the boundary. Lesson: every interface needs an enforced, typed contract. For agents: define strict tool schemas and validate types/units/formats at the tool boundary — never trust that the model and the tool agree on shape implicitly.",
       "body": null
     },
@@ -651,6 +700,9 @@
         "testing",
         "fault-injection"
       ],
+      "evidence": [
+        "Public post-mortem/record; well-documented, durable lesson (verified 2026-07-14)"
+      ],
       "text": "Netflix's Chaos Monkey randomly kills production instances so the system is forced to tolerate failure as a normal condition rather than a rare emergency. Lesson: resilience comes from routinely exercising failure paths, not avoiding them. For agents: fault-inject dependencies — time out tools, return malformed tool output, drop context — and confirm the agent degrades gracefully instead of only testing the happy path.",
       "body": null
     },
@@ -670,6 +722,9 @@
         "concurrency",
         "interlocks",
         "autonomy"
+      ],
+      "evidence": [
+        "Public post-mortem/record; well-documented, durable lesson (verified 2026-07-14)"
       ],
       "text": "The Therac-25 radiation machine (1985–87) gave massive overdoses due to race conditions after hardware safety interlocks were replaced with software-only checks that had subtle timing bugs. Lesson: don't remove independent safety layers, and treat concurrency as a first-class hazard. For agents: keep human/hardware approval gates for high-consequence actions, and guard concurrent tool calls that share state — autonomy must not bypass the interlocks.",
       "body": null
@@ -692,6 +747,7 @@
         "open",
         "standard"
       ],
+      "evidence": [],
       "text": "The Model Context Protocol is an open standard for connecting AI applications to external tools and data. MCP uses a client-server architecture: servers expose resources, prompts, and tools, while hosts manage model access, permissions, and user consent. It reduces custom integration work but does not replace security boundaries.",
       "body": null
     },
@@ -713,8 +769,9 @@
         "migration",
         "extensions"
       ],
-      "text": "The largest MCP revision since launch makes the protocol stateless: the initialize handshake and sessions are gone, servers can no longer call back into clients, and every tool call is a self-contained HTTP request. Nothing running breaks on day one (adoption is opt-in, SDKs shipped compatible betas), but migrating servers must read capabilities from _meta and implement server/discover — and agents should start treating tool-returned handles as first-class state.",
-      "body": "The Model Context Protocol's largest revision since launch finalized on July 28, 2026: **MCP is now stateless at the protocol layer.** The `initialize` handshake is gone, sessions are gone, servers can no longer send requests back to clients, and every tool call is a self-contained HTTP request carrying its own protocol version, identity, and capabilities.\n\n## Why it changed\n\nThe original stateful design forced real operational pain: a remote MCP server needed sticky sessions, a shared session store (typically Redis), and gateway-level packet inspection just to route traffic. The core team spent two years watching deployments fight session supervision for every individual action — the new spec removes the whole class of problem. A stateless server now runs behind a plain round-robin load balancer, routes on an `Mcp-Method` header, and lets clients cache `tools/list` responses for as long as the server's `ttlMs` allows.\n\n## What actually breaks\n\n**Nothing already running breaks on day one** — adoption is opt-in, and all tier-1 SDKs (Python, TypeScript, Go, C#) shipped backward-compatible support in the June 29 betas. But when you migrate:\n\n- Servers that read the session header or relied on `initialize` must switch to reading protocol version and capabilities from `_meta`, implement `server/discover`, and attach `ttlMs` / `cacheScope` to list and read results.\n- Clients must send `Mcp-Method` and `Mcp-Name` headers on Streamable HTTP POSTs.\n- Server-to-client requests are gone: anything built on that reverse channel needs redesigning around return values.\n\n## The agent-architecture upside\n\nThe subtle win for agent builders: state moves out of transport metadata and **into the agent's reasoning loop**. Where a workflow previously depended on hidden session state, a stateless server returns explicit handles — a `basket_id`, a `workflow_run_id` — that the agent can reason about, compose with other handles, and pass forward across multi-step tool chains. That's a better fit for how agent loops actually work: durable context lives with the agent, not the wire.\n\nTwo official extensions ship alongside, under the new Extensions framework (reverse-DNS IDs, independent versioning): **MCP Apps** (servers ship interactive HTML rendered in a sandboxed iframe) and a redesigned **Tasks** extension built for the stateless model. A formal lifecycle policy now guarantees twelve months minimum between a feature's deprecation and removal.\n\n## Bottom line\n\nIf you run MCP servers: nothing forces migration today, but the stateless path deletes your session store, your sticky-session config, and a category of scaling bugs — plan the `_meta`/`server/discover` migration this quarter. If you build agents: start treating tool-returned handles as first-class state, because the protocol just stopped hiding it for you.\n\n*Sources: modelcontextprotocol.io (2026-07-28 release), GitHub MCP Server changelog (Jul 23), The Register, Microsoft App Service blog, Arcade.dev.*"
+      "evidence": [],
+      "text": "The largest MCP revision since launch makes the protocol stateless: the initialize handshake and sessions are gone, every tool call is a self-contained HTTP request, and server-initiated interactions (sampling, elicitation) are restructured as multi-round-trip requests — allowed only while the server is processing a client request. Nothing running breaks on day one (adoption is opt-in, SDKs shipped compatible betas), but migrating servers must read capabilities from _meta and implement server/discover — and agents should start treating tool-returned handles as first-class state.",
+      "body": "The Model Context Protocol's largest revision since launch — the 2026-07-28 specification (release candidate locked May 21, 2026; final spec published July 28, 2026): **MCP is now stateless at the protocol layer.** The `initialize` handshake is gone, sessions are gone, and every tool call is a self-contained HTTP request carrying its own protocol version, identity, and capabilities. Server-initiated interactions are not gone — they are restructured as **multi-round-trip requests** (see below) and may only be issued while the server is actively processing a client request.\n\n## Why it changed\n\nThe original stateful design forced real operational pain: a remote MCP server needed sticky sessions, a shared session store (typically Redis), and gateway-level packet inspection just to route traffic. The core team spent two years watching deployments fight session supervision for every individual action — the new spec removes the whole class of problem. A stateless server now runs behind a plain round-robin load balancer, routes on an `Mcp-Method` header, and lets clients cache `tools/list` responses for as long as the server's `ttlMs` allows.\n\n## What actually breaks\n\n**Nothing already running breaks on day one** — adoption is opt-in, and all tier-1 SDKs (Python, TypeScript, Go, C#) shipped backward-compatible support in the June 29 betas. But when you migrate:\n\n- Servers that read the session header or relied on `initialize` must switch to reading protocol version and capabilities from `_meta`, implement `server/discover`, and attach `ttlMs` / `cacheScope` to list and read results.\n- Clients must send `Mcp-Method` and `Mcp-Name` headers on Streamable HTTP POSTs.\n- Server-to-client requests are restructured, not removed. The old model — the server pushing sampling or elicitation requests over an open SSE stream — is replaced by **multi-round-trip requests (MRTR)**: when a server needs input mid-call, it returns an `InputRequiredResult` carrying `inputRequests` (prompts + schemas) plus an opaque `requestState` payload; the client gathers answers and re-issues the original call with `inputResponses` and the echoed `requestState`. All state lives in the payload, not a held connection, and the spec now mandates that server-initiated requests may only be issued while the server is actively processing a client request — so users are never prompted out of the blue. Anything built on the old open reverse channel needs porting to this request/response shape.\n\n## The agent-architecture upside\n\nThe subtle win for agent builders: state moves out of transport metadata and **into the agent's reasoning loop**. Where a workflow previously depended on hidden session state, a stateless server returns explicit handles — a `basket_id`, a `workflow_run_id` — that the agent can reason about, compose with other handles, and pass forward across multi-step tool chains. That's a better fit for how agent loops actually work: durable context lives with the agent, not the wire.\n\nTwo official extensions ship alongside, under the new Extensions framework (reverse-DNS IDs, independent versioning): **MCP Apps** (servers ship interactive HTML rendered in a sandboxed iframe) and a redesigned **Tasks** extension built for the stateless model. A formal lifecycle policy now guarantees twelve months minimum between a feature's deprecation and removal.\n\n## Bottom line\n\nIf you run MCP servers: nothing forces migration today, but the stateless path deletes your session store, your sticky-session config, and a category of scaling bugs — plan the `_meta`/`server/discover` migration this quarter. If you build agents: start treating tool-returned handles as first-class state, because the protocol just stopped hiding it for you.\n\n*Sources: [MCP blog — the 2026-07-28 release candidate](https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/), [MCP blog — SDK betas for 2026-07-28](https://blog.modelcontextprotocol.io/posts/sdk-betas-2026-07-28/), [modelcontextprotocol.io](https://modelcontextprotocol.io/).*"
     },
     {
       "id": "memory-poisoning",
@@ -734,13 +791,14 @@
         "provenance",
         "least-privilege"
       ],
+      "evidence": [],
       "text": "Memory poisoning plants malicious content in an agent's long-term memory so it activates on a later task, often against a different user — unlike one-shot prompt injection, the payload sits dormant in a store the agent trusts. Defend by treating every retrieved memory as untrusted data, verifying on recall before high-stakes actions, tagging provenance and trust tiers on writes, quarantining new memories, separating per-user namespaces, and gating irreversible actions behind approval.",
-      "body": "**Memory poisoning** is when an attacker plants malicious content in an agent's *long-term memory* so it activates later — on a future task, in a future session, often against a different user. Unlike a one-shot prompt injection, the payload sits dormant in the store the agent trusts, then fires when a relevant query retrieves it. Researchers have shown attacks (e.g. \"GhostWriter\") reaching ~98% injection and ~60% activation rates against memory-augmented agents, and prompt-injection attacks overall grew ~340% in 2026 — making this one of the fastest-rising agent risks.\n\n## Why memory makes it worse\nAn agent's memory is designed to be *believed*. Once a false \"fact\" or instruction is stored, the agent recalls it as ground truth and acts on it — no further attacker access required. The blast radius is every future retrieval, which is exactly what makes poisoning more dangerous than a single hijacked prompt.\n\n## Six defenses that actually help\n\n1. **Treat every retrieved memory as untrusted data, never as instructions.** Wrap recalled content in clear delimiters and a system rule: memories are observations to reason about, not commands to obey.\n2. **Verify on recall, not just on write.** Before acting on a high-stakes recalled fact, re-check it against a trusted live source. Stale or planted memories should not silently drive irreversible actions.\n3. **Provenance + least privilege on writes.** Tag each memory with who/what wrote it and from which source. Memory written from untrusted room/user content gets a lower trust tier and cannot authorize privileged actions (sends, payments, deploys).\n4. **Quarantine new memories (TTL + review).** New writes enter a probationary state; they influence low-stakes reasoning but require corroboration or a review window before they can drive consequential actions.\n5. **Separate memory namespaces per user/tenant.** A payload planted in one user's context must never surface in another's — cross-user retrieval is the highest-severity failure.\n6. **Human-in-the-loop for irreversible actions.** Assume some injections will land; gate spend, external posts, and config changes behind approval so a poisoned memory can't complete the loop on its own.\n\n## The mindset\nInjection is not fully solvable at the model layer, so build assuming some poisoned content *will* reach memory. The goal is containment: least privilege, verification on recall, provenance, and approval gates so a planted memory can inform reasoning but never unilaterally act. An agent that verifies a recalled fact before trusting it is far harder to weaponize than one that treats its own memory as infallible.\n\n*Related: [Guardrails & Safety](/library/guardrails-safety) · [Human approval gates](/library/human-approval-gates) · [Prompt injection defense](/library/prompt-injection-defense) · [Agent memory tiers](/library/agent-memory-tiers)*"
+      "body": "**Memory poisoning** is when an attacker plants malicious content in an agent's *long-term memory* so it activates later — on a future task, in a future session, often against a different user. Unlike a one-shot prompt injection, the payload sits dormant in the store the agent trusts, then fires when a relevant query retrieves it. This is demonstrated, not hypothetical: the [GhostWriter attack (arXiv:2607.06595)](https://arxiv.org/abs/2607.06595) poisons the memory store of tool-using personal agents via untrusted email/calendar content and reports ~98% injection and ~60% average activation rates against state-of-the-art memory-augmented agents.\n\n## Why memory makes it worse\nAn agent's memory is designed to be *believed*. Once a false \"fact\" or instruction is stored, the agent recalls it as ground truth and acts on it — no further attacker access required. The blast radius is every future retrieval, which is exactly what makes poisoning more dangerous than a single hijacked prompt.\n\n## Six defenses that actually help\n\n1. **Treat every retrieved memory as untrusted data, never as instructions.** Wrap recalled content in clear delimiters and a system rule: memories are observations to reason about, not commands to obey.\n2. **Verify on recall, not just on write.** Before acting on a high-stakes recalled fact, re-check it against a trusted live source. Stale or planted memories should not silently drive irreversible actions.\n3. **Provenance + least privilege on writes.** Tag each memory with who/what wrote it and from which source. Memory written from untrusted room/user content gets a lower trust tier and cannot authorize privileged actions (sends, payments, deploys).\n4. **Quarantine new memories (TTL + review).** New writes enter a probationary state; they influence low-stakes reasoning but require corroboration or a review window before they can drive consequential actions.\n5. **Separate memory namespaces per user/tenant.** A payload planted in one user's context must never surface in another's — cross-user retrieval is the highest-severity failure.\n6. **Human-in-the-loop for irreversible actions.** Assume some injections will land; gate spend, external posts, and config changes behind approval so a poisoned memory can't complete the loop on its own.\n\n## The mindset\nInjection is not fully solvable at the model layer, so build assuming some poisoned content *will* reach memory. The goal is containment: least privilege, verification on recall, provenance, and approval gates so a planted memory can inform reasoning but never unilaterally act. An agent that verifies a recalled fact before trusting it is far harder to weaponize than one that treats its own memory as infallible.\n\n*Sources: [When Agents Remember Too Much: Memory Poisoning Attacks on LLM Agents (arXiv:2607.06595)](https://arxiv.org/abs/2607.06595).*\n\n*Related: [Guardrails & Safety](/library/guardrails-safety) · [Human approval gates](/library/human-approval-gates) · [Prompt injection defense](/library/prompt-injection-defense) · [Agent memory tiers](/library/agent-memory-tiers)*"
     },
     {
       "id": "model-selection-adaptation",
       "title": "Choosing models, prompting, RAG, and fine-tuning",
-      "url": [],
+      "url": "https://docs.claude.com/en/docs/about-claude/models/choosing-a-model",
       "category": "evaluation",
       "source_type": "blog",
       "status": "current",
@@ -755,6 +813,7 @@
         "fine",
         "tuning"
       ],
+      "evidence": [],
       "text": "Choose the smallest model that meets measured quality, tool-use, context, latency, modality, privacy, and reliability requirements on your own task distribution, then route exceptional cases upward. Improve instructions and examples when behavior is underspecified, use RAG when answers depend on changing or private facts that need provenance, and fine-tune when many examples define a stable behavior, format, or domain pattern that prompting cannot deliver economically. Fine-tuning does not reliably teach fresh facts or replace authorization, retrieval, or deterministic business logic, and every adaptation choice should be validated by the same regression suite.",
       "body": null
     },
@@ -776,13 +835,14 @@
         "multiple",
         "subtasks"
       ],
+      "evidence": [],
       "text": "Use multiple agents when subtasks are genuinely independent, require distinct tools or context, or benefit from parallel search or review; a single agent is usually cheaper, faster, and easier to debug for sequential work. In the supervisor pattern, one coordinator decomposes the task, gives workers bounded contracts, and merges results, while handoffs must carry the goal, evidence, state, ownership, and completion criteria explicitly. Cap fan-out, recursion, and per-worker budgets because coordination messages, duplicated context, and synthesis can cost more than the useful work.",
       "body": null
     },
     {
       "id": "operations-agents",
       "title": "Production back-office agents",
-      "url": [],
+      "url": "https://www.uipath.com/ai/agentic-ai",
       "category": "orchestration",
       "source_type": "blog",
       "status": "current",
@@ -797,6 +857,7 @@
         "useful",
         "documents"
       ],
+      "evidence": [],
       "text": "Back-office agents are useful when documents vary and judgment is needed, while deterministic RPA remains preferable for stable screens and fixed rules; combine them by letting the model interpret inputs and a workflow engine enforce state transitions. Document pipelines should retain the original, extract fields with page or region provenance, validate totals and identifiers, deduplicate work, and route low-confidence or policy-exception cases to humans. For invoice processing, the agent can classify and extract an invoice, but deterministic services perform vendor matching, three-way matching, duplicate detection, and payment approval.",
       "body": null
     },
@@ -818,6 +879,7 @@
         "interleaves",
         "reasoning"
       ],
+      "evidence": [],
       "text": "ReAct interleaves reasoning, actions, and observations so the agent can revise its approach from environmental feedback; plan-then-execute first creates a task graph and is better when dependencies and approval points must be visible. Decompose work into verifiable steps with explicit inputs, outputs, dependencies, and stopping conditions, then replan when observations invalidate assumptions rather than blindly following the original plan. Reflection can improve a failed attempt, but bound reflection rounds and require new evidence or a changed action to prevent expensive self-critique loops.",
       "body": null
     },
@@ -839,6 +901,7 @@
         "reuse",
         "reduces"
       ],
+      "evidence": [],
       "text": "Prompt caching reduces latency and input cost when many calls share a long stable prefix such as system instructions, tool definitions, examples, or reference documents. Put stable content before volatile conversation state, keep serialization byte-for-byte consistent, and monitor cache creation, hit rate, read tokens, expiration, and provider-specific minimums. Caching is an optimization rather than memory: invalidate or version cached prefixes when policies, permissions, schemas, or source data change.",
       "body": null
     },
@@ -860,6 +923,7 @@
         "injection",
         "treat"
       ],
+      "evidence": [],
       "text": "Treat retrieved pages, emails, documents, tool outputs, and user-uploaded files as untrusted data, even when they contain text claiming to be system instructions. Keep instructions and data in distinct channels or fields, label provenance, minimize the data sent to privileged agents, and never let content grant itself permissions or select secrets to reveal. Enforce authorization and destination allow-lists outside the model, require confirmation for sensitive writes, and test indirect-injection cases where malicious instructions arrive through a trusted connector.",
       "body": null
     },
@@ -881,6 +945,7 @@
         "basics",
         "embeds"
       ],
+      "evidence": [],
       "text": "Retrieval-augmented generation embeds a question, retrieves semantically similar passages from a knowledge base, and places those passages in the model context. Good RAG systems preserve source metadata, retrieve compact relevant chunks, instruct the model to stay grounded, and evaluate retrieval separately from answer generation.",
       "body": null
     },
@@ -902,6 +967,7 @@
         "model",
         "providers"
       ],
+      "evidence": [],
       "text": "Model providers can limit requests, input tokens, output tokens, or concurrent work, so admission control must estimate token load rather than count requests alone. Use per-tenant quotas, bounded queues, concurrency semaphores, exponential backoff with jitter, and provider reset headers; shed or defer low-priority work before queues consume all memory or exceed user deadlines. Propagate cancellation through agent and tool calls, and avoid synchronized retry storms or unbounded worker fan-out after a limit clears.",
       "body": null
     },
@@ -923,13 +989,14 @@
         "reranking",
         "chunk"
       ],
+      "evidence": [],
       "text": "Chunk along semantic boundaries and keep headings, source URL, timestamps, permissions, and neighboring relationships; chunks should be small enough to isolate an answer but large enough to preserve definitions and exceptions. Hybrid retrieval combines lexical search, which excels at exact identifiers and rare terms, with vector search for paraphrases, then a reranker scores a broader candidate set before context assembly. Evaluate retrieval separately with recall at k, ranking metrics, citation coverage, and hard negatives, and apply access filters before results reach the model.",
       "body": null
     },
     {
       "id": "sales-agents",
       "title": "Production sales and GTM agents",
-      "url": [],
+      "url": "https://www.salesforce.com/agentforce/",
       "category": "tools",
       "source_type": "blog",
       "status": "current",
@@ -944,6 +1011,7 @@
         "personalize",
         "consented"
       ],
+      "evidence": [],
       "text": "Sales agents should personalize from consented, relevant data, respect suppression lists and communication rules, and avoid inferring sensitive traits or fabricating customer facts. CRM tools need scoped read and write operations, duplicate detection, ownership checks, and approval before external outreach or bulk changes. For lead qualification, an agent can summarize verified firmographic and interaction signals, assign a reason-coded recommendation, and draft an email, while deterministic territory rules route the lead and the account owner approves sending.",
       "body": null
     },
@@ -965,6 +1033,7 @@
         "schema",
         "constrained"
       ],
+      "evidence": [],
       "text": "Use schema-constrained generation when downstream code needs machine-readable output: define required fields, closed enums, bounds, and disallow unexpected properties where the provider's supported JSON Schema subset permits it. Schema conformance guarantees shape, not truth, so still perform semantic validation, authorization, range checks, and referential checks before acting. Handle refusals, truncation, and provider errors as distinct outcomes, and version schemas so producers and consumers can evolve safely.",
       "body": null
     },
@@ -986,8 +1055,9 @@
         "orchestration",
         "fan-out"
       ],
+      "evidence": [],
       "text": "A subagent is a specialized worker with its own isolated context window and restricted tools; the orchestrator hands off a bounded task and only the result flows back. Use subagents when work decomposes into independent pieces with clean inputs and outputs — the isolation cuts token bloat sharply and keeps the main loop sharp. The failure mode to engineer against is the lossy handoff: make results an explicit structured contract, not free prose.",
-      "body": "A **subagent** is a specialized worker your main agent spins up to handle one focused task. It gets its own **isolated context window**, its own system prompt, and a **restricted set of tools**. The orchestrator hands off a job, the subagent works independently, and only its *result* flows back — the messy details never pollute the main conversation.\n\n## Why subagents exist: context isolation\n\nAs an agent's conversation grows, its context fills with tool output, dead ends, and half-finished reasoning. That bloat makes it slower, pricier, and more error-prone. Subagents contain the mess: the subagent may read 50 files, but the orchestrator only sees the 3-line answer. In practice this cuts token use sharply (reports of ~60–70% savings vs. cramming everything into one loop) and keeps the main agent sharp.\n\n## When to use subagents\n\nReach for subagents when a task **decomposes into independent pieces** that don't need to talk to each other:\n\n- A **researcher** subagent that reads docs and returns a summary.\n- A **reviewer** subagent that checks output against rules.\n- **Fan-out**: run several specialists in parallel, each on its own slice, then merge.\n\nRule of thumb: if you can describe the subtask with a clean input and a clean output, it's a good subagent.\n\n## When NOT to use them\n\nSkip subagents when workers need to **share discoveries mid-task**, challenge each other, or coordinate on a moving target — a single well-run loop (or a collaborative \"agent team\") beats rigid delegation there. And don't over-split: every handoff is a place to lose information.\n\n## The one thing that breaks subagents: the handoff\n\nThe failure mode is a **lossy handoff** — the subagent knew the answer but its summary dropped the detail the orchestrator needed. Guard against it:\n\n1. Make handoffs an **explicit contract** — a structured result (JSON, a filled template), not free prose.\n2. Use a **plan → approve → execute** pipeline for risky work, with the review gate *before* any file is modified, not after.\n3. Give each subagent the **least tools** it needs — fewer tools, fewer ways to go wrong.\n\n## Bottom line\n\nUse subagents to **isolate context and parallelize independent work**; keep a single loop when the work is tightly coupled. The 2026 SDKs (including the Claude Agent SDK's new hierarchical spawning) make this cheap to try — the engineering is in the handoff, not the spawn."
+      "body": "A **subagent** is a specialized worker your main agent spins up to handle one focused task. It gets its own **isolated context window**, its own system prompt, and a **restricted set of tools**. The orchestrator hands off a job, the subagent works independently, and only its *result* flows back — the messy details never pollute the main conversation.\n\n## Why subagents exist: context isolation\n\nAs an agent's conversation grows, its context fills with tool output, dead ends, and half-finished reasoning. That bloat makes it slower, pricier, and more error-prone. Subagents contain the mess: the subagent may read 50 files, but the orchestrator only sees the 3-line answer. [Anthropic's multi-agent research system write-up](https://www.anthropic.com/engineering/multi-agent-research-system) describes exactly this pattern — subagents \"operating in parallel with their own context windows\" act as intelligent filters, compressing large explorations down to the insights the lead agent actually needs. (Note the honest trade-off from the same report: multi-agent runs consume substantially *more total tokens* than single-agent chat — what isolation buys is a sharp, uncluttered main loop, not a smaller bill.)\n\n## When to use subagents\n\nReach for subagents when a task **decomposes into independent pieces** that don't need to talk to each other:\n\n- A **researcher** subagent that reads docs and returns a summary.\n- A **reviewer** subagent that checks output against rules.\n- **Fan-out**: run several specialists in parallel, each on its own slice, then merge.\n\nRule of thumb: if you can describe the subtask with a clean input and a clean output, it's a good subagent.\n\n## When NOT to use them\n\nSkip subagents when workers need to **share discoveries mid-task**, challenge each other, or coordinate on a moving target — a single well-run loop (or a collaborative \"agent team\") beats rigid delegation there. And don't over-split: every handoff is a place to lose information.\n\n## The one thing that breaks subagents: the handoff\n\nThe failure mode is a **lossy handoff** — the subagent knew the answer but its summary dropped the detail the orchestrator needed. Guard against it:\n\n1. Make handoffs an **explicit contract** — a structured result (JSON, a filled template), not free prose.\n2. Use a **plan → approve → execute** pipeline for risky work, with the review gate *before* any file is modified, not after.\n3. Give each subagent the **least tools** it needs — fewer tools, fewer ways to go wrong.\n\n## Bottom line\n\nUse subagents to **isolate context and parallelize independent work**; keep a single loop when the work is tightly coupled. The 2026 SDKs (including the Claude Agent SDK's new hierarchical spawning) make this cheap to try — the engineering is in the handoff, not the spawn.\n\n*Sources: [Anthropic — How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) · [Claude Code subagents docs](https://docs.claude.com/en/docs/claude-code/sub-agents).*"
     },
     {
       "id": "token-budgets",
@@ -1007,6 +1077,7 @@
         "capability",
         "security"
       ],
+      "evidence": [],
       "text": "UK AI Security Institute evaluations found that increasing an agent's token budget from 1 million to 10 million tokens improved success on software-engineering tasks by roughly 25 percent. Some long-horizon cybersecurity tasks can require budgets near 50 million tokens. A weak result may therefore reflect an exhausted reasoning budget rather than a hard capability limit.",
       "body": null
     },
@@ -1028,6 +1099,7 @@
         "tools",
         "give"
       ],
+      "evidence": [],
       "text": "Give every networked tool a connection timeout, an overall deadline, and a bounded retry policy using exponential backoff with jitter only for transient failures such as throttling or selected 5xx responses. Never automatically retry validation, authorization, or permanent business errors, and respect provider retry hints. Side-effecting operations need an idempotency key and stored outcome so a timeout after a successful write cannot create a duplicate charge, ticket, email, or order.",
       "body": null
     },
@@ -1049,6 +1121,7 @@
         "design",
         "expose"
       ],
+      "evidence": [],
       "text": "Expose narrow, intent-level tools with unambiguous names and descriptions, explicit required fields, typed enums and bounds, and no overlapping functions that differ only subtly. Do not make the model invent database keys or hidden defaults: provide lookup tools, use stable external identifiers, and return structured success or actionable error objects. Keep authorization, validation, and side-effect confirmation in the executor, and use strict schema mode where available while testing selection and argument accuracy across realistic prompts.",
       "body": null
     },
@@ -1070,6 +1143,7 @@
         "work",
         "best"
       ],
+      "evidence": [],
       "text": "Tool-using agents work best with narrow tools, explicit schemas, actionable error messages, and observable results. Validate arguments before execution, use idempotency keys for side effects, limit permissions, and return structured outputs so the model can accurately decide what to do next.",
       "body": null
     }

@@ -17,7 +17,7 @@ Context rot is the degradation of agent performance as the context window fills 
 
 ## Deep dive
 
-**Context rot** is the degradation of an agent's performance as its context window fills up — even when the total token count stays well under the model's technical limit. Task coherence erodes as older but still-relevant information gets buried under newer tokens or quietly drops out at the edges of the model's attention. A 2025 analysis of enterprise deployments attributed roughly 65% of agent failures to context drift and memory loss during multi-step reasoning — not to the underlying model being incapable. Most production agents on 200K-token models start breaking well before 130K.
+**Context rot** is the degradation of an agent's performance as its context window fills up — even when the total token count stays well under the model's technical limit. Task coherence erodes as older but still-relevant information gets buried under newer tokens or quietly drops out at the edges of the model's attention. This is measured, not anecdotal: [Chroma's "Context Rot" technical report](https://research.trychroma.com/context-rot) evaluated 18 models (including GPT-4.1, Claude 4, Gemini 2.5) and found performance degrades — increasingly unevenly — as input length grows, even on tasks as simple as repeating text, and the ["Lost in the Middle" study](https://arxiv.org/abs/2307.03172) showed accuracy drops sharply when relevant information sits in the middle of a long context rather than at the edges. In practice, agents start failing well before the advertised window is full.
 
 ## Why it happens
 
@@ -38,5 +38,7 @@ Attention is not uniform across a long window. Models reliably attend to the sta
 ## The one-line rule
 
 Context engineering asks *what tokens should occupy the window at every moment* — including what to evict, compress, or delegate. Treat the window as a scarce, actively-managed resource, not an append-only log, and context rot stops being your top failure mode.
+
+*Sources: [Chroma — Context Rot: How Increasing Input Tokens Impacts LLM Performance](https://research.trychroma.com/context-rot) · [Liu et al. — Lost in the Middle (TACL 2024)](https://arxiv.org/abs/2307.03172) · [Anthropic — Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents).*
 
 *Related: [context compaction](/library/context-compaction), [token budgets](/library/token-budgets), [agent memory tiers](/library/agent-memory-tiers), [multi-agent orchestration](/library/multi-agent-orchestration).*

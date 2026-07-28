@@ -1,7 +1,7 @@
 ---
 id: context-compaction
 title: "Context management and compaction"
-url: 
+url: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
 category: tools
 source_type: blog
 status: current

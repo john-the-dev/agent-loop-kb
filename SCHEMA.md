@@ -37,5 +37,5 @@ A **lesson** is an engineering lesson drawn from a **famous, publicly-documented
 
 ## Compiled output
 
-[`scripts/build.mjs`](scripts/build.mjs) emits [`dist/kb.json`](dist/kb.json): a **manifest** `{ source, homepage, repository, license, attribution_required, attribution, usage, version, count, entries[] }` where each entry is `{ id, title, url, category, source_type, status, grade, added, last_verified, superseded_by, tags, text, body }` (`body` = the optional deep-dive markdown, else `null`). See [AGENTS.md](AGENTS.md) for the consumption contract + required attribution.
+[`scripts/build.mjs`](scripts/build.mjs) emits [`dist/kb.json`](dist/kb.json): a **manifest** `{ source, homepage, repository, license, attribution_required, attribution, usage, version, count, entries[] }` where each entry is `{ id, title, url, category, source_type, status, grade, added, last_verified, superseded_by, tags, evidence, text, body }` (`body` = the optional deep-dive markdown, else `null`). See [AGENTS.md](AGENTS.md) for the consumption contract + required attribution.
 The Agent Loop site ingests this (drops `status: deprecated`/`grade: D` from active retrieval, or down-weights them).

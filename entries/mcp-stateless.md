@@ -13,11 +13,11 @@ evidence: []
 tags: [mcp, stateless, protocol, migration, extensions]
 ---
 
-The largest MCP revision since launch makes the protocol stateless: the initialize handshake and sessions are gone, servers can no longer call back into clients, and every tool call is a self-contained HTTP request. Nothing running breaks on day one (adoption is opt-in, SDKs shipped compatible betas), but migrating servers must read capabilities from _meta and implement server/discover — and agents should start treating tool-returned handles as first-class state.
+The largest MCP revision since launch makes the protocol stateless: the initialize handshake and sessions are gone, every tool call is a self-contained HTTP request, and server-initiated interactions (sampling, elicitation) are restructured as multi-round-trip requests — allowed only while the server is processing a client request. Nothing running breaks on day one (adoption is opt-in, SDKs shipped compatible betas), but migrating servers must read capabilities from _meta and implement server/discover — and agents should start treating tool-returned handles as first-class state.
 
 ## Deep dive
 
-The Model Context Protocol's largest revision since launch finalized on July 28, 2026: **MCP is now stateless at the protocol layer.** The `initialize` handshake is gone, sessions are gone, servers can no longer send requests back to clients, and every tool call is a self-contained HTTP request carrying its own protocol version, identity, and capabilities.
+The Model Context Protocol's largest revision since launch — the 2026-07-28 specification (release candidate locked May 21, 2026; final spec published July 28, 2026): **MCP is now stateless at the protocol layer.** The `initialize` handshake is gone, sessions are gone, and every tool call is a self-contained HTTP request carrying its own protocol version, identity, and capabilities. Server-initiated interactions are not gone — they are restructured as **multi-round-trip requests** (see below) and may only be issued while the server is actively processing a client request.
 
 ## Why it changed
 
@@ -29,7 +29,7 @@ The original stateful design forced real operational pain: a remote MCP server n
 
 - Servers that read the session header or relied on `initialize` must switch to reading protocol version and capabilities from `_meta`, implement `server/discover`, and attach `ttlMs` / `cacheScope` to list and read results.
 - Clients must send `Mcp-Method` and `Mcp-Name` headers on Streamable HTTP POSTs.
-- Server-to-client requests are gone: anything built on that reverse channel needs redesigning around return values.
+- Server-to-client requests are restructured, not removed. The old model — the server pushing sampling or elicitation requests over an open SSE stream — is replaced by **multi-round-trip requests (MRTR)**: when a server needs input mid-call, it returns an `InputRequiredResult` carrying `inputRequests` (prompts + schemas) plus an opaque `requestState` payload; the client gathers answers and re-issues the original call with `inputResponses` and the echoed `requestState`. All state lives in the payload, not a held connection, and the spec now mandates that server-initiated requests may only be issued while the server is actively processing a client request — so users are never prompted out of the blue. Anything built on the old open reverse channel needs porting to this request/response shape.
 
 ## The agent-architecture upside
 
@@ -41,4 +41,4 @@ Two official extensions ship alongside, under the new Extensions framework (reve
 
 If you run MCP servers: nothing forces migration today, but the stateless path deletes your session store, your sticky-session config, and a category of scaling bugs — plan the `_meta`/`server/discover` migration this quarter. If you build agents: start treating tool-returned handles as first-class state, because the protocol just stopped hiding it for you.
 
-*Sources: modelcontextprotocol.io (2026-07-28 release), GitHub MCP Server changelog (Jul 23), The Register, Microsoft App Service blog, Arcade.dev.*
+*Sources: [MCP blog — the 2026-07-28 release candidate](https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/), [MCP blog — SDK betas for 2026-07-28](https://blog.modelcontextprotocol.io/posts/sdk-betas-2026-07-28/), [modelcontextprotocol.io](https://modelcontextprotocol.io/).*

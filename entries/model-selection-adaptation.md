@@ -1,7 +1,7 @@
 ---
 id: model-selection-adaptation
 title: "Choosing models, prompting, RAG, and fine-tuning"
-url: 
+url: https://docs.claude.com/en/docs/about-claude/models/choosing-a-model
 category: evaluation
 source_type: blog
 status: current

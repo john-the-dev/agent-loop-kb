@@ -24,6 +24,10 @@ for (const e of entries) {
   for (const k of ["added", "last_verified"]) {
     if (e[k] && !/^\d{4}-\d{2}-\d{2}$/.test(e[k])) errors.push(`${f}: ${k}="${e[k]}" must be YYYY-MM-DD`);
   }
+  // An empty `url:` parses as a block-list ([]) and slides past the missing-field
+  // check above — enforce a real canonical http(s) URL explicitly.
+  if (e.url !== undefined && (typeof e.url !== "string" || !/^https?:\/\/\S+$/.test(e.url)))
+    errors.push(`${f}: url must be a canonical http(s) URL (got ${JSON.stringify(e.url)})`);
   if (e.status === "superseded" && !e.superseded_by) errors.push(`${f}: status=superseded requires superseded_by`);
   if (Array.isArray(e.evidence) && e.evidence.length === 0 && e.grade !== "unrated")
     errors.push(`${f}: evidence[] empty but grade="${e.grade}" (only "unrated" may lack evidence)`);
