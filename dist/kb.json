@@ -6,7 +6,7 @@
   "attribution_required": true,
   "attribution": "Source: The Agent Loop (https://agent-loop.xyz)",
   "usage": "https://github.com/john-the-dev/agent-loop-kb/blob/main/AGENTS.md",
-  "version": "2d982ad6c7a9",
+  "version": "6a32f2ccd6cc",
   "count": 51,
   "entries": [
     {
@@ -194,7 +194,7 @@
       "status": "current",
       "grade": "unrated",
       "added": "2026-07-14",
-      "last_verified": "2026-07-14",
+      "last_verified": "2026-07-29",
       "superseded_by": null,
       "tags": [
         "context",
@@ -205,7 +205,7 @@
       ],
       "evidence": [],
       "text": "Manage context as a budget: retain the system policy, current objective, unresolved constraints, recent actions, exact error messages, and identifiers needed for future tool calls, while dropping duplicated prose and superseded attempts. A sliding window preserves local conversational detail, whereas periodic summaries compress older history; summaries should separate verified facts from hypotheses and link to durable artifacts rather than paraphrasing critical code or numbers. Trigger compaction before the window is full and test that an agent can resume from the compacted state without losing commitments or repeating side effects.",
-      "body": null
+      "body": "Every long-running agent eventually faces the same arithmetic: the context window is finite, the task history is not. What separates agents that degrade gracefully from agents that quietly lose the plot is *what they choose to keep* — because compaction is not a storage problem, it is a judgment call about which information still constrains future behavior.\n\n## Keep what still binds, drop what's spent\n\n[Anthropic's context-engineering guide](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) frames context as a budgeted resource where every token competes for the model's attention. The keep-list is shorter than most teams expect: the system policy, the current objective, unresolved constraints (\"never push to main\", \"the user chose option B\"), recent actions and their results, exact error messages, and the identifiers future tool calls will need. The drop-list is everything already *spent*: duplicated prose, superseded attempts, tool outputs whose conclusions have been extracted, exploratory dead ends.\n\nThe subtle failure is dropping something that looked spent but still binds — a commitment made 40 turns ago, a constraint stated once. This is why compaction summaries must separate **verified facts from hypotheses**, and why they should *link* to durable artifacts (files, PRs, notes on disk) instead of paraphrasing critical code or numbers — a paraphrase drifts; a path does not.\n\n## Why more context isn't the answer\n\nLong-context models tempt teams to skip compaction entirely. Measurement says otherwise: [Chroma's context-rot study](https://research.trychroma.com/context-rot) ran 18 models across needle-retrieval and long-conversation tasks and found performance degrades non-uniformly as input grows — even on tasks a short context handles perfectly. Distractors accumulate, attention dilutes, and the model starts answering from the wrong region of history. Relatedly, agents that re-read their whole raw history each turn pay the [cost problem](/library/agent-cost-control) on top of the accuracy one.\n\n## Compact early, resume honestly\n\nTrigger compaction *before* the window forces it — a compaction under pressure has no room to be careful. And treat resumability as a testable property: after compacting, can the agent state its current objective, its open commitments, and what it must NOT redo (side effects already executed)? An agent that re-sends an email after compaction because the \"already sent\" fact got summarized away is the canonical failure. Sliding windows preserve recent local detail; periodic summaries compress the old; durable state (task lists, decision logs, memory files) lives *outside* the window entirely and gets re-read on demand — the pattern every production harness converges on.\n\n*Sources: [Anthropic — Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) · [Chroma — Context rot](https://research.trychroma.com/context-rot).*\n\n*Related: [context rot](/library/context-rot), [agent memory tiers](/library/agent-memory-tiers), [token budgets](/library/token-budgets), [cost control](/library/agent-cost-control).*"
     },
     {
       "id": "context-rot",
@@ -1112,7 +1112,7 @@
       "status": "current",
       "grade": "unrated",
       "added": "2026-07-14",
-      "last_verified": "2026-07-14",
+      "last_verified": "2026-07-29",
       "superseded_by": null,
       "tags": [
         "function",
@@ -1123,7 +1123,7 @@
       ],
       "evidence": [],
       "text": "Expose narrow, intent-level tools with unambiguous names and descriptions, explicit required fields, typed enums and bounds, and no overlapping functions that differ only subtly. Do not make the model invent database keys or hidden defaults: provide lookup tools, use stable external identifiers, and return structured success or actionable error objects. Keep authorization, validation, and side-effect confirmation in the executor, and use strict schema mode where available while testing selection and argument accuracy across realistic prompts.",
-      "body": null
+      "body": "Tool schemas are the API contract between your system and a caller that reads documentation *every single time* and takes it literally. Most tool-use failures blamed on the model trace back to the schema: ambiguous names, overlapping tools, parameters the model must guess. Design the contract like you're onboarding a brilliant new engineer with no institutional context — because that is functionally who is calling it.\n\n## Name for intent, not implementation\n\nA tool named `query_db_v2` with a `sql` string parameter forces the model to know your schema, your dialect, and your safety rules. A tool named `find_customer_orders` with typed filters encodes the intent and makes misuse structurally hard. [Anthropic's guide to writing tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents) is emphatic that descriptions carry most of the weight: state what the tool does, when to use it, and when NOT to — the negative space (\"not for bulk exports\") prevents more errors than the positive description.\n\n**No near-twins.** Two tools that differ only subtly (`search_docs` vs `query_documents`) split the model's choice probability and produce coin-flip selection. Merge them or differentiate them sharply.\n\n## Make invalid states unrepresentable\n\nEverything you can move from convention into the type system is an error class deleted: enums instead of free strings, explicit `required` fields, numeric bounds, formats for dates and IDs. [OpenAI's function-calling guide](https://platform.openai.com/docs/guides/function-calling) recommends strict schema mode where available — the model is constrained to emit only valid shapes, so \"argument hallucination\" becomes a parse-time impossibility instead of a runtime surprise.\n\nThe classic anti-pattern is making the model invent keys: any parameter like `customer_id` that the model has no way to *know* invites fabrication. Provide a lookup tool, accept stable external identifiers (email, order number), or thread IDs through prior tool results.\n\n## Errors are part of the schema\n\nA tool that returns `\"error: failed\"` teaches the model nothing; a tool that returns `{\"error\": \"date_range_too_wide\", \"max_days\": 90}` lets it self-correct on the next call. Return structured success AND structured, actionable failure. Keep authorization, validation, and side-effect confirmation in the *executor* — the schema tells the model what's callable, but the runtime decides what's permitted; a model should never be the enforcement layer.\n\n## Test selection, not just execution\n\nSchema quality is measurable: across realistic prompts, does the model pick the right tool (selection accuracy) with the right arguments (argument accuracy)? Track both separately — selection failures point at names/descriptions, argument failures at parameter design. Evolve schemas with the same discipline as public APIs: additive changes, versioned breaks, and a changelog the [evals](/library/agent-evals) can regression-test against.\n\n*Sources: [Anthropic — Writing tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents) · [OpenAI — Function calling guide](https://platform.openai.com/docs/guides/function-calling).*\n\n*Related: [tool use](/library/tool-use), [structured outputs](/library/structured-outputs), [tool retries & idempotency](/library/tool-retries-idempotency), [agent evaluation pitfalls](/library/agent-evals).*"
     },
     {
       "id": "tool-use",
