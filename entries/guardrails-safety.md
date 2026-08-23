@@ -40,4 +40,4 @@ Red-team the deployed system, not the model: plant hostile instructions in the c
 
 *Sources: [OWASP — Top 10 for LLM Applications](https://genai.owasp.org/llm-top-10/) · [NIST — AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework).*
 
-*Related: [prompt injection defense](/library/prompt-injection-defense), [human approval gates](/library/human-approval-gates), [tool use](/library/tool-use), [structured outputs](/library/structured-outputs).*
+*Related: [prompt injection defense](/library/prompt-injection-defense), [human approval gates](/library/human-approval-gates), [tool use](/library/tool-use), [structured outputs](/library/structured-outputs), [the agent security map](/library/agent-security), [sandboxing code execution](/library/sandboxing-code-execution).*

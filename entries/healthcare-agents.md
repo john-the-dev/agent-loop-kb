@@ -54,4 +54,4 @@ Design so that the *absence* of a grounded source produces a refusal and a hando
 
 Identity boundaries verified before retrieval; purpose-scoped access rather than role-scoped alone; retrieval-level audit logging; BAAs covering every subcontractor that can see PHI including observability; zero-retention model endpoints; grounded-or-refuse behavior on clinical claims; and encryption plus MFA implemented now on the strength of the risk, with your addressable-specification reasoning written down either way.
 
-*Related: [production agents in finance](/library/finance-agents), [production agents for legal work](/library/legal-agents), [human approval gates](/library/human-approval-gates), [agent observability](/library/agent-observability).*
+*Related: [production agents in finance](/library/finance-agents), [production agents for legal work](/library/legal-agents), [human approval gates](/library/human-approval-gates), [agent observability](/library/agent-observability), [does the EU AI Act apply to your agent?](/library/eu-ai-act-agents).*

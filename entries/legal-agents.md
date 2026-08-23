@@ -50,3 +50,5 @@ So the system requirement is not a better model. It is that **no citation reache
 ## Where agents genuinely help
 
 Nothing above argues against agents in legal work — it argues against unverified generation. The durable value is in the labor that is checkable by construction: retrieving and summarizing authorities *with* their source text attached, surfacing contradictory authority, extracting obligations and dates from long agreements with pinpoint provenance, and flagging where a draft's support is thin. Each of those makes a lawyer faster at work they still verify, which is the only posture the sanctions record rewards.
+
+*Related: [does the EU AI Act apply to your agent?](/library/eu-ai-act-agents).*

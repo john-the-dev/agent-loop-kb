@@ -64,4 +64,4 @@ Two places where a secret outlives the request that introduced it:
 
 An agent that cannot name a single credential it uses; an executor that attaches them; a policy engine that authorizes each issuance; identities that expire on the order of minutes; scoped, audience-bound tokens; and redaction on every path where tool output becomes context, memory, or a log line.
 
-*Related: [production coding agents](/library/coding-agents), [Model Context Protocol](/library/mcp), [human approval gates](/library/human-approval-gates), [prompt injection defense](/library/prompt-injection-defense).*
+*Related: [production coding agents](/library/coding-agents), [Model Context Protocol](/library/mcp), [human approval gates](/library/human-approval-gates), [prompt injection defense](/library/prompt-injection-defense), [delegated authorization for agents](/library/agent-delegated-auth).*
