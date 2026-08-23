@@ -36,4 +36,4 @@ Injection is not fully solvable at the model layer, so build assuming some poiso
 
 *Sources: [When Agents Remember Too Much: Memory Poisoning Attacks on LLM Agents (arXiv:2607.06595)](https://arxiv.org/abs/2607.06595).*
 
-*Related: [Guardrails & Safety](/library/guardrails-safety) · [Human approval gates](/library/human-approval-gates) · [Prompt injection defense](/library/prompt-injection-defense) · [Agent memory tiers](/library/agent-memory-tiers)*
+*Related: [Guardrails & Safety](/library/guardrails-safety) · [Human approval gates](/library/human-approval-gates) · [Prompt injection defense](/library/prompt-injection-defense) · [Agent memory tiers](/library/agent-memory-tiers), [the agent security map](/library/agent-security).

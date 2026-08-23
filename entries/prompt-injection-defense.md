@@ -39,4 +39,4 @@ Design as if injection *will* succeed occasionally, and make success boring: lea
 
 *Sources: [OWASP LLM01 — Prompt Injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/) · [NCSC — Prompt injection is not SQL injection](https://www.ncsc.gov.uk/blog-post/prompt-injection-is-not-sql-injection) · [Willison — The Lethal Trifecta](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/) · [Design Patterns for Securing LLM Agents (arXiv:2506.08837)](https://arxiv.org/abs/2506.08837).*
 
-*Related: [memory poisoning](/library/memory-poisoning), [guardrails & safety](/library/guardrails-safety), [human approval gates](/library/human-approval-gates), [tool schema design](/library/tool-schema-design).*
+*Related: [memory poisoning](/library/memory-poisoning), [guardrails & safety](/library/guardrails-safety), [human approval gates](/library/human-approval-gates), [tool schema design](/library/tool-schema-design), [the agent security map](/library/agent-security).*

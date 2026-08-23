@@ -43,4 +43,4 @@ If you run MCP servers: nothing forces migration today, but the stateless path d
 
 *Sources: [MCP blog — the 2026-07-28 release candidate](https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/), [MCP blog — SDK betas for 2026-07-28](https://blog.modelcontextprotocol.io/posts/sdk-betas-2026-07-28/), [modelcontextprotocol.io](https://modelcontextprotocol.io/).*
 
-*Related: [Model Context Protocol](/library/mcp), [tool use](/library/tool-use), [tool schema design](/library/tool-schema-design), [durable execution](/library/durable-agent-execution).*
+*Related: [Model Context Protocol](/library/mcp), [tool use](/library/tool-use), [tool schema design](/library/tool-schema-design), [durable execution](/library/durable-agent-execution), [the A2A protocol](/library/a2a-protocol).*

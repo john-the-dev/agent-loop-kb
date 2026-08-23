@@ -41,4 +41,4 @@ Coordination messages, duplicated context, and synthesis passes are pure overhea
 
 *Sources: [Anthropic — Building effective agents](https://www.anthropic.com/engineering/building-effective-agents) · [Anthropic — Multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) · [AG2 documentation](https://docs.ag2.ai/latest/) · [OpenAI — Agents guide](https://platform.openai.com/docs/guides/agents).*
 
-*Related: [subagents](/library/subagents), [planning & decomposition](/library/planning-decomposition), [agent cost control](/library/agent-cost-control), [context rot](/library/context-rot).*
+*Related: [subagents](/library/subagents), [planning & decomposition](/library/planning-decomposition), [agent cost control](/library/agent-cost-control), [context rot](/library/context-rot), [the A2A protocol](/library/a2a-protocol).*
