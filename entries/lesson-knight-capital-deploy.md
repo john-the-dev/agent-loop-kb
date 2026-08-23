@@ -65,4 +65,4 @@ An agent's tools are a deployed surface, and they change more often and more cas
 
 **Bound what one rollout can lose.** Deploy to a fraction, watch a real signal, expand. The value of a canary is not that it catches everything — it is that when it fails, it fails at one-eighth scale.
 
-Related: [Guardrails on destructive commands](/library/lesson-aws-s3-2017-guardrails), [Unbounded work will exhaust the system](/library/lesson-cloudflare-regex-2019), [Concurrency bugs and removed safety interlocks](/library/lesson-therac-25), [Durable agent execution](/library/durable-agent-execution).
+Related: [Guardrails on destructive commands](/library/lesson-aws-s3-2017-guardrails), [Unbounded work will exhaust the system](/library/lesson-cloudflare-regex-2019), [Concurrency bugs and removed safety interlocks](/library/lesson-therac-25), [Durable agent execution](/library/durable-agent-execution), [Deploying agents on serverless infrastructure](/library/agent-deployment).
