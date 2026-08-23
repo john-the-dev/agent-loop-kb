@@ -39,4 +39,4 @@ A versioned offline suite with repeated trials and failure attribution · online
 
 *Sources: [Anthropic — Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) · [τ-bench (arXiv:2406.12045)](https://arxiv.org/abs/2406.12045) · [LLM-as-judge (arXiv:2306.05685)](https://arxiv.org/abs/2306.05685) · [OpenAI — Evals guide](https://platform.openai.com/docs/guides/evals).*
 
-*Related: [agent evaluation pitfalls](/library/agent-evals), [determinism & reproducibility](/library/determinism-reproducibility), [agent observability](/library/agent-observability), [guardrails & safety](/library/guardrails-safety).*
+*Related: [agent evaluation pitfalls](/library/agent-evals), [determinism & reproducibility](/library/determinism-reproducibility), [agent observability](/library/agent-observability), [guardrails & safety](/library/guardrails-safety), [groundedness and hallucination](/library/groundedness-hallucination).*
