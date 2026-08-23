@@ -54,3 +54,5 @@ Ground personalization in **user-stated needs** — what they said in this sessi
 ## What to instrument
 
 Filter-violation rate (recommended items that were unbuyable), attribute-hallucination rate against catalog ground truth, disclosure-coverage on every sponsored surface, return rate on agent-recommended items versus baseline, and the gap between offered and fulfilled. The last one is the honest measure of whether retrieval and the catalog have drifted apart.
+
+*Related: [production sales and GTM agents](/library/sales-agents), [customer support agents](/library/customer-support-agents), [rag basics](/library/rag-basics), [retrieval quality](/library/retrieval-quality).*

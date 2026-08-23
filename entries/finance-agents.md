@@ -41,4 +41,4 @@ PII handling runs through all four: minimize what enters the context window (the
 
 *Sources: [EU AI Act Annex III](https://artificialintelligenceact.eu/annex/3/) · [Federal Reserve SR 11-7](https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm) · [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework).*
 
-*Related: [human approval gates](/library/human-approval-gates), [prompt injection defense](/library/prompt-injection-defense), [agent observability](/library/agent-observability), [legal agents](/library/legal-agents).*
+*Related: [human approval gates](/library/human-approval-gates), [prompt injection defense](/library/prompt-injection-defense), [agent observability](/library/agent-observability), [legal agents](/library/legal-agents), [production agents in healthcare](/library/healthcare-agents).*

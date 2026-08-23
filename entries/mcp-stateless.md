@@ -42,3 +42,5 @@ Two official extensions ship alongside, under the new Extensions framework (reve
 If you run MCP servers: nothing forces migration today, but the stateless path deletes your session store, your sticky-session config, and a category of scaling bugs — plan the `_meta`/`server/discover` migration this quarter. If you build agents: start treating tool-returned handles as first-class state, because the protocol just stopped hiding it for you.
 
 *Sources: [MCP blog — the 2026-07-28 release candidate](https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/), [MCP blog — SDK betas for 2026-07-28](https://blog.modelcontextprotocol.io/posts/sdk-betas-2026-07-28/), [modelcontextprotocol.io](https://modelcontextprotocol.io/).*
+
+*Related: [Model Context Protocol](/library/mcp), [tool use](/library/tool-use), [tool schema design](/library/tool-schema-design), [durable execution](/library/durable-agent-execution).*

@@ -52,3 +52,5 @@ The CRM is a shared system of record with real ownership politics, and an agent 
 ## Instrument the things that predict trouble
 
 Complaint and unsubscribe rate per campaign (the earliest signal that targeting has drifted), suppression-check latency between assembly and send, duplicate-creation rate, fabricated-fact rate sampled against CRM ground truth, and the share of outreach whose personalization traces to a retrieved field. That last metric is the one that separates a sales agent from a plausible-sounding liability.
+
+*Related: [production e-commerce agents](/library/ecommerce-agents), [human approval gates](/library/human-approval-gates), [agent observability](/library/agent-observability), [structured outputs](/library/structured-outputs).*
