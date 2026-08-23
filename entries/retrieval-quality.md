@@ -37,4 +37,4 @@ Score retrieval with recall@k and ranking metrics (MRR/nDCG) against a labeled s
 
 *Sources: [Anthropic — Contextual retrieval](https://www.anthropic.com/news/contextual-retrieval) · [Azure AI Search — Hybrid search overview](https://learn.microsoft.com/en-us/azure/search/hybrid-search-overview) · [SBERT — Cross-encoder reranking](https://www.sbert.net/examples/applications/cross-encoder/README.html).*
 
-*Related: [RAG basics](/library/rag-basics), [context rot](/library/context-rot), [token budgets](/library/token-budgets), [agent memory tiers](/library/agent-memory-tiers).*
+*Related: [RAG basics](/library/rag-basics), [context rot](/library/context-rot), [token budgets](/library/token-budgets), [agent memory tiers](/library/agent-memory-tiers), [groundedness and hallucination](/library/groundedness-hallucination).*

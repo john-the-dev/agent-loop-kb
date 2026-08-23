@@ -37,4 +37,4 @@ Repeated trials per task (report pass^k, not just pass@1) · transcript review f
 
 *Sources: [Anthropic — Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) · [τ-bench (arXiv:2406.12045)](https://arxiv.org/abs/2406.12045) · [OpenAI — Evals guide](https://platform.openai.com/docs/guides/evals).*
 
-*Related: [evaluation strategy](/library/evaluation-strategy), [determinism & reproducibility](/library/determinism-reproducibility), [token budgets](/library/token-budgets), [agent observability](/library/agent-observability).*
+*Related: [evaluation strategy](/library/evaluation-strategy), [determinism & reproducibility](/library/determinism-reproducibility), [token budgets](/library/token-budgets), [agent observability](/library/agent-observability), [groundedness and hallucination](/library/groundedness-hallucination).*

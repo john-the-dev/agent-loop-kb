@@ -39,4 +39,4 @@ Facts that fit comfortably in the prompt don't need a retriever. Stable behavior
 
 *Sources: [Lewis et al. — Retrieval-Augmented Generation (arXiv:2005.11401)](https://arxiv.org/abs/2005.11401) · [Anthropic — Introducing Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval) · [Microsoft — RAG overview](https://learn.microsoft.com/azure/search/retrieval-augmented-generation-overview).*
 
-*Related: [retrieval quality](/library/retrieval-quality), [context rot](/library/context-rot), [agent memory tiers](/library/agent-memory-tiers), [evaluation strategy](/library/evaluation-strategy).*
+*Related: [retrieval quality](/library/retrieval-quality), [context rot](/library/context-rot), [agent memory tiers](/library/agent-memory-tiers), [evaluation strategy](/library/evaluation-strategy), [groundedness and hallucination](/library/groundedness-hallucination).*

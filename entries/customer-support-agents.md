@@ -41,4 +41,4 @@ Define hard triggers, and log them as first-class outcomes: low retrieval confid
 
 *Sources: [Klarna AI assistant press release](https://www.klarna.com/international/press/klarna-ai-assistant-handles-two-thirds-of-customer-service-chats-in-its-first-month/) · [Moffatt v. Air Canada, 2024 BCCRT 149](https://www.canlii.org/en/bc/bccrt/doc/2024/2024bccrt149/2024bccrt149.html) · [τ-bench (arXiv:2406.12045)](https://arxiv.org/abs/2406.12045).*
 
-*Related: [rag basics](/library/rag-basics), [human approval gates](/library/human-approval-gates), [guardrails & safety](/library/guardrails-safety), [agent evals](/library/agent-evals), [back-office operations agents](/library/operations-agents).*
+*Related: [rag basics](/library/rag-basics), [human approval gates](/library/human-approval-gates), [guardrails & safety](/library/guardrails-safety), [agent evals](/library/agent-evals), [back-office operations agents](/library/operations-agents), [groundedness and hallucination](/library/groundedness-hallucination).*
