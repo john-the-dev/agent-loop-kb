@@ -33,5 +33,4 @@ A large budget is only useful if the spend converts to progress. Three failure m
 
 *Sources: [Anthropic — Context windows](https://docs.anthropic.com/en/docs/build-with-claude/context-windows) · [Anthropic — Prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) · [Liu et al., Lost in the Middle (arXiv:2307.03172)](https://arxiv.org/abs/2307.03172).*
 
-*Related: [cost control & token economics](/library/agent-cost-control), [prompt caching](/library/prompt-caching), [agent evaluation pitfalls](/library/agent-evals), [context rot](/library/context-rot).*
-
+*Related: [cost control & token economics](/library/agent-cost-control), [prompt caching](/library/prompt-caching), [agent evaluation pitfalls](/library/agent-evals), [context rot](/library/context-rot), [Agent Skills vs MCP servers](/library/agent-skills-vs-mcp).*
