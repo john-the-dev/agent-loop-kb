@@ -50,3 +50,5 @@ The failure mode is a **lossy handoff** — the subagent knew the answer but its
 Use subagents to **isolate context and parallelize independent work**; keep a single loop when the work is tightly coupled. The 2026 SDKs (including the Claude Agent SDK's new hierarchical spawning) make this cheap to try — the engineering is in the handoff, not the spawn.
 
 *Sources: [Anthropic — How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) · [Claude Code subagents docs](https://docs.claude.com/en/docs/claude-code/sub-agents).*
+
+*Related: [Agent Skills vs MCP servers](/library/agent-skills-vs-mcp), [token budgets](/library/token-budgets), [multi-agent orchestration](/library/multi-agent-orchestration).*

@@ -41,4 +41,4 @@ Schema quality is measurable: across realistic prompts, does the model pick the 
 
 *Sources: [Anthropic — Writing tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents) · [OpenAI — Function calling guide](https://platform.openai.com/docs/guides/function-calling).*
 
-*Related: [tool use](/library/tool-use), [structured outputs](/library/structured-outputs), [tool retries & idempotency](/library/tool-retries-idempotency), [agent evaluation pitfalls](/library/agent-evals).*
+*Related: [tool use](/library/tool-use), [structured outputs](/library/structured-outputs), [tool retries & idempotency](/library/tool-retries-idempotency), [agent evaluation pitfalls](/library/agent-evals), [Agent Skills vs MCP servers](/library/agent-skills-vs-mcp).*
