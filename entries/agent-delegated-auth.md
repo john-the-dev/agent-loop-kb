@@ -5,11 +5,14 @@ url: https://www.rfc-editor.org/rfc/rfc9728.html
 category: security
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: A
 added: 2026-08-23
-last_verified: 2026-08-23
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "RFC 9728 'OAuth 2.0 Protected Resource Metadata' fetched live 2026-08-30: HTTP 200, Category Standards Track — a ratified IETF standard, not a draft"
+  - "entry's central claim (MCP servers implement RFC 9728 Protected Resource Metadata) names the exact RFC the source title states, verified 2026-08-30"
+  - "primary standards document, the top source-quality tier in GRADING.md; no superseding RFC found for 9728 as of 2026-08-30"
 tags: [identity, oauth, delegation, scoped-tokens, mcp, rfc9728, rfc8707, spiffe, authorization]
 ---
 Give an AI agent its own identity rather than the user's credentials: issue short-lived tokens whose sub names the human, act names the agent, aud binds a single resource server, and scope grants the narrowest verb that finishes the job. MCP servers are OAuth 2.0 resource servers and must implement RFC 9728 Protected Resource Metadata, returning 401 with a WWW-Authenticate resource_metadata pointer and binding token audience via RFC 8707. Subagents get narrowed derived tokens, never copies of the parent's credentials. Anti-patterns: inherited user tokens, unscoped API keys, standing credentials.
