@@ -3,7 +3,7 @@ id: guardrails-safety
 title: "Layered guardrails for agent actions"
 url: https://www.nist.gov/itl/ai-risk-management-framework
 category: tools
-source_type: blog
+source_type: docs
 status: current
 grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
 added: 2026-07-14

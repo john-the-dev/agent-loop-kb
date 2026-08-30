@@ -3,7 +3,7 @@ id: retrieval-quality
 title: "Chunking, hybrid retrieval, and reranking"
 url: https://learn.microsoft.com/en-us/azure/search/hybrid-search-overview
 category: evaluation
-source_type: blog
+source_type: docs
 status: current
 grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
 added: 2026-07-14

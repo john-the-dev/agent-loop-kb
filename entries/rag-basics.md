@@ -3,7 +3,7 @@ id: rag-basics
 title: "Retrieval-augmented generation basics"
 url: https://learn.microsoft.com/azure/search/retrieval-augmented-generation-overview
 category: evaluation
-source_type: blog
+source_type: docs
 status: current
 grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
 added: 2026-07-14
