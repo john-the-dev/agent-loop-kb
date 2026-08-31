@@ -12,6 +12,8 @@ superseded_by: null
 evidence:
   - "Public post-mortem/record; well-documented, durable lesson (verified 2026-07-14)"
   - "Expanded to a full deep dive 2026-08-12; GitLab's own post-mortem is unusually detailed and public"
+  - "DEAD SOURCE found 2026-08-31 by scripts/check-sources.mjs: the cited GitLab post-mortem returns HTTP 404 (control on the same origin 404s too, so this is a real removal, not a catch-all). GitLab took the post down; last_verified 2026-08-12 predates that"
+  - "GRADE LEFT AT A DELIBERATELY, and flagged rather than quietly changed: the entry is a historical engineering lesson that is widely documented elsewhere, so its substance is not in doubt - but the CITATION no longer resolves and needs repointing at an archive or an equivalent write-up. Someone should decide that, not have it decided silently"
 tags: [backups, recovery, state, memory]
 ---
 

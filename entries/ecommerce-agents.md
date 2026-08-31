@@ -10,9 +10,10 @@ added: 2026-07-14
 last_verified: 2026-08-31
 superseded_by: null
 evidence:
-  - "agenticcommerce.dev fetched live 2026-08-30: HTTP 200, 'Agentic Commerce Protocol'. This is the ONLY verified source for this entry"
-  - "CORRECTION 2026-08-31 to this entry's own first grading pass, which said 'sources fetched live' and called the FTC citation 'the strong half - a regulator's own guidance'. www.ftc.gov returns HTTP 403 to me, for the cited path and for a nonsense control path alike. I did not read it. Calling an unread page the strong half of the evidence was an overclaim, and I made it two entries after correctly refusing to grade healthcare-agents on the same kind of 403"
-  - "GRADE UNCHANGED at B, but the reason moved: it now rests on the protocol site alone, an emerging spec rather than established practice. The FTC guidance may well be exactly the right authority - that is a statement about the page, which I cannot check from here, not about my access, which I can"
+  - "agenticcommerce.dev fetched live 2026-08-30: HTTP 200, 'Agentic Commerce Protocol'"
+  - "ftc.gov RESOLVED 2026-08-31 by scripts/check-sources.mjs: HTTP 200, 'FTC's Endorsement Guides: What People Are Asking | Federal Trade Commission'. The title matches the claim it supports, so the FTC guidance IS the right authority for the disclosure claims after all"
+  - "CORRECTION-OF-A-CORRECTION: an earlier pass recorded ftc.gov as 403-and-unread. That was true of MY client - curl got 403, node's fetch did not. The 403 was a property of the request, not the page. The first evidence line was an overclaim ('fetched live' for a page I had not read); the second was accurate about access but understated the source"
+  - "CAVEAT driving B not A: the protocol site is an emerging spec rather than established practice, so the operational claims rest on a standard that is still moving"
 tags: [production, commerce, should, combine, lexical]
 ---
 
