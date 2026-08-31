@@ -5,11 +5,14 @@ url: https://modelcontextprotocol.io/docs/learn/architecture
 category: tools
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: A
 added: 2026-07-14
-last_verified: 2026-07-29
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source is the official Model Context Protocol documentation, fetched live 2026-08-30: HTTP 200, page title 'Architecture overview - Model Context Protocol'"
+  - "primary specification docs for the protocol the entry describes — the top source-quality tier in GRADING.md, not a secondhand account of it"
+  - "MCP is actively shipping and broadly integrated across agent tooling as of 2026-08-30; no superseding protocol doc found at the same origin"
 tags: [model, context, protocol, open, standard]
 ---
 
