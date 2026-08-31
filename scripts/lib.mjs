@@ -1,6 +1,7 @@
 // Zero-dependency front-matter parser for entries/*.md
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 export const ENUMS = {
   category: ["frameworks", "orchestration", "evaluation", "memory", "tools", "protocols", "security", "infra", "research", "lessons", "general"],
@@ -9,7 +10,7 @@ export const ENUMS = {
   grade: ["A", "B", "C", "D", "unrated"],
 };
 export const REQUIRED = ["id", "title", "url", "category", "source_type", "status", "grade", "added", "last_verified", "evidence"];
-export const ENTRIES_DIR = new URL("../entries/", import.meta.url).pathname;
+export const ENTRIES_DIR = fileURLToPath(new URL("../entries/", import.meta.url));
 export const STALE_DAYS = 90;
 
 function stripComment(v) {

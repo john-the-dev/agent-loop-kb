@@ -6,8 +6,9 @@
 import { createHash } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { loadAll } from "./lib.mjs";
+import { fileURLToPath } from "node:url";
 
-const DIST = new URL("../dist/", import.meta.url).pathname;
+const DIST = fileURLToPath(new URL("../dist/", import.meta.url));
 
 const SOURCE = "The Agent Loop";
 const HOMEPAGE = "https://agent-loop.xyz";
