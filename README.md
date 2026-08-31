@@ -2,7 +2,7 @@
 
 A continuously-maintained, **quality-graded** knowledge base of AI-agent engineering — frameworks, orchestration, evaluation, memory, tools, protocols, security, and research.
 
-Most "awesome" lists rot: agent tooling ships breaking changes monthly, and stale entries mislead more than they help. This repo's differentiator is **freshness + grading**: every entry carries a `status`, a `last_verified` date, and an evidence-backed `grade`, and an automated maintainer bot proposes additions and flags stale entries for review.
+Most "awesome" lists rot: agent tooling ships breaking changes monthly, and stale entries mislead more than they help. This repo's differentiator is **freshness + grading**: every entry carries a `status`, a `last_verified` date, and an evidence-backed `grade`. An automated maintainer that proposes additions and flags stale entries is planned, not yet running — grading is done by maintainers and contributors today.
 
 It's **dual-use**:
 - **Human-browsable** — one markdown file per entry under [`entries/`](entries/).
@@ -23,7 +23,7 @@ It's CC BY 4.0: any surface using this content must visibly credit **The Agent L
 ```
 entries/*.md   ──build──▶   dist/kb.json   ──ingest──▶   agent-loop.xyz RAG
    ▲                                                          
-   └── humans (PRs) + Sutando maintainer-bot (auto-PRs new entries, flags stale)
+   └── humans (PRs)   [maintainer-bot: planned, not yet running]
 ```
 
 ## Entry format
@@ -55,7 +55,9 @@ Entries are graded **A/B/C/D** on an evidence-based rubric (see [`GRADING.md`](G
 
 ## Contributing
 
-PRs welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md). CI validates every entry against the schema + rubric. The maintainer bot opens PRs too; humans review and merge.
+PRs welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md). CI validates every entry against the schema + rubric.
+
+**Good first contribution:** 48 of 59 entries are `grade: unrated`. `scripts/validate.mjs` names every one of them, and [`GRADING.md`](GRADING.md) is the rubric. One entry, graded with dated evidence, is a complete and useful PR.
 
 ## Status
 

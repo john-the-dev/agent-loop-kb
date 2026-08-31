@@ -18,6 +18,6 @@ Thanks for helping keep AI-agent engineering knowledge accurate and fresh.
 - **Lessons are public-only.** `category: lessons` entries must come from famous, publicly-documented projects/post-mortems. Never include private, proprietary, or non-public project details (anyone's).
 - **Primary sources first** — official docs / papers / release notes over secondhand blogs.
 
-## The maintainer bot
+## The maintainer bot (planned)
 
-An automated maintainer (Sutando) also opens PRs — proposing new entries from the latest releases/research and flagging entries whose `last_verified` is >90 days old. Bot PRs are reviewed and merged by a human, same as any other.
+An automated maintainer that proposes new entries and flags entries whose `last_verified` is >90 days old is planned but **not running yet**. Until it exists, both jobs are human: `scripts/validate.mjs` warns on every `unrated` entry, and stale ones are found by the same rubric a bot would apply. Bot PRs, when they arrive, will be reviewed and merged by a human like any other.
