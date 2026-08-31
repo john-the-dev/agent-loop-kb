@@ -5,11 +5,14 @@ url: https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html
 category: memory
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: A
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source is the official AWS Lambda best-practices guide, fetched live 2026-08-30: HTTP 200, title 'Best practices for working with AWS Lambda functions - AWS Lambda'"
+  - "unusually tight source-to-claim fit: the entry is specifically about serverless agent workers, and this is the primary vendor doc for exactly that runtime — not a general doc being stretched to cover it"
+  - "the entry's core instruction (treat workers as stateless, persist state in durable services because instances can vanish or be retried) is the same guidance the cited page gives for Lambda, checked 2026-08-30"
 tags: [deploying, serverless, infrastructure, treat, workers]
 ---
 
