@@ -1,19 +1,20 @@
 ---
 id: lesson-gitlab-2017-backups
 title: "Test your recovery, not just your backups"
-url: https://about.gitlab.com/blog/2017/02/10/postmortem-of-database-outage-of-january-31/
+url: https://web.archive.org/web/2023/https://about.gitlab.com/blog/2017/02/10/postmortem-of-database-outage-of-january-31/
 category: lessons
 source_type: post-mortem
 status: current
 grade: A   # timeless, widely-documented public engineering lesson
 added: 2026-07-14
-last_verified: 2026-08-12
+last_verified: 2026-08-31
 superseded_by: null
 evidence:
   - "Public post-mortem/record; well-documented, durable lesson (verified 2026-07-14)"
   - "Expanded to a full deep dive 2026-08-12; GitLab's own post-mortem is unusually detailed and public"
   - "DEAD SOURCE found 2026-08-31 by scripts/check-sources.mjs: the cited GitLab post-mortem returns HTTP 404 (control on the same origin 404s too, so this is a real removal, not a catch-all). GitLab took the post down; last_verified 2026-08-12 predates that"
   - "GRADE LEFT AT A DELIBERATELY, and flagged rather than quietly changed: the entry is a historical engineering lesson that is widely documented elsewhere, so its substance is not in doubt - but the CITATION no longer resolves and needs repointing at an archive or an equivalent write-up. Someone should decide that, not have it decided silently"
+  - "REPOINTED 2026-08-31 at the Wayback capture of the SAME post, verified with a control: archive copy 200 'Postmortem of database outage of January 31'; a fabricated path on web.archive.org returns 404, so the 200 is a real capture and not a catch-all. The live GitLab url stays dead - this restores the citation, it does not re-source the entry"
 tags: [backups, recovery, state, memory]
 ---
 

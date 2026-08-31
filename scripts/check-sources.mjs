@@ -80,10 +80,14 @@ for (const r of rows.sort((a, b) => a.verdict.localeCompare(b.verdict) || a.id.l
   if (r.verdict === "catch-all") console.log(`   control returned the SAME: ${r.ctrl.status} ${r.ctrl.title}`);
 }
 
-const graded = rows.filter((r) => r.grade !== "unrated" && BAD.has(r.verdict));
-console.log(`\n${rows.length} sources probed (front-matter + body links); ${rows.filter((r) => BAD.has(r.verdict)).length} unverifiable, ${graded.length} of those on a GRADED entry.`);
-if (graded.length) {
-  console.log("A graded entry whose source cannot be verified from here is not necessarily wrong —");
-  console.log("it is a statement about ACCESS. Say so in the evidence rather than claiming 'fetched live'.");
+const unver = rows.filter((r) => BAD.has(r.verdict));
+const blocking = unver.filter((r) => r.where === "url" && r.grade !== "unrated");
+const supporting = unver.filter((r) => !(r.where === "url" && r.grade !== "unrated"));
+console.log(`\n${rows.length} sources probed (front-matter + body links); ${unver.length} unverifiable.`);
+console.log(`  ${blocking.length} are the GRADED source of a graded entry — those undercut the grade.`);
+console.log(`  ${supporting.length} are body citations or on unrated entries — worth repointing, but the grade may still stand.`);
+if (unver.length) {
+  console.log("Unverifiable is a statement about ACCESS, not about the page. Say that in the evidence");
+  console.log("rather than writing 'fetched live', and re-try with a second client before concluding.");
 }
-if (STRICT && graded.length) process.exit(1);
+if (STRICT && blocking.length) process.exit(1);
