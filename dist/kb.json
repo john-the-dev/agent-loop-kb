@@ -6,7 +6,7 @@
   "attribution_required": true,
   "attribution": "Source: The Agent Loop (https://agent-loop.xyz)",
   "usage": "https://github.com/john-the-dev/agent-loop-kb/blob/main/AGENTS.md",
-  "version": "9086c9773d24",
+  "version": "9649a05439e5",
   "count": 59,
   "entries": [
     {
@@ -128,9 +128,9 @@
       "category": "evaluation",
       "source_type": "blog",
       "status": "current",
-      "grade": "unrated",
+      "grade": "B",
       "added": "2026-07-14",
-      "last_verified": "2026-07-28",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "evaluation",
@@ -139,7 +139,12 @@
         "should",
         "separate"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200, 'Demystifying evals for AI agents \\ Anthropic' — a primary vendor engineering essay",
+        "CAVEAT driving B not A: the essay is squarely about eval pitfalls, so the topical fit is good — but this entry's specific claims (single-run pass rates hiding nondeterminism, short time/token limits misclassifying capable agents) are the sharp, checkable ones and rest entirely on one vendor essay with no second source",
+        "SHARED-SOURCE CAVEAT: this url backs TWO entries — agent-evals and evaluation-strategy. A redirect-normalised audit of all 59 entries on 2026-08-30 found only 2 shared sources covering 6 entries (55 distinct sources for 59 entries), so reuse is bounded and this is one of the two clusters, not a general pattern",
+        "NEGATIVE CONTROL: anthropic.com/engineering/not-a-real-post-xyz returns 404, so the 200 is a real page"
+      ],
       "text": "Agent evaluations should separate model quality from scaffold, tool, and environment failures. Single-run pass rates hide nondeterminism, while overly short time or token limits can misclassify capable agents. Use repeated trials, inspect trajectories, score intermediate outcomes, and test realistic failure recovery.",
       "body": "Evaluating an agent is not like evaluating a chat completion. A chat eval grades one output against one input; an agent eval grades a *trajectory* — a sequence of decisions, tool calls, and recoveries in an environment that pushes back. Most teams discover this the hard way: their eval says the agent regressed when actually a tool timed out, or says it passed when it reached the right answer by a route that will fall over in production.\n\n## The pitfalls that actually bite\n\n**1. Blaming the model for the harness.** When a run fails, the cause may be the model, the scaffold, the tool, or the environment — and a bare pass rate cannot tell you which. [Anthropic's guide to agent evals](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) is blunt about this: read the transcripts. Attribute each failure before averaging them into a metric, or the metric will steer you into fixing the wrong layer.\n\n**2. Trusting single runs.** Agent trajectories are highly nondeterministic — same task, same model, different tool-call order, different outcome. [τ-bench (arXiv:2406.12045)](https://arxiv.org/abs/2406.12045) formalized this with the pass^k metric: the probability an agent succeeds on *all* k attempts of the same task. Its headline finding — agents that look competent on pass@1 collapse on pass^8 — is the consistency gap production users actually feel. One green run is an anecdote, not a result.\n\n**3. Grading only the final state.** Outcome-only scoring misses agents that succeed by accident and agents that did everything right until a recoverable stumble at step 19. Score intermediate outcomes too: did it choose sensible tools, recover from the injected error, stay inside its permissions? [OpenAI's evals guide](https://platform.openai.com/docs/guides/evals) treats these trajectory-level checks as first-class eval targets, not nice-to-haves.\n\n**4. Capping runs too tightly.** Aggressive time or token limits misclassify capable-but-thorough agents as failures. Budget limits should reflect production reality, and a budget-exceeded run should be recorded as *budget-exceeded*, not merged into generic failure counts — they demand different fixes.\n\n**5. Evals that never change.** A static suite saturates: the agent overfits to it and the scores drift up while production quality does not. Feed real production failures back in as new cases, and retire cases everyone passes.\n\n## A minimal honest setup\n\nRepeated trials per task (report pass^k, not just pass@1) · transcript review for every failure with a cause label (model / scaffold / tool / environment) · trajectory checks alongside outcome checks · realistic budgets with separately-tracked budget failures · a suite that grows from production incidents.\n\n*Sources: [Anthropic — Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) · [τ-bench (arXiv:2406.12045)](https://arxiv.org/abs/2406.12045) · [OpenAI — Evals guide](https://platform.openai.com/docs/guides/evals).*\n\n*Related: [evaluation strategy](/library/evaluation-strategy), [determinism & reproducibility](/library/determinism-reproducibility), [token budgets](/library/token-budgets), [agent observability](/library/agent-observability), [groundedness and hallucination](/library/groundedness-hallucination).*"
     },
@@ -508,9 +513,9 @@
       "category": "evaluation",
       "source_type": "blog",
       "status": "current",
-      "grade": "unrated",
+      "grade": "B",
       "added": "2026-07-14",
-      "last_verified": "2026-07-29",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "offline",
@@ -519,7 +524,12 @@
         "evals",
         "provide"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200, 'Demystifying evals for AI agents \\ Anthropic' — a primary vendor engineering essay",
+        "CAVEAT driving B not A: the entry's offline/online split — pre-release regression suites versus live completion, escalation, latency and cost signals — is a broader framing than the cited essay establishes; the source supports the offline half far better than the online half",
+        "SHARED-SOURCE CAVEAT: this url backs TWO entries — agent-evals and evaluation-strategy. A redirect-normalised audit of all 59 entries on 2026-08-30 found only 2 shared sources covering 6 entries (55 distinct sources for 59 entries), so reuse is bounded and this is one of the two clusters, not a general pattern",
+        "NEGATIVE CONTROL: anthropic.com/engineering/not-a-real-post-xyz returns 404, so the 200 is a real page"
+      ],
       "text": "Offline evals provide repeatable pre-release regression tests over representative tasks, adversarial cases, tool failures, and multi-step trajectories; online evals measure real completion, escalation, latency, cost, and safety signals under production traffic. Maintain frozen golden sets plus newly mined failures, run repeated trials for nondeterministic agents, and score both final outcomes and critical intermediate constraints. LLM judges are scalable but can be biased by style, verbosity, ordering, or shared model errors, so calibrate them against blinded human labels and deterministic checks and track judge-version changes.",
       "body": "Teams usually build one eval and ask it to do two jobs: catch regressions before release and tell them how the agent behaves in production. It can't do both. Offline and online evaluation answer different questions with different data, and a strategy is the deliberate split between them — plus the pipeline that feeds one from the other.\n\n## Offline: the regression gate\n\nThe offline suite is your frozen, repeatable pre-release check: representative tasks, adversarial cases, injected tool failures, and full multi-step trajectories. Two properties make it trustworthy. **Frozen golden sets** — if the suite changes every week, score movements are meaningless; version it like code and change it deliberately. **Repeated trials** — agent trajectories are nondeterministic, and [τ-bench (arXiv:2406.12045)](https://arxiv.org/abs/2406.12045) showed how much this matters by measuring pass^k (success on *all* k attempts of the same task): agents that look strong on a single attempt collapse when asked to succeed eight times in a row. Report consistency, not just best-case.\n\n[Anthropic's eval guide](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) adds the discipline most teams skip: read failed transcripts and attribute each failure to model, scaffold, tool, or environment before averaging anything into a metric. A pass rate that mixes harness bugs with model regressions steers your roadmap into the wrong layer.\n\n## Online: the reality check\n\nProduction traffic answers what offline can't: real task-completion rate, escalation-to-human rate, latency and cost distributions, and safety-signal frequency under inputs you didn't think to write. Instrument these as first-class metrics from day one. The highest-value pipeline in the whole strategy is the loop between the two: **mine online failures into offline cases**. Every production incident that surprised you is a golden-set candidate; a suite that doesn't grow from production saturates, and scores drift up while quality doesn't.\n\n## LLM judges: scalable, biased, calibratable\n\nTrajectory grading at scale needs LLM judges, and judge bias is well documented — [MT-Bench and the LLM-as-judge study (arXiv:2306.05685)](https://arxiv.org/abs/2306.05685) measured position bias, verbosity bias, and self-enhancement bias, alongside the subtler failure of shared blind spots between judge and judged. The mitigations are mechanical: calibrate the judge against blinded human labels on a sample, pair it with deterministic checks (schema validity, constraint satisfaction, final-state assertions) that can't be charmed by fluent prose, randomize orderings, and **version the judge** — a silent judge-model upgrade shifts scores and gets misread as an agent change. [OpenAI's evals guide](https://platform.openai.com/docs/guides/evals) treats these calibration steps as core workflow, not hygiene.\n\n## The minimal strategy\n\nA versioned offline suite with repeated trials and failure attribution · online completion/escalation/latency/cost/safety metrics · a standing pipeline that promotes production failures into the golden set · judges calibrated against humans and paired with deterministic checks. Anything less is either a demo gate or a dashboard — not a strategy.\n\n*Sources: [Anthropic — Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) · [τ-bench (arXiv:2406.12045)](https://arxiv.org/abs/2406.12045) · [LLM-as-judge (arXiv:2306.05685)](https://arxiv.org/abs/2306.05685) · [OpenAI — Evals guide](https://platform.openai.com/docs/guides/evals).*\n\n*Related: [agent evaluation pitfalls](/library/agent-evals), [determinism & reproducibility](/library/determinism-reproducibility), [agent observability](/library/agent-observability), [guardrails & safety](/library/guardrails-safety), [groundedness and hallucination](/library/groundedness-hallucination).*"
     },

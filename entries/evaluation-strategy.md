@@ -5,11 +5,15 @@ url: https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
 category: evaluation
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-29
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Demystifying evals for AI agents \ Anthropic' — a primary vendor engineering essay"
+  - "CAVEAT driving B not A: the entry's offline/online split — pre-release regression suites versus live completion, escalation, latency and cost signals — is a broader framing than the cited essay establishes; the source supports the offline half far better than the online half"
+  - "SHARED-SOURCE CAVEAT: this url backs TWO entries — agent-evals and evaluation-strategy. A redirect-normalised audit of all 59 entries on 2026-08-30 found only 2 shared sources covering 6 entries (55 distinct sources for 59 entries), so reuse is bounded and this is one of the two clusters, not a general pattern"
+  - "NEGATIVE CONTROL: anthropic.com/engineering/not-a-real-post-xyz returns 404, so the 200 is a real page"
 tags: [offline, online, evaluation, evals, provide]
 ---
 
