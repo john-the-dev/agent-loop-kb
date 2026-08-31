@@ -11,7 +11,7 @@ Thanks for helping keep AI-agent engineering knowledge accurate and fresh.
 5. If you set or changed a `grade`: `node scripts/check-sources.mjs` — it probes each
    source against a same-origin control, because a 200 can be a catch-all challenge
    page rather than the document. See GRADING.md for why this is not optional.
-5. Open a PR.
+6. Open a PR.
 
 ## Principles
 
