@@ -18,6 +18,8 @@ Thanks for helping keep AI-agent engineering knowledge accurate and fresh.
 - **Lessons are public-only.** `category: lessons` entries must come from famous, publicly-documented projects/post-mortems. Never include private, proprietary, or non-public project details (anyone's).
 - **Primary sources first** — official docs / papers / release notes over secondhand blogs.
 
-## The maintainer bot
+## Automation
 
-An automated maintainer (Sutando) also opens PRs — proposing new entries from the latest releases/research and flagging entries whose `last_verified` is >90 days old. Bot PRs are reviewed and merged by a human, same as any other.
+CI validates the schema and rubric on every PR; `node scripts/validate.mjs` runs the same checks locally and lists every `unrated` entry and every entry past the 90-day staleness bar.
+
+There is **no bot proposing or grading entries** — grading requires independent sources a human has actually read, which is the whole point of the rubric. If that changes, this section changes with it.
