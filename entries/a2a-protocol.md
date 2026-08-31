@@ -5,11 +5,14 @@ url: https://a2a-protocol.org/
 category: protocols
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-08-16
-last_verified: 2026-08-16
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "the cited url https://a2a-protocol.org/ is a REDIRECT STUB, not documentation: title 'Redirecting', and curl -L does not move because the redirect is a client-side meta refresh (content='1; url=latest/'). The real docs are https://a2a-protocol.org/latest/, HTTP 200, title 'A2A Protocol' - that is where the url should point"
+  - "verified ON that page 2026-08-30: 'Linux Foundation' x3, 'Agent Card' x1, 'SSE' x11 - so the entry's Linux-Foundation, Agent-Cards-for-discovery and streaming claims are corroborated at the source"
+  - "CAVEAT driving B not A: the same scan found ZERO occurrences of json-rpc, webhook, or task lifecycle, which are three more things the entry asserts. They may sit on deeper spec pages, but the page this entry effectively points to does not evidence them. NEGATIVE CONTROL: /latest/not-a-real-a2a-page-xyz returns 404, so these are real absences and not a catch-all route"
 tags: [a2a, agent-to-agent, interoperability, protocols, agent-cards, json-rpc, linux-foundation, mcp]
 ---
 A2A (Agent-to-Agent) is the Linux Foundation open protocol for cross-vendor agent interop: JSON-RPC over HTTP with Agent Cards for discovery, task lifecycles for long-running delegation, and SSE/webhooks for streaming. Use it between agents from different teams or products; use MCP for an agent's own tools. v1.0 support now ships in major runtimes (e.g. Hermes Agent, Aug 2026).
