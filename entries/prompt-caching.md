@@ -5,11 +5,13 @@ url: https://platform.claude.com/docs/en/build-with-claude/prompt-caching
 category: memory
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: A
 added: 2026-07-14
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Prompt caching - Claude Platform Docs'"
+  - "prompt caching is a VENDOR-SPECIFIC API feature, not a vendor-neutral technique — so the vendor's own reference doc is the primary and correct source here, and the usual vendor-scope caveat that drove other entries to B does not apply"
 tags: [prompt, caching, context, reuse, reduces]
 ---
 

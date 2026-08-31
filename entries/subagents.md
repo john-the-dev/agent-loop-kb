@@ -5,11 +5,13 @@ url: https://www.anthropic.com/engineering/multi-agent-research-system
 category: orchestration
 source_type: docs
 status: current
-grade: unrated   # pending first evidence-graded review
+grade: A
 added: 2026-07-28
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'How we built our multi-agent research system \ Anthropic'"
+  - "an engineering write-up of a system actually built and shipped, on exactly the entry's subject — orchestrator/subagent decomposition. It reports what the authors did rather than recommending a pattern in the abstract, which is the strongest form a vendor source takes"
 tags: [subagents, context-isolation, handoff, orchestration, fan-out]
 ---
 

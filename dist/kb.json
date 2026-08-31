@@ -6,7 +6,7 @@
   "attribution_required": true,
   "attribution": "Source: The Agent Loop (https://agent-loop.xyz)",
   "usage": "https://github.com/john-the-dev/agent-loop-kb/blob/main/AGENTS.md",
-  "version": "16523166f41e",
+  "version": "689b84e3d889",
   "count": 59,
   "entries": [
     {
@@ -181,9 +181,9 @@
       "category": "tools",
       "source_type": "research",
       "status": "current",
-      "grade": "unrated",
+      "grade": "B",
       "added": "2026-07-14",
-      "last_verified": "2026-07-14",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "what",
@@ -192,7 +192,11 @@
         "reads",
         "current"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200, 'Building Effective AI Agents \\ Anthropic' (the entry cites /research/, which 301s to /engineering/)",
+        "of the four entries sharing this essay, agent-loop is the CLOSEST fit — the essay's subject is the loop itself, so this entry has the best claim on it of the four",
+        "SHARED-SOURCE CAVEAT: one essay backs four entries here (agent-loop, agent-cost-control, customer-support-agents, multi-agent-orchestration). A redirect-normalised audit of all 59 entries on 2026-08-30 found 3 shared sources covering 8 entries, 54 distinct sources overall — bounded reuse, and this is the largest cluster"
+      ],
       "text": "An agent loop repeatedly reads the current state, chooses an action, uses a tool, observes the result, and corrects its plan. The model is only one component: reliable agents also need clear goals, useful tools, bounded context, termination conditions, and feedback from the environment.",
       "body": "The single most useful shift when building agents is to stop thinking of the model as the agent and start thinking of the **loop** as the agent. The model contributes one step — pick the next action given the current state — and everything that makes the system reliable lives in the machinery around that step: the goal it is held to, the tools it can call, the state it is allowed to see, and the condition that ends the run. Anthropic's [Building effective agents](https://www.anthropic.com/research/building-effective-agents) draws the line precisely: *workflows* thread a model through predefined code paths, while *agents* let the model direct its own process — dynamically choosing tools and deciding when it is done. The loop is what turns a one-shot completion into an agent, and it is also where almost all of the failure modes live.\n\n## Observe → decide → act → observe, and why the first arrow is the hard one\n\nThe canonical cycle is: read the current state, choose an action, execute it through a tool, observe the real result, update the plan, and check whether to stop. The step teams under-invest in is the *observe* — feeding the true outcome of an action back into the next decision. An agent that assumes its last action succeeded, instead of reading what actually happened, drifts from reality within a few turns. This is the core insight of [ReAct (Yao et al., arXiv:2210.03629)](https://arxiv.org/abs/2210.03629): interleaving explicit reasoning traces with actions — and grounding the next thought in the *observed* tool result — measurably reduces hallucination compared with a model that acts without reading back. Honest observation is also why [tool retries must be idempotent](/library/tool-retries-idempotency): the loop will re-run steps, and a re-observed world has to be trustworthy for the next decision to be sound.\n\n## Termination is a first-class part of the loop, not an afterthought\n\nA loop with no termination condition is not an agent, it is an infinite regress with a bill attached. Every loop needs bounded iteration, explicit stop conditions (goal met, no-progress detected, budget exhausted, human handoff), and loud failure when it hits a limit. Left unbounded, an agent will retry a failing step until it runs out of [token budget](/library/token-budgets) or trips [rate limits and backpressure](/library/rate-limiting-backpressure) — and a run that silently stops mid-task is far harder to debug than one that ends with \"no progress for 3 iterations, halting.\" Pair termination with [planning and decomposition](/library/planning-decomposition) so the loop has a checkable notion of \"done,\" and with [durable execution](/library/durable-agent-execution) so a long loop can survive a crash without restarting from zero.\n\n## Bounded context keeps the loop honest over long horizons\n\nBecause the loop runs many times, whatever it carries forward compounds. Feed the model the whole history and attention degrades and cost balloons; feed it too little and it forgets the goal. Bounded, curated context — recent observations, the active plan, and durable facts pulled from [memory tiers](/library/agent-memory-tiers) rather than the raw transcript — is what lets a loop run for dozens of turns without either forgetting why it started or drowning in its own scrollback. The loop is only as reliable as the state it observes each turn, so treat context as a working set to maintain, not a log to accumulate.\n\n*Sources: [Anthropic — Building effective agents](https://www.anthropic.com/research/building-effective-agents) · [Yao et al., ReAct (arXiv:2210.03629)](https://arxiv.org/abs/2210.03629).*\n\n*Related: [planning & decomposition](/library/planning-decomposition), [tool retries & idempotency](/library/tool-retries-idempotency), [token budgets](/library/token-budgets), [agent memory tiers](/library/agent-memory-tiers), [durable execution](/library/durable-agent-execution), [agent evaluation](/library/agent-evals).*"
     },
@@ -362,9 +366,9 @@
       "category": "tools",
       "source_type": "blog",
       "status": "current",
-      "grade": "unrated",
+      "grade": "B",
       "added": "2026-07-14",
-      "last_verified": "2026-07-29",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "context",
@@ -373,7 +377,10 @@
         "manage",
         "retain"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200, 'Effective context engineering for AI agents \\ Anthropic'",
+        "CAVEAT driving B not A: the essay covers context engineering broadly, while the entry is specifically about COMPACTION — summarise-and-discard under a window limit. The essay supports the surrounding discipline more than the specific mechanism the entry names"
+      ],
       "text": "Manage context as a budget: retain the system policy, current objective, unresolved constraints, recent actions, exact error messages, and identifiers needed for future tool calls, while dropping duplicated prose and superseded attempts. A sliding window preserves local conversational detail, whereas periodic summaries compress older history; summaries should separate verified facts from hypotheses and link to durable artifacts rather than paraphrasing critical code or numbers. Trigger compaction before the window is full and test that an agent can resume from the compacted state without losing commitments or repeating side effects.",
       "body": "Every long-running agent eventually faces the same arithmetic: the context window is finite, the task history is not. What separates agents that degrade gracefully from agents that quietly lose the plot is *what they choose to keep* — because compaction is not a storage problem, it is a judgment call about which information still constrains future behavior.\n\n## Keep what still binds, drop what's spent\n\n[Anthropic's context-engineering guide](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) frames context as a budgeted resource where every token competes for the model's attention. The keep-list is shorter than most teams expect: the system policy, the current objective, unresolved constraints (\"never push to main\", \"the user chose option B\"), recent actions and their results, exact error messages, and the identifiers future tool calls will need. The drop-list is everything already *spent*: duplicated prose, superseded attempts, tool outputs whose conclusions have been extracted, exploratory dead ends.\n\nThe subtle failure is dropping something that looked spent but still binds — a commitment made 40 turns ago, a constraint stated once. This is why compaction summaries must separate **verified facts from hypotheses**, and why they should *link* to durable artifacts (files, PRs, notes on disk) instead of paraphrasing critical code or numbers — a paraphrase drifts; a path does not.\n\n## Why more context isn't the answer\n\nLong-context models tempt teams to skip compaction entirely. Measurement says otherwise: [Chroma's context-rot study](https://research.trychroma.com/context-rot) ran 18 models across needle-retrieval and long-conversation tasks and found performance degrades non-uniformly as input grows — even on tasks a short context handles perfectly. Distractors accumulate, attention dilutes, and the model starts answering from the wrong region of history. Relatedly, agents that re-read their whole raw history each turn pay the [cost problem](/library/agent-cost-control) on top of the accuracy one.\n\n## Compact early, resume honestly\n\nTrigger compaction *before* the window forces it — a compaction under pressure has no room to be careful. And treat resumability as a testable property: after compacting, can the agent state its current objective, its open commitments, and what it must NOT redo (side effects already executed)? An agent that re-sends an email after compaction because the \"already sent\" fact got summarized away is the canonical failure. Sliding windows preserve recent local detail; periodic summaries compress the old; durable state (task lists, decision logs, memory files) lives *outside* the window entirely and gets re-read on demand — the pattern every production harness converges on.\n\n*Sources: [Anthropic — Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) · [Chroma — Context rot](https://research.trychroma.com/context-rot).*\n\n*Related: [context rot](/library/context-rot), [agent memory tiers](/library/agent-memory-tiers), [token budgets](/library/token-budgets), [cost control](/library/agent-cost-control).*"
     },
@@ -1184,9 +1191,9 @@
       "category": "memory",
       "source_type": "docs",
       "status": "current",
-      "grade": "unrated",
+      "grade": "A",
       "added": "2026-07-14",
-      "last_verified": "2026-07-28",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "prompt",
@@ -1195,7 +1202,10 @@
         "reuse",
         "reduces"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200, 'Prompt caching - Claude Platform Docs'",
+        "prompt caching is a VENDOR-SPECIFIC API feature, not a vendor-neutral technique — so the vendor's own reference doc is the primary and correct source here, and the usual vendor-scope caveat that drove other entries to B does not apply"
+      ],
       "text": "Prompt caching reduces latency and input cost when many calls share a long stable prefix such as system instructions, tool definitions, examples, or reference documents. Put stable content before volatile conversation state, keep serialization byte-for-byte consistent, and monitor cache creation, hit rate, read tokens, expiration, and provider-specific minimums. Caching is an optimization rather than memory: invalidate or version cached prefixes when policies, permissions, schemas, or source data change.",
       "body": "An agent loop re-sends nearly the same prompt dozens of times per task: the system prompt, the tool definitions, and the growing conversation are identical on every call except the newest turn. Prompt caching lets the provider store the processed prefix and skip re-computing it — which for a long-running agent is the single cheapest large win available: no quality trade-off, just less latency and a much smaller bill.\n\n## How the providers differ\n\n- **Anthropic** uses [explicit cache breakpoints](https://platform.claude.com/docs/en/build-with-claude/prompt-caching): you mark where the stable prefix ends. Cache writes cost a premium over base input tokens, cache *reads* cost a small fraction of them, and entries expire on a short TTL (with a paid longer-TTL option) — so the economics reward prefixes that are reused quickly and often.\n- **OpenAI** applies [caching automatically](https://platform.openai.com/docs/guides/prompt-caching) once a prompt exceeds a minimum length, discounting the cached portion with no code changes — but you only benefit if your prompts actually share a byte-identical prefix.\n- **Gemini** offers [context caching](https://ai.google.dev/gemini-api/docs/caching) with both implicit caching and explicitly-managed cached content objects you create and reference across requests, suited to a large document or video you'll query repeatedly.\n\nThe shared contract across all three: caching operates on an **exact prefix match**. One changed byte early in the prompt invalidates everything after it.\n\n## Structuring an agent for cache hits\n\n1. **Stability-ordered prompts.** System instructions and tool definitions first, few-shot examples next, conversation history after, and the volatile parts — current time, retrieved documents, the user's newest message — last.\n2. **Never interleave volatility.** A timestamp (\"Current time: 14:03:27\") rendered into the system prompt destroys the cache on every single call. Move it to the end, truncate it to the granularity you need, or pass it as a message.\n3. **Byte-stable serialization.** Non-deterministic JSON key order, shuffled tool lists, or a randomized retriever re-ranking the same documents will silently zero your hit rate. Serialize canonically.\n4. **Watch the metrics, not the vibes.** Providers report cache reads/writes per request. An agent fleet with a low hit rate usually has one volatile line in a shared prefix — findable in minutes once you actually look.\n\n## What caching is not\n\nIt is not memory and not state: the cache stores computation over tokens you still send, it can evict at any time, and it must never be load-bearing for correctness. Version your prefixes — when a policy, permission set, or tool schema changes, the *content* changes, and stale-prefix reuse is a bug the cache will happily hide.\n\n*Sources: [Anthropic — Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) · [OpenAI — Prompt caching](https://platform.openai.com/docs/guides/prompt-caching) · [Google — Gemini context caching](https://ai.google.dev/gemini-api/docs/caching).*\n\n*Related: [token budgets](/library/token-budgets), [context compaction](/library/context-compaction), [latency & streaming](/library/latency-streaming), [agent cost control](/library/agent-cost-control).*"
     },
@@ -1386,9 +1396,9 @@
       "category": "orchestration",
       "source_type": "docs",
       "status": "current",
-      "grade": "unrated",
+      "grade": "A",
       "added": "2026-07-28",
-      "last_verified": "2026-07-28",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "subagents",
@@ -1397,7 +1407,10 @@
         "orchestration",
         "fan-out"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200, 'How we built our multi-agent research system \\ Anthropic'",
+        "an engineering write-up of a system actually built and shipped, on exactly the entry's subject — orchestrator/subagent decomposition. It reports what the authors did rather than recommending a pattern in the abstract, which is the strongest form a vendor source takes"
+      ],
       "text": "A subagent is a specialized worker with its own isolated context window and restricted tools; the orchestrator hands off a bounded task and only the result flows back. Use subagents when work decomposes into independent pieces with clean inputs and outputs — the isolation cuts token bloat sharply and keeps the main loop sharp. The failure mode to engineer against is the lossy handoff: make results an explicit structured contract, not free prose.",
       "body": "A **subagent** is a specialized worker your main agent spins up to handle one focused task. It gets its own **isolated context window**, its own system prompt, and a **restricted set of tools**. The orchestrator hands off a job, the subagent works independently, and only its *result* flows back — the messy details never pollute the main conversation.\n\n## Why subagents exist: context isolation\n\nAs an agent's conversation grows, its context fills with tool output, dead ends, and half-finished reasoning. That bloat makes it slower, pricier, and more error-prone. Subagents contain the mess: the subagent may read 50 files, but the orchestrator only sees the 3-line answer. [Anthropic's multi-agent research system write-up](https://www.anthropic.com/engineering/multi-agent-research-system) describes exactly this pattern — subagents \"operating in parallel with their own context windows\" act as intelligent filters, compressing large explorations down to the insights the lead agent actually needs. (Note the honest trade-off from the same report: multi-agent runs consume substantially *more total tokens* than single-agent chat — what isolation buys is a sharp, uncluttered main loop, not a smaller bill.)\n\n## When to use subagents\n\nReach for subagents when a task **decomposes into independent pieces** that don't need to talk to each other:\n\n- A **researcher** subagent that reads docs and returns a summary.\n- A **reviewer** subagent that checks output against rules.\n- **Fan-out**: run several specialists in parallel, each on its own slice, then merge.\n\nRule of thumb: if you can describe the subtask with a clean input and a clean output, it's a good subagent.\n\n## When NOT to use them\n\nSkip subagents when workers need to **share discoveries mid-task**, challenge each other, or coordinate on a moving target — a single well-run loop (or a collaborative \"agent team\") beats rigid delegation there. And don't over-split: every handoff is a place to lose information.\n\n## The one thing that breaks subagents: the handoff\n\nThe failure mode is a **lossy handoff** — the subagent knew the answer but its summary dropped the detail the orchestrator needed. Guard against it:\n\n1. Make handoffs an **explicit contract** — a structured result (JSON, a filled template), not free prose.\n2. Use a **plan → approve → execute** pipeline for risky work, with the review gate *before* any file is modified, not after.\n3. Give each subagent the **least tools** it needs — fewer tools, fewer ways to go wrong.\n\n## Bottom line\n\nUse subagents to **isolate context and parallelize independent work**; keep a single loop when the work is tightly coupled. The 2026 SDKs (including the Claude Agent SDK's new hierarchical spawning) make this cheap to try — the engineering is in the handoff, not the spawn.\n\n*Sources: [Anthropic — How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) · [Claude Code subagents docs](https://docs.claude.com/en/docs/claude-code/sub-agents).*\n\n*Related: [Agent Skills vs MCP servers](/library/agent-skills-vs-mcp), [token budgets](/library/token-budgets), [multi-agent orchestration](/library/multi-agent-orchestration).*"
     },
