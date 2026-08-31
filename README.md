@@ -2,7 +2,7 @@
 
 A continuously-maintained, **quality-graded** knowledge base of AI-agent engineering — frameworks, orchestration, evaluation, memory, tools, protocols, security, and research.
 
-Most "awesome" lists rot: agent tooling ships breaking changes monthly, and stale entries mislead more than they help. This repo's differentiator is **freshness + grading**: every entry carries a `status`, a `last_verified` date, and an evidence-backed `grade`, and an automated maintainer bot proposes additions and flags stale entries for review.
+Most "awesome" lists rot: agent tooling ships breaking changes monthly, and stale entries mislead more than they help. This repo's differentiator is **freshness + grading**: every entry carries a `status`, a `last_verified` date, and an evidence-backed `grade`, and every entry is graded by a human against a published rubric.
 
 It's **dual-use**:
 - **Human-browsable** — one markdown file per entry under [`entries/`](entries/).
@@ -55,7 +55,9 @@ Entries are graded **A/B/C/D** on an evidence-based rubric (see [`GRADING.md`](G
 
 ## Contributing
 
-PRs welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md). CI validates every entry against the schema + rubric. The maintainer bot opens PRs too; humans review and merge.
+PRs welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md). CI validates every entry against the schema + rubric.
+
+**The best first contribution is grading an `unrated` entry.** 48 of 59 entries are `unrated` today — `node scripts/validate.mjs` names every one of them. Pick one, find the independent sources the rubric asks for, and open a PR with `grade` + `evidence[]` filled in.
 
 ## Status
 
