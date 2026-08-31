@@ -5,11 +5,14 @@ url: https://learn.microsoft.com/en-us/azure/search/hybrid-search-overview
 category: evaluation
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-29
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, title 'Hybrid Search Overview - Azure AI Search | Microsoft Learn'"
+  - "CAVEAT driving B not A: the source substantiates the hybrid-retrieval half well, but the entry also asserts chunking boundaries and reranking practice that this page does not cover — so it under-evidences part of its own claim"
+  - "NEGATIVE CONTROL for this batch: learn.microsoft.com returns 404 on a fabricated path (/azure/search/not-a-real-page-xyz), so the 200s above are real pages and not a docs catch-all route, checked 2026-08-30"
 tags: [chunking, hybrid, retrieval, reranking, chunk]
 ---
 

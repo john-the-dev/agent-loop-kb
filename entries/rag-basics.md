@@ -5,11 +5,14 @@ url: https://learn.microsoft.com/azure/search/retrieval-augmented-generation-ove
 category: evaluation
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, title 'RAG and Generative AI - Azure AI Search | Microsoft Learn'"
+  - "CAVEAT driving B not A: the entry states RAG vendor-neutrally while the source is one vendor's product documentation. It is primary and actively maintained for Azure AI Search's implementation, but a reader should not read Azure's specific defaults as the general best practice"
+  - "NEGATIVE CONTROL for this batch: learn.microsoft.com returns 404 on a fabricated path (/azure/search/not-a-real-page-xyz), so the 200s above are real pages and not a docs catch-all route, checked 2026-08-30"
 tags: [retrieval, augmented, generation, basics, embeds]
 ---
 
