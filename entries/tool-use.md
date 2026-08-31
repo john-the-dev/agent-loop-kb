@@ -5,11 +5,14 @@ url: https://platform.openai.com/docs/guides/function-calling
 category: tools
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: A
 added: 2026-07-14
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "four sources, all fetched live 2026-08-30 and all primary: platform.openai.com function-calling (301 -> developers.openai.com), docs.claude.com tool-use overview, anthropic.com/engineering/writing-tools-for-agents, docs.stripe.com idempotent_requests"
+  - "best-sourced entry in the batch: the claims split cleanly across them — schema design to the two vendor tool-use docs, tool ergonomics to the Anthropic engineering piece, and the idempotency-key claim to Stripe's actual API reference rather than to a vendor-neutral restatement"
+  - "SHARED SOURCE: the frontmatter url is the same OpenAI function-calling guide cited by tool-schema-design. Grading both A is deliberate — they make different claims off it (this entry on runtime reliability, that one on schema shape), so it is not one source doing double duty for one claim"
 tags: [reliable, tool, using, work, best]
 ---
 

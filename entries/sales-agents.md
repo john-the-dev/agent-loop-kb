@@ -5,11 +5,14 @@ url: https://www.salesforce.com/agentforce/
 category: tools
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "sources fetched live 2026-08-30: salesforce.com/agentforce HTTP 200 'Agentforce: The AI Agent Platform | Salesforce'; ecfr.gov title-47 s64.1200 (TCPA, regulator primary source)"
+  - "the eCFR citation is the strong half and is exactly right for the outbound-contact claims — the regulation itself, not a summary"
+  - "CAVEAT driving B not A: the other source is a VENDOR PRODUCT MARKETING page. Distinct from the documentation-at-root case above — a product page is written to sell, so it is evidence that a capability is claimed, not that it works as described"
 tags: [production, sales, should, personalize, consented]
 ---
 

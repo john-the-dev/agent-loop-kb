@@ -5,11 +5,14 @@ url: https://agentskills.io/
 category: protocols
 source_type: docs
 status: current
-grade: unrated   # new entry — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-08-25
-last_verified: 2026-08-25
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Agent Skills Overview - Agent Skills' (negative control on the same host 404s, so the 200 is real)"
+  - "the url is a site ROOT but that is NOT a defect here — agentskills.io serves its documentation overview at the root, so the cited resource does address the subject"
+  - "CAVEAT driving B not A: the entry is a COMPARISON (Skills vs MCP) and this source documents only the Skills side. A comparison sourced from one of the two things compared cannot settle where the boundary falls"
 tags: [agent-skills, mcp, progressive-disclosure, tool-search, context-budget, tool-selection, capability-boundary, supply-chain]
 ---
 

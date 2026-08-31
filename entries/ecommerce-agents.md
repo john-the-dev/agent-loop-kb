@@ -5,11 +5,14 @@ url: https://www.agenticcommerce.dev/
 category: evaluation
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "sources fetched live 2026-08-30: agenticcommerce.dev HTTP 200 'Agentic Commerce Protocol'; ftc.gov endorsement guides (regulator primary source)"
+  - "the FTC citation is the strong half — a regulator's own guidance is the right authority for the disclosure claims, not a restatement of it"
+  - "CAVEAT driving B not A: the protocol site is an emerging spec rather than established practice, so the operational claims rest on a standard that is still moving"
 tags: [production, commerce, should, combine, lexical]
 ---
 
