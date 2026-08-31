@@ -7,12 +7,13 @@ source_type: blog
 status: current
 grade: B
 added: 2026-07-14
-last_verified: 2026-08-30
+last_verified: 2026-08-31
 superseded_by: null
 evidence:
-  - "sources fetched live 2026-08-30: salesforce.com/agentforce HTTP 200 'Agentforce: The AI Agent Platform | Salesforce'; ecfr.gov title-47 s64.1200 (TCPA, regulator primary source)"
-  - "the eCFR citation is the strong half and is exactly right for the outbound-contact claims — the regulation itself, not a summary"
-  - "CAVEAT driving B not A: the other source is a VENDOR PRODUCT MARKETING page. Distinct from the documentation-at-root case above — a product page is written to sell, so it is evidence that a capability is claimed, not that it works as described"
+  - "salesforce.com/agentforce fetched live 2026-08-30: HTTP 200, 'Agentforce: The AI Agent Platform | Salesforce'. This is the ONLY verified source for this entry"
+  - "CORRECTION 2026-08-31 to this entry's own first grading pass, which said 'sources fetched live' and called the eCFR citation 'the strong half and exactly right'. www.ecfr.gov returns HTTP 200 with the title 'Federal Register :: Request Access' - a bot challenge, not the regulation - and returns the SAME page for a nonsense control path, so the 200 is a catch-all and proves nothing. I never read that regulation"
+  - "GRADE UNCHANGED at B, but this entry is now the same shape I flagged operations-agents for: the only source I could actually verify is a VENDOR PRODUCT MARKETING page, evidence a capability is claimed rather than that it works. The TCPA citation stands or falls on a page I could not open"
+  - "ACTIONABLE for both this entry and ecommerce-agents: a regulator citation that no automated fetch can confirm needs either a mirror that can be read, or an explicit note that it is human-verify-only. Do not re-grade either on a 200 from these hosts without a nonsense-path control beside it"
 tags: [production, sales, should, personalize, consented]
 ---
 

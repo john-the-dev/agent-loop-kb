@@ -7,12 +7,12 @@ source_type: blog
 status: current
 grade: B
 added: 2026-07-14
-last_verified: 2026-08-30
+last_verified: 2026-08-31
 superseded_by: null
 evidence:
-  - "sources fetched live 2026-08-30: agenticcommerce.dev HTTP 200 'Agentic Commerce Protocol'; ftc.gov endorsement guides (regulator primary source)"
-  - "the FTC citation is the strong half — a regulator's own guidance is the right authority for the disclosure claims, not a restatement of it"
-  - "CAVEAT driving B not A: the protocol site is an emerging spec rather than established practice, so the operational claims rest on a standard that is still moving"
+  - "agenticcommerce.dev fetched live 2026-08-30: HTTP 200, 'Agentic Commerce Protocol'. This is the ONLY verified source for this entry"
+  - "CORRECTION 2026-08-31 to this entry's own first grading pass, which said 'sources fetched live' and called the FTC citation 'the strong half - a regulator's own guidance'. www.ftc.gov returns HTTP 403 to me, for the cited path and for a nonsense control path alike. I did not read it. Calling an unread page the strong half of the evidence was an overclaim, and I made it two entries after correctly refusing to grade healthcare-agents on the same kind of 403"
+  - "GRADE UNCHANGED at B, but the reason moved: it now rests on the protocol site alone, an emerging spec rather than established practice. The FTC guidance may well be exactly the right authority - that is a statement about the page, which I cannot check from here, not about my access, which I can"
 tags: [production, commerce, should, combine, lexical]
 ---
 
