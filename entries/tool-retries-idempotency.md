@@ -5,11 +5,14 @@ url: https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-j
 category: tools
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-29
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200 at the AWS Builders Library timeouts-retries-and-backoff-with-jitter article (page title renders as the generic 'AWS Builder Center' shell)"
+  - "CAVEAT driving B not A: the article is a strong primary treatment of timeouts, retries and jittered backoff — but the entry also claims IDEMPOTENCY discipline for tool calls, which is a different property that retry guidance assumes rather than establishes"
+  - "METHOD NOTE: this page's <title> is the generic site shell rather than the article name, so the title is not usable as identification here; the url path is what pins the article"
 tags: [retries, timeouts, idempotent, tools, give]
 ---
 

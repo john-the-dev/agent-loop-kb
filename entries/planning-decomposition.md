@@ -5,11 +5,13 @@ url: https://arxiv.org/abs/2210.03629
 category: general
 source_type: paper
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: A
 added: 2026-07-14
-last_verified: 2026-07-29
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, citation_title '[2210.03629] ReAct: Synergizing Reasoning and Acting in Language Models'"
+  - "the source IS the paper that introduced the interleaved reason/act loop this entry describes — claim and evidence are the same object, and it is the canonical citation for the pattern rather than a later summary of it"
 tags: [planning, decomposition, react, interleaves, reasoning]
 ---
 

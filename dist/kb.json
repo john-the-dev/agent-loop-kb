@@ -6,7 +6,7 @@
   "attribution_required": true,
   "attribution": "Source: The Agent Loop (https://agent-loop.xyz)",
   "usage": "https://github.com/john-the-dev/agent-loop-kb/blob/main/AGENTS.md",
-  "version": "4bb4d3d1b1a2",
+  "version": "cee58c4174a7",
   "count": 59,
   "entries": [
     {
@@ -1054,9 +1054,9 @@
       "category": "security",
       "source_type": "research",
       "status": "current",
-      "grade": "unrated",
+      "grade": "B",
       "added": "2026-07-28",
-      "last_verified": "2026-07-28",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "memory-poisoning",
@@ -1065,7 +1065,10 @@
         "provenance",
         "least-privilege"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200, 'LLMRisks Archive - OWASP Gen AI Security Project'",
+        "CAVEAT driving B not A: the url is the LLM Top-10 INDEX, not the specific risk entry for memory or data poisoning. The index establishes that OWASP tracks this class; it does not itself carry the poisoning detail the entry asserts. Repointing at the individual risk page would make this an A"
+      ],
       "text": "Memory poisoning plants malicious content in an agent's long-term memory so it activates on a later task, often against a different user — unlike one-shot prompt injection, the payload sits dormant in a store the agent trusts. Defend by treating every retrieved memory as untrusted data, verifying on recall before high-stakes actions, tagging provenance and trust tiers on writes, quarantining new memories, separating per-user namespaces, and gating irreversible actions behind approval.",
       "body": "**Memory poisoning** is when an attacker plants malicious content in an agent's *long-term memory* so it activates later — on a future task, in a future session, often against a different user. Unlike a one-shot prompt injection, the payload sits dormant in the store the agent trusts, then fires when a relevant query retrieves it. This is demonstrated, not hypothetical: the [GhostWriter attack (arXiv:2607.06595)](https://arxiv.org/abs/2607.06595) poisons the memory store of tool-using personal agents via untrusted email/calendar content and reports ~98% injection and ~60% average activation rates against state-of-the-art memory-augmented agents.\n\n## Why memory makes it worse\nAn agent's memory is designed to be *believed*. Once a false \"fact\" or instruction is stored, the agent recalls it as ground truth and acts on it — no further attacker access required. The blast radius is every future retrieval, which is exactly what makes poisoning more dangerous than a single hijacked prompt.\n\n## Six defenses that actually help\n\n1. **Treat every retrieved memory as untrusted data, never as instructions.** Wrap recalled content in clear delimiters and a system rule: memories are observations to reason about, not commands to obey.\n2. **Verify on recall, not just on write.** Before acting on a high-stakes recalled fact, re-check it against a trusted live source. Stale or planted memories should not silently drive irreversible actions.\n3. **Provenance + least privilege on writes.** Tag each memory with who/what wrote it and from which source. Memory written from untrusted room/user content gets a lower trust tier and cannot authorize privileged actions (sends, payments, deploys).\n4. **Quarantine new memories (TTL + review).** New writes enter a probationary state; they influence low-stakes reasoning but require corroboration or a review window before they can drive consequential actions.\n5. **Separate memory namespaces per user/tenant.** A payload planted in one user's context must never surface in another's — cross-user retrieval is the highest-severity failure.\n6. **Human-in-the-loop for irreversible actions.** Assume some injections will land; gate spend, external posts, and config changes behind approval so a poisoned memory can't complete the loop on its own.\n\n## The mindset\nInjection is not fully solvable at the model layer, so build assuming some poisoned content *will* reach memory. The goal is containment: least privilege, verification on recall, provenance, and approval gates so a planted memory can inform reasoning but never unilaterally act. An agent that verifies a recalled fact before trusting it is far harder to weaponize than one that treats its own memory as infallible.\n\n*Sources: [When Agents Remember Too Much: Memory Poisoning Attacks on LLM Agents (arXiv:2607.06595)](https://arxiv.org/abs/2607.06595).*\n\n*Related: [Guardrails & Safety](/library/guardrails-safety) · [Human approval gates](/library/human-approval-gates) · [Prompt injection defense](/library/prompt-injection-defense) · [Agent memory tiers](/library/agent-memory-tiers), [the agent security map](/library/agent-security)."
     },
@@ -1147,9 +1150,9 @@
       "category": "general",
       "source_type": "paper",
       "status": "current",
-      "grade": "unrated",
+      "grade": "A",
       "added": "2026-07-14",
-      "last_verified": "2026-07-29",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "planning",
@@ -1158,7 +1161,10 @@
         "interleaves",
         "reasoning"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200, citation_title '[2210.03629] ReAct: Synergizing Reasoning and Acting in Language Models'",
+        "the source IS the paper that introduced the interleaved reason/act loop this entry describes — claim and evidence are the same object, and it is the canonical citation for the pattern rather than a later summary of it"
+      ],
       "text": "ReAct interleaves reasoning, actions, and observations so the agent can revise its approach from environmental feedback; plan-then-execute first creates a task graph and is better when dependencies and approval points must be visible. Decompose work into verifiable steps with explicit inputs, outputs, dependencies, and stopping conditions, then replan when observations invalidate assumptions rather than blindly following the original plan. Reflection can improve a failed attempt, but bound reflection rounds and require new evidence or a changed action to prevent expensive self-critique loops.",
       "body": "The gap between a demo agent and a reliable one is usually planning. A model that can answer any single question still fails at multi-step tasks — not because it can't do the steps, but because it commits to a bad plan early, never revises it, and burns its budget executing a doomed approach with confidence. Good planning is less about generating the perfect plan up front and more about staying able to change it.\n\n## Two shapes: interleaved vs plan-first\n\n**ReAct** ([arXiv:2210.03629](https://arxiv.org/abs/2210.03629)) interleaves reasoning, action, and observation — think a little, act, observe the result, think again. Its strength is *feedback incorporation*: the agent revises course from what the environment actually returned, which is essential when outcomes are uncertain (search, web navigation, debugging). Its weakness is that without structure it can wander.\n\n**Plan-then-execute** first builds a task graph, then runs it. It shines when dependencies and approval points must be *visible before execution* — a deploy pipeline, a multi-file refactor, anything where a human needs to sanction the plan or where steps have ordering constraints. The cost is rigidity: a plan made before any observation is a hypothesis, and treating it as a contract is how agents march off cliffs.\n\nMost robust systems combine them: plan coarsely, execute with ReAct-style feedback inside each step, and replan when observations invalidate assumptions.\n\n## Decompose into *verifiable* steps\n\nThe load-bearing word is verifiable. A step like \"research the topic\" has no stopping condition and no success test — the agent can't tell when it's done or whether it succeeded. A good decomposition gives each step explicit **inputs, outputs, dependencies, and a stopping condition**. This is what makes [evaluation](/library/evaluation-strategy) possible at the trajectory level, and what lets a supervisor detect a stuck sub-task instead of discovering failure only at the end.\n\n## Replanning and the reflection trap\n\nWhen an observation contradicts the plan, *replan* — don't blindly execute the next queued step. But reflection has a failure mode of its own: unbounded self-critique. [Reflexion (arXiv:2303.11366)](https://arxiv.org/abs/2303.11366) showed that verbal self-feedback across attempts improves task success — but only when each reflection is grounded in *new evidence* and produces a *changed action*. A reflection loop that re-critiques the same failed attempt without new information is an expensive way to burn tokens and converge on nothing. Bound the rounds, and require every reflection to either cite a new observation or change the next action — otherwise stop and escalate.\n\n## The supervisor's view\n\nAt scale, planning becomes a control problem: a supervisor decomposes, dispatches sub-tasks (sometimes to [subagents](/library/subagents)), monitors for stuck or looping steps against their stopping conditions, and replans on failure. The plan is a living artifact on disk, not a one-shot generation — which is also what makes the whole run resumable after a crash.\n\n*Sources: [ReAct (arXiv:2210.03629)](https://arxiv.org/abs/2210.03629) · [Reflexion (arXiv:2303.11366)](https://arxiv.org/abs/2303.11366).*\n\n*Related: [subagents](/library/subagents), [durable agent execution](/library/durable-agent-execution), [evaluation strategy](/library/evaluation-strategy), [the agent loop](/library/agent-loop).*"
     },
@@ -1191,9 +1197,9 @@
       "category": "tools",
       "source_type": "blog",
       "status": "current",
-      "grade": "unrated",
+      "grade": "A",
       "added": "2026-07-14",
-      "last_verified": "2026-07-28",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "defending",
@@ -1202,7 +1208,10 @@
         "injection",
         "treat"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200, 'Prompt injection is not SQL injection (it may be worse)' — UK NCSC, a national cyber-security authority",
+        "the title states the entry's own central argument: that prompt injection resists the parameterisation fix that solved SQL injection. Authoritative and vendor-neutral, which is rare for this topic and is why this is an A rather than another vendor B"
+      ],
       "text": "Treat retrieved pages, emails, documents, tool outputs, and user-uploaded files as untrusted data, even when they contain text claiming to be system instructions. Keep instructions and data in distinct channels or fields, label provenance, minimize the data sent to privileged agents, and never let content grant itself permissions or select secrets to reveal. Enforce authorization and destination allow-lists outside the model, require confirmation for sensitive writes, and test indirect-injection cases where malicious instructions arrive through a trusted connector.",
       "body": "Prompt injection is the top-ranked risk in the [OWASP Top 10 for LLM applications](https://genai.owasp.org/llmrisk/llm01-prompt-injection/) for a structural reason: an LLM has one input stream, and everything in it — your system prompt, the user's request, a scraped web page, a tool result — is just tokens. Any text the model reads can try to act like instructions. That is why the UK NCSC argues that [prompt injection is not SQL injection](https://www.ncsc.gov.uk/blog-post/prompt-injection-is-not-sql-injection): with SQL you could fix the vulnerability class with parameterized queries; with LLMs there is no equivalent boundary *inside* the model, so defenses must assume some injections get through.\n\n## The threat model that matters for agents\n\nDirect injection (\"ignore previous instructions\") is the easy case. The dangerous one for agents is **indirect injection**: malicious instructions arriving through content the agent was legitimately asked to process — a web page it retrieved, an email it summarized, an issue comment it triaged. Simon Willison's [\"lethal trifecta\"](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/) names the condition to watch for: an agent that combines (1) access to private data, (2) exposure to untrusted content, and (3) the ability to communicate externally can be manipulated into exfiltrating the private data. If your agent has all three, an injection is not a wrong answer — it is a breach.\n\n## Defenses that survive contact\n\nBecause the model layer cannot be fully hardened, effective defense is architectural — contain what a compromised model can *do*:\n\n1. **Separate instructions from data.** Delimit and label untrusted content; tell the model retrieved text is observation, never command. This raises the bar but is not sufficient on its own.\n2. **Break the trifecta.** Deny at least one leg: strip external-send tools from agents that read untrusted content, or wall private data off from them. The [Design Patterns for Securing LLM Agents paper (arXiv:2506.08837)](https://arxiv.org/abs/2506.08837) systematizes this — patterns like plan-then-execute and context minimization all work by constraining what the untrusted-content-reading component is *able* to trigger.\n3. **Enforce authorization outside the model.** Allow-lists for destinations, scoped credentials, and permission checks live in code the model cannot rewrite. Content must never be able to grant itself capability.\n4. **Gate irreversible actions.** Sends, payments, deletes, and config changes get human confirmation — so a successful injection can propose but not complete the damaging step.\n5. **Test indirect paths.** Red-team through your connectors: plant instructions in a test email, calendar invite, or web page and verify the agent surfaces rather than obeys them.\n\n## The mindset\n\nDesign as if injection *will* succeed occasionally, and make success boring: least privilege, broken trifecta, external authorization, and approval gates turn \"the model got fooled\" from an incident into a non-event.\n\n*Sources: [OWASP LLM01 — Prompt Injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/) · [NCSC — Prompt injection is not SQL injection](https://www.ncsc.gov.uk/blog-post/prompt-injection-is-not-sql-injection) · [Willison — The Lethal Trifecta](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/) · [Design Patterns for Securing LLM Agents (arXiv:2506.08837)](https://arxiv.org/abs/2506.08837).*\n\n*Related: [memory poisoning](/library/memory-poisoning), [guardrails & safety](/library/guardrails-safety), [human approval gates](/library/human-approval-gates), [tool schema design](/library/tool-schema-design), [the agent security map](/library/agent-security).*"
     },
@@ -1409,9 +1418,9 @@
       "category": "tools",
       "source_type": "blog",
       "status": "current",
-      "grade": "unrated",
+      "grade": "B",
       "added": "2026-07-14",
-      "last_verified": "2026-07-29",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "retries",
@@ -1420,7 +1429,11 @@
         "tools",
         "give"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200 at the AWS Builders Library timeouts-retries-and-backoff-with-jitter article (page title renders as the generic 'AWS Builder Center' shell)",
+        "CAVEAT driving B not A: the article is a strong primary treatment of timeouts, retries and jittered backoff — but the entry also claims IDEMPOTENCY discipline for tool calls, which is a different property that retry guidance assumes rather than establishes",
+        "METHOD NOTE: this page's <title> is the generic site shell rather than the article name, so the title is not usable as identification here; the url path is what pins the article"
+      ],
       "text": "Give every networked tool a connection timeout, an overall deadline, and a bounded retry policy using exponential backoff with jitter only for transient failures such as throttling or selected 5xx responses. Never automatically retry validation, authorization, or permanent business errors, and respect provider retry hints. Side-effecting operations need an idempotency key and stored outcome so a timeout after a successful write cannot create a duplicate charge, ticket, email, or order.",
       "body": "Retries look like a reliability feature until an agent turns one uncertain tool call into three charges, three emails, or a synchronized flood against a struggling service. The safe design starts by separating three questions: **Did the request time out? Is the failure transient? Is repeating the operation safe?** A retry is justified only when the answers line up.\n\n## Timeouts are layered budgets\n\nA networked tool needs both a short **connection timeout** and an **overall deadline** for the logical operation. The connection timeout stops a dead endpoint from consuming the whole run; the deadline prevents DNS, connection, response, and backoff delays from quietly exceeding the agent's task budget. Each retry spends from the same deadline rather than resetting the clock.\n\n[Amazon's Builders' Library](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/) recommends choosing timeouts from the downstream service's latency distribution, then accounting for network overhead and deployment effects such as cold connections. For agents, expose the exhausted deadline as a structured outcome—`transient_failure`, attempts used, and the last provider request ID—so the model can switch strategy or escalate instead of starting another hidden retry loop.\n\n## Retry a class of failure, not every error\n\nConnection resets, socket timeouts, throttling, and selected `5xx` responses are usually transient. Invalid arguments, failed authorization, missing resources, and business-rule rejection require a changed request or human action; repeating them only adds load. [Google Cloud's retry guidance](https://cloud.google.com/storage/docs/retry-strategy) makes the second gate explicit: even a transient response should be retried automatically only when the operation is idempotent or protected by a precondition.\n\nUse exponential backoff with random jitter and a hard attempt/deadline cap. Backoff gives the dependency room to recover; jitter prevents thousands of workers from retrying on the same schedule and causing another outage. Honor `Retry-After` or provider-specific hints when present. Put the policy in the executor, not in the model prompt, so a hallucinated “try again” cannot bypass it.\n\n## The ambiguous-success trap\n\nThe most dangerous failure is a timeout **after the server committed the write but before the client received the response**. From the agent's perspective the outcome is unknown. Retrying with a fresh request may duplicate the effect; refusing to retry may leave the task falsely reported as failed.\n\nAn idempotency key resolves that ambiguity. Generate one stable key for the logical action, persist it with the task or checkpoint, and reuse it on every replay. The service stores the first outcome and returns it for the same key. [Stripe's idempotent-request contract](https://docs.stripe.com/api/idempotent_requests) demonstrates the pattern: repeated create/update requests with the same key return the recorded result rather than performing the action again, while changed parameters are rejected.\n\nIf the provider has no native key, build deduplication at the tool boundary: store `(operation, target, idempotency_key) → outcome` before returning success, and query that record before executing a replay. Conditional writes and resource-version preconditions can make updates safely retryable too.\n\n## What to record\n\nFor every attempt, capture the logical idempotency key, provider request ID, attempt number, error class, delay, elapsed deadline, and final disposition. That turns “the agent called the tool twice” from a mystery into an auditable decision—and lets evals inject timeout-after-commit failures to prove the duplicate-effect path is actually closed.\n\n*Sources: [AWS Builders' Library — Timeouts, retries, and backoff with jitter](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/) · [AWS Builders' Library — Making retries safe with idempotent APIs](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/) · [Google Cloud — Retry strategy](https://cloud.google.com/storage/docs/retry-strategy) · [Stripe — Idempotent requests](https://docs.stripe.com/api/idempotent_requests).*\n\n*Related: [tool use](/library/tool-use), [tool schema design](/library/tool-schema-design), [durable agent execution](/library/durable-agent-execution), [rate limiting & backpressure](/library/rate-limiting-backpressure).*"
     },

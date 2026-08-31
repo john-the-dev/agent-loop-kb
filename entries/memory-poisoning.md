@@ -5,11 +5,13 @@ url: https://genai.owasp.org/llm-top-10/
 category: security
 source_type: research
 status: current
-grade: unrated   # pending first evidence-graded review
+grade: B
 added: 2026-07-28
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'LLMRisks Archive - OWASP Gen AI Security Project'"
+  - "CAVEAT driving B not A: the url is the LLM Top-10 INDEX, not the specific risk entry for memory or data poisoning. The index establishes that OWASP tracks this class; it does not itself carry the poisoning detail the entry asserts. Repointing at the individual risk page would make this an A"
 tags: [memory-poisoning, prompt-injection, security, provenance, least-privilege]
 ---
 
