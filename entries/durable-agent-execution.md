@@ -5,11 +5,14 @@ url: https://docs.temporal.io/evaluate/understanding-temporal
 category: tools
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-29
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, h1 'Understanding Temporal'; on-page counts workflow x41, durable execution x7, replay x3 — the page genuinely covers the entry's subject"
+  - "CAVEAT driving B not A: Temporal is ONE implementation of durable execution. The entry argues the pattern generally — checkpointing, replay-safety, idempotent side effects — and a single vendor's evaluate-page cannot establish the general case"
+  - "METHOD NOTE: this page returns an EMPTY <title> AND an empty og:title; the identifying text is in the h1 and body. Third source in this PR where an empty title meant the probe was wrong rather than the page being opaque"
 tags: [durable, execution, checkpointing, long, running]
 ---
 

@@ -5,11 +5,13 @@ url: https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/
 category: evaluation
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: A
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Defeating Nondeterminism in LLM Inference - Thinking Machines'"
+  - "the source IS the investigation the entry describes, not a secondhand summary of it — the title names the exact phenomenon the entry is about, so claim and evidence are the same object (same basis on which context-rot was graded A in this PR)"
 tags: [determinism, reproducibility, lower, temperature, reduce]
 ---
 
