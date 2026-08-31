@@ -5,11 +5,15 @@ url: https://developers.openai.com/api/docs/guides/rate-limits
 category: memory
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-31
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, og:title 'Rate limits | OpenAI API'"
+  - "CAVEAT driving B not A: the guide documents this vendor's specific limit headers and tiers; the entry's backpressure argument — queueing, shedding, retry budgets — is a systems claim the page does not make"
+  - "NEGATIVE CONTROL: developers.openai.com/api/docs/guides/not-a-real-guide-xyz returns 404, so the 200s are real guides and not a catch-all route, checked 2026-08-30"
+  - "METHOD NOTE: these docs are client-rendered and <title> comes back EMPTY — the identifying text is in og:title and the body payload. An empty <title> here means the probe was wrong, not that the page is unverifiable"
 tags: [rate, limiting, backpressure, model, providers]
 ---
 
