@@ -5,11 +5,15 @@ url: https://www.anthropic.com/engineering/building-effective-agents
 category: evaluation
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-29
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Building Effective AI Agents \ Anthropic' — a primary vendor engineering essay, and a real one"
+  - "CAVEAT driving B not A: the essay is about agent design generally and does not address cost control — token budgeting, model tiering, caching economics — which is what this entry is about. It underpins the entry's framing, not its subject"
+  - "SHARED-SOURCE CAVEAT: this exact url backs FOUR entries in this KB — agent-loop, agent-cost-control, customer-support-agents and multi-agent-orchestration. agent-loop reaches it via /research/building-effective-agents, which 301s to the /engineering/ path, so it is one essay under two urls. A single general essay cannot be the sole evidence for four different applied claims; measured 2026-08-30"
+  - "NEGATIVE CONTROL: /engineering/not-a-real-post-xyz returns 404, so the 200s here are real pages rather than a catch-all route"
 tags: [cost, control, token, economics, measure]
 ---
 

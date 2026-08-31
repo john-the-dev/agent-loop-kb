@@ -5,11 +5,15 @@ url: https://developers.openai.com/api/docs/guides/latency-optimization
 category: evaluation
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, og:title 'Latency optimization | OpenAI API'"
+  - "CAVEAT driving B not A: the guide is one vendor's latency advice for its own API surface, while the entry generalises to agent latency and streaming behaviour"
+  - "NEGATIVE CONTROL: developers.openai.com/api/docs/guides/not-a-real-guide-xyz returns 404, so the 200s are real guides and not a catch-all route, checked 2026-08-30"
+  - "METHOD NOTE: these docs are client-rendered and <title> comes back EMPTY — the identifying text is in og:title and the body payload. An empty <title> here means the probe was wrong, not that the page is unverifiable"
 tags: [latency, streaming, results, optimize, both]
 ---
 

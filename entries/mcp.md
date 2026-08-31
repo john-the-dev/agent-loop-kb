@@ -5,11 +5,15 @@ url: https://modelcontextprotocol.io/docs/learn/architecture
 category: tools
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-29
+last_verified: 2026-08-31
 superseded_by: null
-evidence: []
+evidence:
+  - "Structural claims re-checked against the cited primary source and all hold: three participants (host/client/server), two layers, JSON-RPC 2.0 data layer, stdio + Streamable HTTP transports — modelcontextprotocol.io/docs/learn/architecture (checked 2026-08-31)"
+  - "B not A: the entry cites specification/2025-06-18 in two places while the live spec is 2026-07-28, and its own last_verified (2026-07-29) post-dates that revision (checked 2026-08-31)"
+  - "The 2026-07-28 revision makes MCP stateless with a mandatory server/discover, and deprecates sampling and logging; this entry frames the data layer around lifecycle messages and mentions neither server/discover nor elicitation (checked 2026-08-31)"
+  - "Actively maintained — the deprecations and the stateless model are dated 2026-07-28, three weeks before this check; the revision itself is covered by the sibling entry mcp-stateless (checked 2026-08-31)"
 tags: [model, context, protocol, open, standard]
 ---
 

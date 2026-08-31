@@ -5,11 +5,15 @@ url: https://developers.openai.com/api/docs/guides/function-calling
 category: tools
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-29
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, og:title 'Function calling | OpenAI API'"
+  - "SHARED-SOURCE CAVEAT: this same effective page also backs tool-use, which cites it via platform.openai.com (a 301 to this url). Two entries, one page — and the schema-DESIGN advice this entry gives goes beyond what the guide states"
+  - "NEGATIVE CONTROL: developers.openai.com/api/docs/guides/not-a-real-guide-xyz returns 404, so the 200s are real guides and not a catch-all route, checked 2026-08-30"
+  - "METHOD NOTE: these docs are client-rendered and <title> comes back EMPTY — the identifying text is in og:title and the body payload. An empty <title> here means the probe was wrong, not that the page is unverifiable"
 tags: [function, tool, schema, design, expose]
 ---
 

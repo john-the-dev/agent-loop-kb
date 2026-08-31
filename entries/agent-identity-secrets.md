@@ -3,13 +3,16 @@ id: agent-identity-secrets
 title: "Agent identity and secret management"
 url: https://csrc.nist.gov/pubs/sp/800/207/final
 category: memory
-source_type: blog
+source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source is NIST SP 800-207 'Zero Trust Architecture' (csrc.nist.gov, final), fetched live 2026-08-30: HTTP 200 — a final NIST Special Publication"
+  - "CAVEAT driving B not A: SP 800-207 is a general zero-trust architecture standard that predates LLM agents; its per-workload identity and least-privilege principles transfer, but it makes no agent-specific claim (checked 2026-08-30)"
+  - "source_type corrected blog -> docs: a final NIST SP is a primary standards document, and GRADING.md ranks primary docs above secondhand blog"
 tags: [identity, secret, management, give, each]
 ---
 

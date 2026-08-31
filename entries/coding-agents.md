@@ -5,11 +5,14 @@ url: https://arxiv.org/abs/2310.06770
 category: security
 source_type: paper
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source is arXiv 2310.06770 'SWE-bench: Can Language Models Resolve Real-World GitHub Issues?', citation_date 2023-10-10, fetched live 2026-08-30: HTTP 200"
+  - "CAVEAT driving B not A: SWE-bench remains the reference benchmark and the paper is heavily cited, but it is a 2023 preprint and the headline resolve-rates in it are far below what current coding agents achieve — cite it for the benchmark design, not for its numbers"
+  - "source_type corrected to paper: an arXiv preprint, which GRADING.md ranks above secondhand blog"
 tags: [production, coding, should, work, isolated]
 ---
 

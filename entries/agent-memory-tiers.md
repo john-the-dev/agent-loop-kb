@@ -3,13 +3,16 @@ id: agent-memory-tiers
 title: "Short-term and long-term agent memory"
 url: https://arxiv.org/abs/2310.08560
 category: memory
-source_type: blog
+source_type: paper
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-29
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source is arXiv 2310.08560 'MemGPT: Towards LLMs as Operating Systems', citation_date 2023-10-12, at least v2, fetched live 2026-08-30: HTTP 200"
+  - "CAVEAT driving B not A: foundational and widely cited, but a 2023 preprint — the tiered-memory idea it introduced is current while its specific system details have been overtaken (checked 2026-08-30)"
+  - "source_type corrected blog -> paper: arXiv preprint, which GRADING.md ranks above secondhand blog"
 tags: [short, term, long, memory, working]
 ---
 

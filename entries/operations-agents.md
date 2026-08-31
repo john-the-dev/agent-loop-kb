@@ -5,11 +5,14 @@ url: https://www.uipath.com/ai/agentic-ai
 category: orchestration
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Agentic AI' (uipath.com/ai/agentic-ai)"
+  - "WEAKEST citation of this batch, and unlike sales-agents there is no regulator source beside it to carry the load: a single vendor marketing page supporting an entry about operations agents generally"
+  - "ACTIONABLE: needs a second, vendor-neutral source before this can reach A — the claim is about a practice, and the only evidence is one vendor asserting its own product embodies it"
 tags: [production, back, office, useful, documents]
 ---
 

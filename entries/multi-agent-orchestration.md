@@ -5,11 +5,15 @@ url: https://www.anthropic.com/engineering/building-effective-agents
 category: orchestration
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "same source, HTTP 200, 'Building Effective AI Agents \ Anthropic'"
+  - "CAVEAT driving B not A: the essay does discuss orchestrator-worker patterns, so the fit is closer here than for the sibling entries — but it is one vendor's design essay standing in for the whole orchestration topic"
+  - "SHARED-SOURCE CAVEAT: this exact url backs FOUR entries in this KB — agent-loop, agent-cost-control, customer-support-agents and multi-agent-orchestration. agent-loop reaches it via /research/building-effective-agents, which 301s to the /engineering/ path, so it is one essay under two urls. A single general essay cannot be the sole evidence for four different applied claims; measured 2026-08-30"
+  - "NEGATIVE CONTROL: /engineering/not-a-real-post-xyz returns 404, so the 200s here are real pages rather than a catch-all route"
 tags: [multi, orchestration, tradeoffs, multiple, subtasks]
 ---
 

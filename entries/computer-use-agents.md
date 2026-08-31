@@ -5,11 +5,13 @@ url: https://docs.claude.com/en/docs/agents-and-tools/computer-use
 category: tools
 source_type: docs
 status: current
-grade: unrated   # new entry — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-08-24
-last_verified: 2026-08-24
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Computer use tool - Claude Platform Docs'"
+  - "CAVEAT driving B not A: this is one vendor's tool reference. It is primary and current for that tool, but the entry generalises to computer-use agents as a class — screen-grounding accuracy, action-space design, failure recovery — which a single tool page does not establish"
 tags: [computer-use, browser-agents, gui-automation, screenshots, accessibility-tree, prompt-injection, approval, idempotency]
 ---
 

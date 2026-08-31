@@ -5,11 +5,13 @@ url: https://opentelemetry.io/docs/concepts/signals/traces/
 category: orchestration
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Traces | OpenTelemetry' — the primary spec-level doc for distributed tracing concepts"
+  - "CAVEAT driving B not A: OTel Traces defines spans, context propagation and sampling generically; the entry is about AGENT observability — tool-call attribution, token and cost accounting, trajectory replay — which the page does not address. The tracing substrate is evidenced, the agent-specific layer is not"
 tags: [tracing, replay, represent, each, trace]
 ---
 

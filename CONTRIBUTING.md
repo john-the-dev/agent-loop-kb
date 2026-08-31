@@ -8,7 +8,10 @@ Thanks for helping keep AI-agent engineering knowledge accurate and fresh.
 2. Fill the front-matter per [`SCHEMA.md`](SCHEMA.md). Grade it per [`GRADING.md`](GRADING.md) and back the grade with dated `evidence`.
 3. Rebuild the compiled output: `node scripts/build.mjs` (commit the updated `dist/kb.json`).
 4. Validate: `node scripts/validate.mjs` (CI runs this on every PR).
-5. Open a PR.
+5. If you set or changed a `grade`: `node scripts/check-sources.mjs` — it probes each
+   source against a same-origin control, because a 200 can be a catch-all challenge
+   page rather than the document. See GRADING.md for why this is not optional.
+6. Open a PR.
 
 ## Principles
 

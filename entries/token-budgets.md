@@ -5,11 +5,15 @@ url: https://www.aisi.gov.uk/
 category: evaluation
 source_type: research
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-31
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'The AI Security Institute (AISI)'"
+  - "WEAK CITATION — TOPIC MISMATCH: nothing at the cited url addresses token budgeting. AISI is a real and serious institute; that is not the issue. The source and the entry are simply about different subjects"
+  - "CORRECTION to this entry's own first grading pass, which diagnosed the defect as 'a homepage is not a document'. That reasoning was wrong and measurement disproved it: 6 of 59 entries cite a site root, and 4 of those (a2a-protocol, mcp-stateless, agent-skills-vs-mcp, ecommerce-agents) serve canonical documentation AT the root and are properly sourced. Root-ness is not the axis; whether the resource addresses the entry's subject is"
+  - "ACTIONABLE: repoint at a specific AISI publication on the subject, or at a different source entirely"
 tags: [token, budgets, change, capability, security]
 ---
 

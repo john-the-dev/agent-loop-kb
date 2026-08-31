@@ -5,11 +5,15 @@ url: https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
 category: evaluation
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Demystifying evals for AI agents \ Anthropic' — a primary vendor engineering essay"
+  - "CAVEAT driving B not A: the essay is squarely about eval pitfalls, so the topical fit is good — but this entry's specific claims (single-run pass rates hiding nondeterminism, short time/token limits misclassifying capable agents) are the sharp, checkable ones and rest entirely on one vendor essay with no second source"
+  - "SHARED-SOURCE CAVEAT: this url backs TWO entries — agent-evals and evaluation-strategy. A redirect-normalised audit of all 59 entries on 2026-08-30 found only 2 shared sources covering 6 entries (55 distinct sources for 59 entries), so reuse is bounded and this is one of the two clusters, not a general pattern"
+  - "NEGATIVE CONTROL: anthropic.com/engineering/not-a-real-post-xyz returns 404, so the 200 is a real page"
 tags: [evaluation, pitfalls, evaluations, should, separate]
 ---
 

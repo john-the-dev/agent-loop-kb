@@ -5,11 +5,13 @@ url: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-
 category: tools
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-29
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Effective context engineering for AI agents \ Anthropic'"
+  - "CAVEAT driving B not A: the essay covers context engineering broadly, while the entry is specifically about COMPACTION — summarise-and-discard under a window limit. The essay supports the surrounding discipline more than the specific mechanism the entry names"
 tags: [context, management, compaction, manage, retain]
 ---
 

@@ -5,11 +5,14 @@ url: https://www.anthropic.com/research/building-effective-agents
 category: tools
 source_type: research
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Building Effective AI Agents \ Anthropic' (the entry cites /research/, which 301s to /engineering/)"
+  - "of the four entries sharing this essay, agent-loop is the CLOSEST fit — the essay's subject is the loop itself, so this entry has the best claim on it of the four"
+  - "SHARED-SOURCE CAVEAT: one essay backs four entries here (agent-loop, agent-cost-control, customer-support-agents, multi-agent-orchestration). A redirect-normalised audit of all 59 entries on 2026-08-30 found 3 shared sources covering 8 entries, 54 distinct sources overall — bounded reuse, and this is the largest cluster"
 tags: [what, loop, repeatedly, reads, current]
 ---
 

@@ -5,11 +5,15 @@ url: https://www.agenticcommerce.dev/
 category: evaluation
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-31
 superseded_by: null
-evidence: []
+evidence:
+  - "agenticcommerce.dev fetched live 2026-08-30: HTTP 200, 'Agentic Commerce Protocol'"
+  - "ftc.gov RESOLVED 2026-08-31 by scripts/check-sources.mjs: HTTP 200, 'FTC's Endorsement Guides: What People Are Asking | Federal Trade Commission'. The title matches the claim it supports, so the FTC guidance IS the right authority for the disclosure claims after all"
+  - "CORRECTION-OF-A-CORRECTION: an earlier pass recorded ftc.gov as 403-and-unread. That was true of MY client - curl got 403, node's fetch did not. The 403 was a property of the request, not the page. The first evidence line was an overclaim ('fetched live' for a page I had not read); the second was accurate about access but understated the source"
+  - "CAVEAT driving B not A: the protocol site is an emerging spec rather than established practice, so the operational claims rest on a standard that is still moving"
 tags: [production, commerce, should, combine, lexical]
 ---
 

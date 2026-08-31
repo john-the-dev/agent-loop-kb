@@ -3,13 +3,16 @@ id: guardrails-safety
 title: "Layered guardrails for agent actions"
 url: https://www.nist.gov/itl/ai-risk-management-framework
 category: tools
-source_type: blog
+source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source is the NIST AI Risk Management Framework landing page, fetched live 2026-08-30: HTTP 200, title 'AI Risk Management Framework | NIST'"
+  - "CAVEAT driving B not A: AI RMF is a voluntary governance framework, not an implementable guardrail spec — it tells you which risks to manage, not how to enforce them at an agent boundary, so it underpins the entry rather than fully evidencing it"
+  - "source_type was corrected blog -> docs earlier in this PR; a NIST framework is a primary document"
 tags: [layered, guardrails, actions, should, enforced]
 ---
 

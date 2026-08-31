@@ -3,13 +3,16 @@ id: finance-agents
 title: "Production agents in finance"
 url: https://www.nist.gov/privacy-framework
 category: general
-source_type: blog
+source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source is the NIST Privacy Framework landing page, fetched live 2026-08-30: HTTP 200, title 'Privacy Framework | NIST'"
+  - "CAVEAT driving B not A: a general privacy governance framework, not finance-specific guidance — it underpins the entry's data-minimization, least-privilege, audit-trail and retention points but says nothing about ledger math, sanctions screening or transaction authorization, which is the half the entry cares most about"
+  - "same shape as guardrails-safety in this PR: a NIST framework is a primary document and a real basis, but grading it 'current best practice, safe to build on' for a domain it does not address would overstate it"
 tags: [production, finance, need, data, minimization]
 ---
 

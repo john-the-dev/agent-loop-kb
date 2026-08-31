@@ -5,11 +5,14 @@ url: https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts
 category: evaluation
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-08-23
-last_verified: 2026-08-23
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, title 'Groundedness detection in Azure AI Content Safety - Azure AI services | Microsoft Learn'"
+  - "unusually close method match: the entry describes decomposing an answer into atomic claims and checking each against the source with an entailment model, which is what the cited service does. CAVEAT driving B not A: it is still one vendor's detector, so the entry's general claim rests on a single implementation"
+  - "NEGATIVE CONTROL for this batch: learn.microsoft.com returns 404 on a fabricated path (/azure/search/not-a-real-page-xyz), so the 200s above are real pages and not a docs catch-all route, checked 2026-08-30"
 tags: [evaluation, hallucination, groundedness, faithfulness, rag, nli, observability]
 ---
 

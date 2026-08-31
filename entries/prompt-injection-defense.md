@@ -5,11 +5,13 @@ url: https://www.ncsc.gov.uk/blog-post/prompt-injection-is-not-sql-injection
 category: tools
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: A
 added: 2026-07-14
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Prompt injection is not SQL injection (it may be worse)' — UK NCSC, a national cyber-security authority"
+  - "the title states the entry's own central argument: that prompt injection resists the parameterisation fix that solved SQL injection. Authoritative and vendor-neutral, which is rare for this topic and is why this is an A rather than another vendor B"
 tags: [defending, against, prompt, injection, treat]
 ---
 

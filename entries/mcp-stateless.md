@@ -5,11 +5,14 @@ url: https://modelcontextprotocol.io/
 category: protocols
 source_type: release
 status: current
-grade: unrated   # pending first evidence-graded review
+grade: A
 added: 2026-07-28
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "the dated claim checks out at the official spec site: https://modelcontextprotocol.io/specification/2026-07-28 returns HTTP 200 and its page mentions Stateless, fetched 2026-08-30"
+  - "NEGATIVE CONTROL run because a docs SPA can answer 200 for any path: /specification/2019-01-01 and /specification/not-a-real-revision both return 404, so the 200 on the dated path is a real revision and not a catch-all"
+  - "CAVEAT on the citation, not the claim: the entry's url is the site ROOT (title 'What is the Model Context Protocol (MCP)?'), which is a general overview and does not itself evidence a dated spec revision. The revision page above is the precise source and is where the url should point"
 tags: [mcp, stateless, protocol, migration, extensions]
 ---
 

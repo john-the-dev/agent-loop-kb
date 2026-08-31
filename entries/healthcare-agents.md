@@ -9,7 +9,9 @@ grade: unrated   # seeded baseline — pending first evidence-graded review (see
 added: 2026-07-14
 last_verified: 2026-07-14
 superseded_by: null
-evidence: []
+evidence:
+  - "NOT GRADED — source could not be verified from here. https://www.hhs.gov/hipaa/for-professionals/security/index.html returns HTTP 403 Access Denied, both with curl default and with a browser User-Agent (checked 2026-08-30, two attempts only — no further retries against someone else-s production site)."
+  - "This is a statement about MY access, not about the page: 403 is a refusal, not a 404, so the resource may well be fine for a normal browser. Left unrated deliberately rather than graded on a citation nobody automated can confirm — GRADING.md reserves unrated for not-yet-evidence-graded, which is exactly the state this is in."
 tags: [production, healthcare, handling, protected, health]
 ---
 

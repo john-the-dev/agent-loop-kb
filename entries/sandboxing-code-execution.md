@@ -5,11 +5,13 @@ url: https://firecracker-microvm.github.io/
 category: security
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-08-15
-last_verified: 2026-08-15
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Firecracker' — the microVM project's own site"
+  - "CAVEAT driving B not A: Firecracker is ONE isolation mechanism. The entry argues sandboxing for agent code execution generally — seccomp, filesystem and network confinement, resource caps — and a single project page cannot establish the general practice, however good that project is"
 tags: [sandboxing, isolation, microvm, firecracker, gvisor, egress, code-execution]
 ---
 Treat every line of LLM-generated code as hostile: run it in a microVM (Firecracker) or user-space kernel (gVisor) rather than a plain shared-kernel container, and lock down network egress, secrets, filesystem, and resource limits first. Escapes are rare; exfiltration through what the sandbox is allowed to do is the common failure, so default-deny egress and broker credentials outside the sandbox.

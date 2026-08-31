@@ -5,11 +5,13 @@ url: https://www.anthropic.com/research/trustworthy-agents
 category: general
 source_type: research
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Trustworthy agents in practice \ Anthropic'"
+  - "CAVEAT driving B not A: the essay is about agent trustworthiness broadly; this entry is specifically about approval GATES — where to interpose a human, what the gate blocks, how it fails open or closed. The source motivates the need for gates more than it specifies them"
 tags: [human, approval, gates, high, stakes]
 ---
 

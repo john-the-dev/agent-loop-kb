@@ -5,11 +5,13 @@ url: https://research.trychroma.com/context-rot
 category: memory
 source_type: research
 status: current
-grade: unrated   # pending first evidence-graded review
+grade: A
 added: 2026-07-28
-last_verified: 2026-07-28
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Context Rot: How Increasing Input Tokens Impacts LLM Performance' — primary research from the group that ran it"
+  - "the source IS the study the entry is about, not a secondhand account of it: the title states the exact effect the entry names, so the claim and the evidence are the same object"
 tags: [context-rot, lost-in-the-middle, compaction, context-engineering, attention]
 ---
 

@@ -5,11 +5,15 @@ url: https://www.salesforce.com/agentforce/
 category: tools
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-31
 superseded_by: null
-evidence: []
+evidence:
+  - "salesforce.com/agentforce fetched live 2026-08-30: HTTP 200, 'Agentforce: The AI Agent Platform | Salesforce'. This is the ONLY verified source for this entry"
+  - "CORRECTION 2026-08-31 to this entry's own first grading pass, which said 'sources fetched live' and called the eCFR citation 'the strong half and exactly right'. www.ecfr.gov returns HTTP 200 with the title 'Federal Register :: Request Access' - a bot challenge, not the regulation - and returns the SAME page for a nonsense control path, so the 200 is a catch-all and proves nothing. I never read that regulation"
+  - "GRADE UNCHANGED at B, but this entry is now the same shape I flagged operations-agents for: the only source I could actually verify is a VENDOR PRODUCT MARKETING page, evidence a capability is claimed rather than that it works. The TCPA citation stands or falls on a page I could not open"
+  - "ACTIONABLE for both this entry and ecommerce-agents: a regulator citation that no automated fetch can confirm needs either a mirror that can be read, or an explicit note that it is human-verify-only. Do not re-grade either on a 200 from these hosts without a nonsense-path control beside it"
 tags: [production, sales, should, personalize, consented]
 ---
 

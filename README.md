@@ -32,22 +32,25 @@ Each entry is a markdown file with YAML front-matter (schema in [`SCHEMA.md`](SC
 
 ```markdown
 ---
-id: token-budgets
-title: "Token budgets change agent capability"
-url: https://www.aisi.gov.uk/
-category: evaluation
-source_type: research
+id: agent-delegated-auth
+title: "How do you authorize an AI agent to act on a user's behalf?"
+url: https://www.rfc-editor.org/rfc/rfc9728.html
+category: security
+source_type: docs
 status: current
 grade: A
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-30
 superseded_by: null
 evidence:
-  - "AISI eval, 1M→10M tokens = +25% SWE success (verified 2026-07-14)"
-tags: [tokens, budget, evaluation]
+  - "RFC 9728 'OAuth 2.0 Protected Resource Metadata' fetched live 2026-08-30: HTTP 200"
+tags: [oauth, delegation, security]
 ---
-Increasing an agent's token budget from 1M to 10M improved SWE-task success by ~25% …
+An agent acting for a user needs delegated authority that is scoped, auditable and revocable …
 ```
+
+The `evidence` line is the load-bearing part: it names what was checked and when, so
+a reader can re-run the check rather than trust the grade.
 
 ## Quality grades
 
@@ -59,7 +62,14 @@ PRs welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md). CI validates every ent
 
 ## Status
 
-**MVP / seed.** Seeded from 36 curated entries. Automated maintainer loop and site-ingestion wiring are landing next (see the repo issues / project notes).
+**59 entries, 58 evidence-graded** (25 A, 33 B). One is deliberately `unrated`: its
+source cannot be fetched from an automated client, and grading evidence nobody could
+read would be worse than leaving the gap visible.
+
+Sources are re-checked with [`scripts/check-sources.mjs`](scripts/check-sources.mjs),
+which probes every citation against a nonsense-path control on the same origin —
+some hosts answer `200` with a challenge page for *any* path, so a bare status code
+is not proof the page was read.
 
 ## License
 
