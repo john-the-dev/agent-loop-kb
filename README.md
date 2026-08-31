@@ -57,7 +57,7 @@ Entries are graded **A/B/C/D** on an evidence-based rubric (see [`GRADING.md`](G
 
 PRs welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md). CI validates every entry against the schema + rubric.
 
-**Good first contribution:** 48 of 59 entries are `grade: unrated`. `scripts/validate.mjs` names every one of them, and [`GRADING.md`](GRADING.md) is the rubric. One entry, graded with dated evidence, is a complete and useful PR.
+**Good first contribution:** any entry `scripts/validate.mjs` still flags as `grade: unrated`, or any entry whose `evidence` you can strengthen — or contradict — with a dated, checkable source. [`GRADING.md`](GRADING.md) is the rubric, and re-grading against it counts as much as first-grading. One entry, evidenced, is a complete and useful PR.
 
 ## Status
 
