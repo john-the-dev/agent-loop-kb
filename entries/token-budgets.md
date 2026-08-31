@@ -5,11 +5,14 @@ url: https://www.aisi.gov.uk/
 category: evaluation
 source_type: research
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-31
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'The AI Security Institute (AISI)'"
+  - "WEAK CITATION, and this is the sharpest one in the PR: the url is an organisation HOMEPAGE, not a document. A homepage is not evidence for anything — it has no stable claim, and its content changes with the org's front page. AISI is a real and serious institute, but nothing at that url speaks to token budgeting"
+  - "ACTIONABLE: this needs repointing at a specific AISI publication that actually addresses the entry's subject, or at a different source entirely. Of the two weak-citation shapes found in this PR — index-instead-of-item (memory-poisoning) and homepage-instead-of-document (here) — this is the more severe, because an index at least scopes the topic"
 tags: [token, budgets, change, capability, security]
 ---
 

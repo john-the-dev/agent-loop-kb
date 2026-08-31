@@ -5,11 +5,13 @@ url: https://docs.claude.com/en/docs/about-claude/models/choosing-a-model
 category: evaluation
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Choosing the right model - Claude Platform Docs'"
+  - "CAVEAT driving B not A: primary and correct for choosing among ONE vendor's models, but the entry also claims ADAPTATION — switching tiers at runtime as task difficulty changes — which a selection guide does not cover"
 tags: [choosing, models, prompting, fine, tuning]
 ---
 
