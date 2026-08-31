@@ -10,7 +10,7 @@ Grades exist so "bad tech" and "outdated knowledge" are **evidence-based, not op
 | **B** | Solid and useful, with caveats. Maintained but niche, or accurate-but-aging, or best-for-specific-cases. Note the caveat in `evidence`. |
 | **C** | Use with caution. Slowing maintenance, partial adoption, known rough edges, or partially superseded. |
 | **D** | Discouraged. Deprecated, abandoned, superseded, or carrying unresolved security/correctness issues. Kept for the historical record and to warn readers — set `status: deprecated` (or `superseded`) and fill `superseded_by`. |
-| **unrated** | Seeded or newly-added, not yet evidence-graded. The maintainer bot grades these on its next pass. |
+| **unrated** | Seeded or newly-added, not yet evidence-graded. `scripts/validate.mjs` warns on each one; grading them is open contribution work. |
 
 ## Signals (what `evidence` should cite)
 
@@ -35,4 +35,4 @@ Each `evidence` item should be a dated, checkable statement, e.g.:
 
 ## Staleness
 
-An entry is **stale** when `last_verified` is more than **90 days** old. The maintainer bot flags stale entries in a `review-needed` PR; a human (or the bot with evidence) re-verifies and updates `last_verified` + `grade`.
+An entry is **stale** when `last_verified` is more than **90 days** old. Re-verify it and update `last_verified` + `grade` with fresh evidence. (Automated flagging is planned; today this is a manual check — as of the last measurement no entry was over 90 days.)
