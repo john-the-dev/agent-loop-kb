@@ -5,11 +5,13 @@ url: https://hai.stanford.edu/news/hallucinating-law-legal-mistakes-large-langua
 category: memory
 source_type: blog
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: A
 added: 2026-07-14
-last_verified: 2026-07-14
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Hallucinating Law: Legal Mistakes with Large Language Models are Pervasive' (Stanford HAI)"
+  - "empirical study from an academic institution rather than a vendor, and its title states the entry's central caution directly. Vendor-neutral evidence for a domain-risk claim is exactly what an A should rest on"
 tags: [production, legal, work, should, retrieve]
 ---
 

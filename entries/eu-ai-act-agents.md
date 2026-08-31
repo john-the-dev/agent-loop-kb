@@ -5,11 +5,13 @@ url: https://artificialintelligenceact.eu/article/50/
 category: security
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: A
 added: 2026-08-21
-last_verified: 2026-08-21
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'Article 50: Transparency Obligations for Providers and Deployers of Certain AI Systems'"
+  - "primary legislative text, not a commentary on it. The entry is about disclosure duties for agent systems and Article 50 is the provision that creates them — claim and evidence are the same instrument"
 tags: [eu-ai-act, article-50, compliance, transparency, disclosure, regulation, deepfakes, gpai]
 ---
 Article 50 of the EU AI Act has been enforceable since 2 August 2026 and applies to agents regardless of high-risk status — the Annex III high-risk regime was separately deferred to 2 December 2027. Agents that interact with people must disclose they are AI; generated content must be machine-readable marked. Providers AND deployers are covered, open-source is not exempt, and the rules are extraterritorial. Penalties reach EUR 15 million or 3% of worldwide turnover, whichever is higher.
