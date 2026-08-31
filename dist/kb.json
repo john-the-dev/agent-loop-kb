@@ -6,7 +6,7 @@
   "attribution_required": true,
   "attribution": "Source: The Agent Loop (https://agent-loop.xyz)",
   "usage": "https://github.com/john-the-dev/agent-loop-kb/blob/main/AGENTS.md",
-  "version": "46c9129c81ae",
+  "version": "3b8138efba49",
   "count": 59,
   "entries": [
     {
@@ -229,9 +229,9 @@
       "category": "orchestration",
       "source_type": "docs",
       "status": "current",
-      "grade": "unrated",
+      "grade": "B",
       "added": "2026-07-14",
-      "last_verified": "2026-07-28",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "tracing",
@@ -240,7 +240,10 @@
         "each",
         "trace"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200, 'Traces | OpenTelemetry' — the primary spec-level doc for distributed tracing concepts",
+        "CAVEAT driving B not A: OTel Traces defines spans, context propagation and sampling generically; the entry is about AGENT observability — tool-call attribution, token and cost accounting, trajectory replay — which the page does not address. The tracing substrate is evidenced, the agent-specific layer is not"
+      ],
       "text": "Represent each agent run as a trace with spans for model calls, retrieval, tool execution, guardrails, handoffs, and human approvals, linked by stable run and parent identifiers. Log model and prompt versions, token counts, latency, tool names and validated arguments, result status, retries, state transitions, citations, and final outcome, while redacting secrets and minimizing retained personal data. Store enough versioned inputs and environment references to replay failures, but distinguish deterministic replay of recorded tool results from a fresh live rerun that may change external state.",
       "body": "An agent that fails without a trace fails twice: once for the user, and once for the engineer who now has to guess. Chat apps get away with logging request/response pairs; agents cannot — a single run is a *tree* of model calls, retrievals, tool executions, retries, and handoffs, and the failure you're hunting usually lives in the relationship between spans, not inside any one of them.\n\n## Traces, not logs\n\nModel each run as a distributed trace: one root span per run, child spans for every model call, retrieval, tool execution, guardrail check, and human approval, linked by stable run/parent IDs — the same discipline [OpenTelemetry's tracing model](https://opentelemetry.io/docs/concepts/signals/traces/) brings to microservices, because an agent *is* a distributed system whose services happen to include a probabilistic one. This is now standardized: the [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/) define attribute names for models, token usage, tool calls, and agent operations, so your traces stay portable across backends instead of bespoke per vendor. Purpose-built platforms like [Langfuse](https://langfuse.com/docs) layer agent-native views (session trees, cost roll-ups, eval scores per trace) on the same structure.\n\n## What each span must carry\n\n- **Identity**: model + version, prompt/template version, agent + tool names. Half of \"the agent got worse\" incidents are an untracked prompt or model change.\n- **Economics**: input/output/cached token counts and latency per span — cost regressions localize instantly when every span is priced.\n- **Decisions**: validated tool arguments, result status, retry counts, state transitions, which retrieved documents were actually cited.\n- **Hygiene**: secrets redacted at the SDK boundary, personal data minimized *before* it reaches the trace store — a trace store full of raw user data is a second breach surface with a longer retention policy.\n\n## Replay is two different things\n\nStore versioned inputs and environment references so failures can be re-executed — but keep the two replay modes distinct. **Deterministic replay** feeds recorded tool results back to reproduce the decision path: safe, hermetic, ideal for debugging the model's choices. **Live rerun** executes tools again against the world: it may double-charge, re-send, or diverge because external state moved. Confusing them turns a debugging session into an incident. Tag every replay with its mode, and gate live reruns behind the same approval checks as production runs.\n\n## Start pragmatic\n\nDay one: run IDs + spans with token counts and tool statuses, and transcripts you can actually read. Grow toward sampled evals scored on traces. The teams that skip observability don't skip the failures — they just meet them without evidence.\n\n*Sources: [OpenTelemetry — Traces](https://opentelemetry.io/docs/concepts/signals/traces/) · [OpenTelemetry — GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/) · [Langfuse documentation](https://langfuse.com/docs).*\n\n*Related: [agent evals](/library/agent-evals), [determinism & reproducibility](/library/determinism-reproducibility), [agent cost control](/library/agent-cost-control), [durable agent execution](/library/durable-agent-execution).*"
     },
@@ -251,9 +254,9 @@
       "category": "security",
       "source_type": "docs",
       "status": "current",
-      "grade": "unrated",
+      "grade": "B",
       "added": "2026-08-16",
-      "last_verified": "2026-08-16",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "security",
@@ -264,7 +267,12 @@
         "guardrails",
         "pillar"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200, 'AI agent security: the complete map - The Agent Loop'",
+        "CIRCULAR CITATION — the real finding here. agent-loop.xyz is the site this KB powers (see the repo description), so citing one of its library pages cites a DERIVATIVE of this KB rather than independent evidence. The entry's four-pillar map may well be right; this url cannot be what establishes it",
+        "partial corroboration that the page is KB-derived rather than independent: of 4 eight-word shingles taken from the entry text, 1 appears verbatim on the page. Weak evidence — the page is 38KB and partly client-rendered — so recorded as suggestive, not proof",
+        "ACTIONABLE: repoint the url at the primary sources the pillar page itself rests on (prompt-injection, sandboxing and approval-gate references), or drop the url and let the pillar stand on the per-surface entries it links"
+      ],
       "text": "Pillar hub mapping the four agent attack surfaces — input (prompt injection), memory (poisoning), execution (sandboxing), authority (guardrails/approval gates) — with links to the deep-dive guide for each, plus real incident case studies (Langflow KEV, Therac-25, Knight Capital).",
       "body": "**Short answer:** securing an AI agent means defending four distinct attack surfaces — what goes *into* the model (injection), what the model *remembers* (memory), what the model *runs* (code execution), and what the model is *allowed to do* (authority). This hub maps each surface to a deep-dive guide.\n\n## 1. Input: prompt injection\n\nAny text your agent reads — web pages, emails, tool output — can carry instructions aimed at the model. Injection remains the #1 practical agent exploit because it needs no access to your infrastructure, only to something your agent will eventually read.\n→ [Prompt injection defense](/library/prompt-injection-defense)\n\n## 2. Memory: poisoning the well\n\nPersistent memory turns a one-shot injection into a standing compromise: plant a fact once and the agent re-reads it forever. Memory needs provenance, quarantine for un-trusted writes, and periodic audits.\n→ [Defending against memory poisoning](/library/memory-poisoning)\n\n## 3. Execution: sandboxing generated code\n\nAgents that write and run code need real isolation — microVMs or user-space kernels, locked-down egress, scoped credentials — because LLM-generated code must be treated as hostile by default.\n→ [Sandboxing agent code execution](/library/sandboxing-code-execution)\n\n## 4. Authority: guardrails and approval gates\n\nThe blast radius of a compromised agent equals the permissions you gave it. Cap it with explicit guardrails, human approval for irreversible actions, and least-privilege tool scopes.\n→ [Guardrails and safety](/library/guardrails-safety) · [Human approval gates](/library/human-approval-gates)\n\n## Case studies\n\nReal incidents beat theory. The Langflow RCE reached CISA's KEV list because an agent-builder exposed unauthenticated code execution:\n→ [Langflow CVE in CISA KEV](/library/langflow-cisa-kev-agent-rce)\n\nAnd the pre-LLM history of safety-critical software failure still sets the frame for what \"unsafe autonomy\" costs:\n→ [Therac-25](/library/lesson-therac-25) · [Knight Capital](/library/lesson-knight-capital-deploy)\n\n## The one-paragraph security model\n\nTreat the model as an enthusiastic intern with no loyalty: everything it reads may be adversarial (injection), everything it remembers may be planted (poisoning), everything it executes may be a payload (sandboxing), and everything it's permitted to do will eventually be done wrong (authority). Defense-in-depth across all four layers — not any single fix — is what makes an agent deployable."
     },
@@ -373,9 +381,9 @@
       "category": "memory",
       "source_type": "research",
       "status": "current",
-      "grade": "unrated",
+      "grade": "A",
       "added": "2026-07-28",
-      "last_verified": "2026-07-28",
+      "last_verified": "2026-08-30",
       "superseded_by": null,
       "tags": [
         "context-rot",
@@ -384,7 +392,10 @@
         "context-engineering",
         "attention"
       ],
-      "evidence": [],
+      "evidence": [
+        "source fetched live 2026-08-30: HTTP 200, 'Context Rot: How Increasing Input Tokens Impacts LLM Performance' — primary research from the group that ran it",
+        "the source IS the study the entry is about, not a secondhand account of it: the title states the exact effect the entry names, so the claim and the evidence are the same object"
+      ],
       "text": "Context rot is the degradation of agent performance as the context window fills — long before the technical token limit — because attention favors the start and end of the window and buries the middle. Prevent it with compaction over accumulation, externalized memory, position-aware window structure, aggressive eviction of stale output, and delegation of bounded sub-tasks to fresh subagent windows.",
       "body": "**Context rot** is the degradation of an agent's performance as its context window fills up — even when the total token count stays well under the model's technical limit. Task coherence erodes as older but still-relevant information gets buried under newer tokens or quietly drops out at the edges of the model's attention. This is measured, not anecdotal: [Chroma's \"Context Rot\" technical report](https://research.trychroma.com/context-rot) evaluated 18 models (including GPT-4.1, Claude 4, Gemini 2.5) and found performance degrades — increasingly unevenly — as input length grows, even on tasks as simple as repeating text, and the [\"Lost in the Middle\" study](https://arxiv.org/abs/2307.03172) showed accuracy drops sharply when relevant information sits in the middle of a long context rather than at the edges. In practice, agents start failing well before the advertised window is full.\n\n## Why it happens\n\nAttention is not uniform across a long window. Models reliably attend to the start and end of the context (\"primacy\" and \"recency\") but degrade in the middle — the \"lost in the middle\" effect. As an agent loop appends tool results, retrieved documents, and prior turns, the instructions and facts that mattered on turn 3 sink into that low-attention middle by turn 30. Nothing was truncated, so it looks fine — but the model has effectively stopped using it.\n\n## How to prevent it\n\n**1. Compaction over accumulation.** When the window approaches a threshold (not the hard limit), summarize the older turns into a compact state and reinitialize with that summary. Keep verbatim only what must stay verbatim — open sub-goals, the active plan, unresolved errors.\n\n**2. Externalize memory.** Offload durable facts to a store (files, vector DB, scratchpad) and retrieve on demand. The window should hold the *working set* for the current step, not the entire history.\n\n**3. Structure the window by position.** Pin the system prompt and current task at the top; keep the most recent tool output at the bottom. Put reference material that must survive in those high-attention zones, not the middle.\n\n**4. Evict aggressively.** Drop stale tool outputs, resolved errors, and superseded plans. A smaller, cleaner window outperforms a larger, noisier one — fewer distractor tokens means sharper attention on what matters.\n\n**5. Delegate to subagents.** Hand a bounded sub-task to a fresh agent with its own clean window, and return only the result. This is compaction by architecture: the parent never sees the sub-task's intermediate churn.\n\n## The one-line rule\n\nContext engineering asks *what tokens should occupy the window at every moment* — including what to evict, compress, or delegate. Treat the window as a scarce, actively-managed resource, not an append-only log, and context rot stops being your top failure mode.\n\n*Sources: [Chroma — Context Rot: How Increasing Input Tokens Impacts LLM Performance](https://research.trychroma.com/context-rot) · [Liu et al. — Lost in the Middle (TACL 2024)](https://arxiv.org/abs/2307.03172) · [Anthropic — Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents).*\n\n*Related: [context compaction](/library/context-compaction), [token budgets](/library/token-budgets), [agent memory tiers](/library/agent-memory-tiers), [multi-agent orchestration](/library/multi-agent-orchestration).*"
     },

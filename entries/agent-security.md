@@ -5,11 +5,15 @@ url: https://agent-loop.xyz/library/agent-security
 category: security
 source_type: docs
 status: current
-grade: unrated   # seeded baseline — pending first evidence-graded review (see GRADING.md)
+grade: B
 added: 2026-08-16
-last_verified: 2026-08-16
+last_verified: 2026-08-30
 superseded_by: null
-evidence: []
+evidence:
+  - "source fetched live 2026-08-30: HTTP 200, 'AI agent security: the complete map - The Agent Loop'"
+  - "CIRCULAR CITATION — the real finding here. agent-loop.xyz is the site this KB powers (see the repo description), so citing one of its library pages cites a DERIVATIVE of this KB rather than independent evidence. The entry's four-pillar map may well be right; this url cannot be what establishes it"
+  - "partial corroboration that the page is KB-derived rather than independent: of 4 eight-word shingles taken from the entry text, 1 appears verbatim on the page. Weak evidence — the page is 38KB and partly client-rendered — so recorded as suggestive, not proof"
+  - "ACTIONABLE: repoint the url at the primary sources the pillar page itself rests on (prompt-injection, sandboxing and approval-gate references), or drop the url and let the pillar stand on the per-surface entries it links"
 tags: [security, hub, prompt-injection, memory-poisoning, sandboxing, guardrails, pillar]
 ---
 Pillar hub mapping the four agent attack surfaces — input (prompt injection), memory (poisoning), execution (sandboxing), authority (guardrails/approval gates) — with links to the deep-dive guide for each, plus real incident case studies (Langflow KEV, Therac-25, Knight Capital).
